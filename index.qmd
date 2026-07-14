@@ -142,6 +142,16 @@ and stored for future games until they are eventually retired to the
 **Dead Letter Office** --- or, in some cases, simply depleted, such as
 a fully used sticker sheet.
 
+Unlike traditional *TtR*, *Legends of the West* tracks **dollars**
+rather than victory points. Money is earned from completed destination
+tickets, coins remaining in hand, bonuses for trains left at the end
+of the game, favourable events, and the $2 toll other companies pay
+when building into one of your headquarters cities. Money is lost
+through failed destination tickets, unfavourable events, payments
+claimed by Mama O'Connell, and payments claimed by other companies
+(note you can also pay these tolls with train cards instead). Every
+game begins with each company holding $5 (although employee abilities may increase this starting amount).
+
 ::: {.callout-note title="Why 1865–1898?" collapse="true"}
 The campaign follows the great American railroad boom. It begins in
 1865, the year the American Civil War ended, and concludes in 1898 as
@@ -157,15 +167,22 @@ of the period.
 
 ## Score progression
 
-Rather than immediately explaining how dollars are earned, this
-section uses the score record to answer a more interesting question.
+When the campaign starts, the board is minimal and a game is
+relatively quick (less than an hour) --- and it is hard to tell what a
+"good" score even looks like. What we noticed is that as the campaign
+progressed, the scores got higher. The more valuable tickets would be
+sought after and depleted: one feature of the legacy system that keeps
+the ticket deck from bloating is that whenever a company completes a
+ticket, it punches the card --- some tickets allow one punch, others
+two (more on that later) --- and once full, the ticket is retired to
+the Dead Letter Office.
 
 ```{r per-game}
 #| fig-cap: >
 #|   Dollars earned by each company throughout the campaign. The dashed
 #|   grey line indicates the recommended dollar amount awarded to a
 #|   player who missed that particular game, as specified by the
-#|   rulebook.
+#|   event deck.
 missing_scores <- dbGetQuery(con, "
   SELECT year, dollars FROM bank_slips WHERE player = 'missing'
 ") |>
@@ -193,19 +210,9 @@ ggplot(per_game, aes(year, dollars, color = player, linetype = player)) +
   )
 ```
 
-Unlike traditional *TtR*, *Legends of the West* tracks **dollars**
-rather than victory points. Money is earned from completed destination
-tickets, coins remaining in hand, bonuses for trains left at the end
-of the game, favourable events, and the $2 toll other companies pay
-when building into one of your headquarters cities. Money is lost
-through failed destination tickets, unfavourable events, payments
-claimed by Mama O'Connell, and payments claimed by other companies
-(note you can also pay these tolls with train cards instead). Every game begins with each company holding
-$5 (although employee abilities may increase this starting amount).
-
-One feature of the campaign is easy to overlook: the rulebook provides
-a **recommended dollar amount** for any player who misses a particular
-game. Rather than attempting to recreate the absent player's result,
+One feature of the campaign is easy to overlook: the event deck
+provides a **recommended dollar amount** for any player who misses a
+particular game. Rather than attempting to recreate the absent player's result,
 the designers simply award a fixed amount based on the chapter of the
 campaign. Presumably these values were chosen to approximate what a
 typical company would have earned during that game.
