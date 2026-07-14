@@ -45,9 +45,12 @@ and network-building train game. Most players where I come from are
 familiar with
 [*Europe*](https://boardgamegeek.com/boardgame/14996/ticket-to-ride-europe)
 or
-[*Nordic Countries*](https://boardgamegeek.com/boardgame/31627/ticket-to-ride-nordic-countries):
-collect coloured train cards, claim routes between cities, complete
-destination tickets for points, and score the most points to win.
+[*Nordic Countries*](https://boardgamegeek.com/boardgame/31627/ticket-to-ride-nordic-countries),
+but regardless of which *TtR* map you know, the core gameplay remains
+largely the same: collect coloured train cards, claim routes between
+cities, complete destination tickets for points, and score additional
+bonuses from map-specific objectives. The player with the most points
+at the end of the game wins.
 
 [*Ticket to Ride Legacy: Legends of the West*](https://boardgamegeek.com/boardgame/390092/ticket-to-ride-legacy-legends-of-the-west)
 (2023) gives that familiar formula the **legacy treatment** pioneered
