@@ -43,6 +43,24 @@ GENDERS = {
 }
 GAME_YEARS = list(range(1865, 1899, 3)) + [1901]
 
+# Company share tally (not in the workbook; recorded from the physical
+# share cards after the campaign). 6 share colors x 10 shares = 60.
+# Scoring per company: most shares ranks first (must hold at least one
+# to qualify); ties broken by the lowest-numbered share held (card
+# numbers were not recorded, so per-company payouts are not derivable -
+# only the resulting per-player dollars, recorded in SHARE_PAYOUTS).
+SHARES = {
+    # company: {player: shares held}
+    "black":  {"black": 6, "blue": 0, "green": 3, "yellow": 0, "red": 1},
+    "blue":   {"black": 3, "blue": 1, "green": 3, "yellow": 2, "red": 1},
+    "green":  {"black": 1, "blue": 0, "green": 4, "yellow": 2, "red": 3},
+    "yellow": {"black": 1, "blue": 1, "green": 5, "yellow": 2, "red": 1},
+    "red":    {"black": 0, "blue": 2, "green": 4, "yellow": 2, "red": 2},
+    "white":  {"black": 3, "blue": 1, "green": 3, "yellow": 0, "red": 3},
+}
+SHARE_BONUS = {1: 20, 2: 15, 3: 10, 4: 5}
+SHARE_PAYOUTS = {"black": 65, "blue": 25, "green": 110, "yellow": 40, "red": 55}
+
 # City coordinates for map plots. Real cities use real lat/lon; the
 # game's fictional cities (approx=1) get plausible board positions.
 CITY_COORDS = {
@@ -252,6 +270,26 @@ def create_schema(con):
         company TEXT,                      -- ownership sticker (color/'big'/...)
         port INTEGER                       -- 1 = port city
     );
+    -- company share holdings at campaign end (6 companies incl. white,
+    -- 10 shares each). Scoring: most shares per company ranks first
+    -- (needs at least 1 share); ties broken by lowest-numbered share.
+    CREATE TABLE shares (
+        company TEXT NOT NULL,             -- share color, incl. 'white'
+        player TEXT NOT NULL REFERENCES players(color),
+        qty INTEGER NOT NULL,
+        PRIMARY KEY (company, player)
+    );
+    CREATE TABLE share_bonus_ref (
+        rank INTEGER PRIMARY KEY,
+        bonus INTEGER NOT NULL
+    );
+    -- resulting share dollars per player (tie resolutions depended on
+    -- share card numbers that were not recorded, so payouts are stored
+    -- as tallied, not derived)
+    CREATE TABLE share_payouts (
+        player TEXT PRIMARY KEY REFERENCES players(color),
+        dollars INTEGER NOT NULL
+    );
     -- map-plot coordinates; approx=1 for the game's fictional cities
     CREATE TABLE city_coords (
         city TEXT PRIMARY KEY REFERENCES cities(city),
@@ -302,6 +340,14 @@ def load_players_and_games(con):
                     (color, company, GENDERS[color]))
     for seq, year in enumerate(GAME_YEARS, start=1):
         con.execute("INSERT INTO games VALUES (?,?)", (year, seq))
+    for company, holdings in SHARES.items():
+        for player, qty in holdings.items():
+            con.execute("INSERT INTO shares VALUES (?,?,?)",
+                        (company, player, qty))
+    for rank, bonus in SHARE_BONUS.items():
+        con.execute("INSERT INTO share_bonus_ref VALUES (?,?)", (rank, bonus))
+    for player, dollars in SHARE_PAYOUTS.items():
+        con.execute("INSERT INTO share_payouts VALUES (?,?)", (player, dollars))
 
 
 def load_reference(con, ref):

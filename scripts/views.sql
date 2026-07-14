@@ -132,6 +132,22 @@ FROM cities c
 LEFT JOIN routes r ON c.city IN (r.city_a, r.city_b)
 GROUP BY c.city;
 
+-- Share tally consistency: every company must have exactly 10 shares
+-- out, and the recorded payouts must exhaust the available bonus pool
+-- (per company: one bonus per qualifying player, best ranks first).
+CREATE VIEW v_share_check AS
+SELECT
+    (SELECT COUNT(*) FROM
+        (SELECT company FROM shares GROUP BY company HAVING SUM(qty) <> 10)
+    ) AS companies_not_10,
+    (SELECT SUM(qty) FROM shares) AS total_shares,
+    (SELECT SUM(dollars) FROM share_payouts) AS payouts_total,
+    (SELECT SUM(b.bonus)
+       FROM (SELECT company, COUNT(*) AS qualifiers
+               FROM shares WHERE qty > 0 GROUP BY company) q
+       JOIN share_bonus_ref b ON b.rank <= q.qualifiers
+    ) AS pool_total;
+
 -- Final scores per player per game, from the bank slips.
 CREATE VIEW v_scores AS
 SELECT player, year, dollars,

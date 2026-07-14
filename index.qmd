@@ -301,6 +301,53 @@ knitr::kable(
 )
 ```
 
+## Company shares
+
+Sixty shares across six railway companies (including the neutral white
+railway), ten per company. Most shares in a company ranks first (at
+least one share required to qualify; ties broken by the lowest-numbered
+share held), paying 20/15/10/5$ down the ranks.
+
+```{r shares}
+#| fig-height: 4.5
+shares <- dbGetQuery(con, "SELECT * FROM shares") |>
+  mutate(
+    player = factor(player, levels = names(player_colors)),
+    company = factor(company,
+      levels = rev(c("black", "blue", "green", "yellow", "red", "white"))
+    )
+  )
+
+ggplot(shares, aes(player, company, fill = qty)) +
+  geom_tile(color = "white", linewidth = 1.2) +
+  geom_text(aes(label = ifelse(qty > 0, qty, "")), size = 3.6) +
+  scale_fill_gradient(low = "#f5f5f5", high = "#2a7fbf", guide = "none") +
+  coord_fixed(ratio = 0.6) +
+  labs(
+    title = "Share holdings (rows sum to 10)",
+    x = NULL, y = "company"
+  )
+```
+
+```{r share-payouts}
+#| fig-height: 3.5
+payouts <- dbGetQuery(con, "SELECT * FROM share_payouts") |>
+  mutate(player = factor(player, levels = names(player_colors)))
+
+ggplot(payouts, aes(player, dollars, fill = player)) +
+  geom_col(show.legend = FALSE) +
+  geom_text(aes(label = dollars), vjust = -0.4, size = 3, color = "gray30") +
+  scale_fill_manual(values = player_colors) +
+  scale_y_continuous(expand = expansion(mult = c(0.02, 0.12))) +
+  labs(
+    title = "Share dollars (295$ paid out in total)",
+    x = NULL, y = "dollars"
+  )
+```
+
+Green's diversified portfolio (22 of 60 shares, holding stakes in every
+company) pays 110$ — more than a third of the entire pool.
+
 ## The board
 
 The game board as a network: 200 tracks connecting 63 cities across 12

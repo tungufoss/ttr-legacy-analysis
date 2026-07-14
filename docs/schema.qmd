@@ -29,6 +29,8 @@ erDiagram
     players ||--o{ bank_slips : "scores"
     players ||--o{ claims : "owns (mostly unknown)"
     players ||--o{ post_office : "vault"
+    players ||--o{ shares : "holdings"
+    players ||--o| share_payouts : "share dollars"
 
     games ||--o{ bank_slips : "per game"
 
@@ -185,6 +187,19 @@ erDiagram
         text track_color "NULL = unbuilt track bed"
         int bridges
     }
+    shares {
+        text company "share color incl white"
+        text player FK
+        int qty
+    }
+    share_bonus_ref {
+        int rank PK
+        int bonus "20/15/10/5"
+    }
+    share_payouts {
+        text player PK
+        int dollars "as tallied"
+    }
 ```
 
 ## Views
@@ -200,5 +215,6 @@ erDiagram
 | `v_ticket_retirement` | the same, joined to retired tickets |
 | `v_ticket_rule_check` | punch-capacity rule violations (empty = consistent) |
 | `v_city_degree` | track connections per city (recreates the map sheet's degree check) |
+| `v_share_check` | share tally consistency: 10 per company, payouts exhaust the bonus pool |
 | `v_scores` | bank slip scores per player per game |
 | `v_campaign_totals` | campaign dollar totals per player |
