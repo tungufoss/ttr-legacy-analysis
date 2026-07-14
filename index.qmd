@@ -141,15 +141,6 @@ and stored for future games until they are eventually retired to the
 **Dead Letter Office** --- or, in some cases, simply depleted, such as
 a fully used sticker sheet.
 
-The campaign tracks **dollars**, rather than traditional *TtR* victory
-points. Money is earned from completed destination tickets, coins
-remaining in hand, bonuses for trains left at the end of the game,
-favourable events, and the $2 toll other companies pay when building
-into one of your headquarters cities. Money is lost through failed
-destination tickets, unfavourable events, and payments claimed by Mama
-O'Connell. Every game begins with each company holding $5, although
-employee abilities may increase this starting amount.
-
 ::: {.callout-note title="Why 1865–1898?" collapse="true"}
 The campaign follows the great American railroad boom. It begins in
 1865, the year the American Civil War ended, and concludes in 1898 as
@@ -165,11 +156,15 @@ of the period.
 
 ## Score progression
 
-Dollars earned per game, per company. The dashed gray line is the
-suggested dollars for a player missing in action that game --- a
-baseline value.
+Rather than immediately explaining how dollars are earned, this
+section uses the score record to answer a more interesting question.
 
 ```{r per-game}
+#| fig-cap: >
+#|   Dollars earned by each company throughout the campaign. The dashed
+#|   grey line indicates the recommended dollar amount awarded to a
+#|   player who missed that particular game, as specified by the
+#|   rulebook.
 missing_scores <- dbGetQuery(con, "
   SELECT year, dollars FROM bank_slips WHERE player = 'missing'
 ") |>
@@ -196,6 +191,148 @@ ggplot(per_game, aes(year, dollars, color = player, linetype = player)) +
     x = NULL, y = "dollars", color = NULL, linetype = NULL
   )
 ```
+
+Unlike traditional *TtR*, *Legends of the West* tracks **dollars**
+rather than victory points. Money is earned from completed destination
+tickets, coins remaining in hand, bonuses for trains left at the end
+of the game, favourable events, and the $2 toll other companies pay
+when building into one of your headquarters cities. Money is lost
+through failed destination tickets, unfavourable events, and payments
+claimed by Mama O'Connell. Every game begins with each company holding
+$5 (although employee abilities may increase this starting amount).
+
+One feature of the campaign is easy to overlook: the rulebook provides
+a **recommended dollar amount** for any player who misses a particular
+game. Rather than attempting to recreate the absent player's result,
+the designers simply award a fixed amount based on the chapter of the
+campaign. Presumably these values were chosen to approximate what a
+typical company would have earned during that game.
+
+Because our campaign contains complete results for all five companies,
+we can evaluate how well these recommendations match observed play.
+Are they an unbiased estimate of an average player's earnings? Do they
+systematically overestimate or underestimate actual performance? And
+would following the rule have unfairly advantaged or disadvantaged a
+player over the course of the campaign?
+
+The remainder of this section compares the official "missing player"
+values against the observed campaign results — effectively an
+evaluation of one of the game's hidden balancing mechanisms.
+
+### Game-level comparison
+
+```{r missing-game-level}
+official <- dbGetQuery(con, "
+  SELECT year, dollars AS official FROM bank_slips WHERE player = 'missing'
+")
+
+obs <- scores |>
+  group_by(year) |>
+  summarise(
+    mean = mean(dollars), median = median(dollars),
+    sd = sd(dollars), .groups = "drop"
+  ) |>
+  left_join(official, by = "year") |>
+  mutate(diff = mean - official)
+
+knitr::kable(
+  obs |> mutate(across(c(mean, median, sd, diff), ~ round(.x, 1))) |>
+    select(year, official, mean, median, sd, `mean − official` = diff),
+  caption = "Official missing-player amount vs observed earnings per game"
+)
+```
+
+```{r missing-errors}
+player_official <- scores |>
+  left_join(official, by = "year") |>
+  mutate(resid = dollars - official)
+
+me   <- mean(player_official$resid)
+mae  <- mean(abs(player_official$resid))
+rmse <- sqrt(mean(player_official$resid^2))
+```
+
+Treating the guideline as a prediction of each company's earnings in
+each game (60 observations), its **mean error is
+\$`r round(me, 1)`** (positive = players actually earned more), with
+a mean absolute error of \$`r round(mae, 1)` and RMSE of
+\$`r round(rmse, 1)`. The bias is not constant, though — it grows
+with the campaign economy:
+
+```{r missing-residuals}
+#| fig-height: 4.5
+#| fig-cap: >
+#|   Residuals (actual − official) per game. The guideline tracks the
+#|   early campaign well, then falls increasingly behind the inflating
+#|   economy.
+ggplot(player_official, aes(year, resid, color = player)) +
+  geom_hline(yintercept = 0, color = "gray55", linetype = "dashed") +
+  geom_line(linewidth = 0.8) +
+  geom_point(size = 2) +
+  scale_color_manual(values = player_colors) +
+  scale_x_continuous(breaks = unique(scores$year)) +
+  labs(
+    title = "Actual minus official, per game",
+    x = NULL, y = "dollars above the guideline", color = NULL
+  )
+```
+
+### Per-company performance
+
+```{r missing-company}
+#| fig-height: 4
+#| fig-cap: >
+#|   Distribution of (actual − official) across the 12 games. Boxes
+#|   above zero mean the company out-earned the missing-player
+#|   guideline.
+ggplot(player_official, aes(player, resid, fill = player)) +
+  geom_hline(yintercept = 0, color = "gray55", linetype = "dashed") +
+  geom_boxplot(show.legend = FALSE, alpha = 0.8) +
+  scale_fill_manual(values = player_colors) +
+  labs(
+    title = "Actual minus official, by company",
+    x = NULL, y = "dollars above the guideline"
+  )
+```
+
+```{r missing-tests}
+tests <- player_official |>
+  group_by(player) |>
+  summarise(
+    avg_dollars = round(mean(dollars), 1),
+    avg_diff = round(mean(resid), 1),
+    sd_diff = round(sd(resid), 1),
+    p_wilcoxon = signif(
+      wilcox.test(dollars, official, paired = TRUE, exact = FALSE)$p.value, 2
+    ),
+    .groups = "drop"
+  )
+
+knitr::kable(
+  tests,
+  col.names = c("company", "avg dollars", "avg − official",
+                "sd", "Wilcoxon p"),
+  caption = "Per-company deviation from the guideline
+    (Wilcoxon signed-rank, paired, n = 12)"
+)
+```
+
+### Interpretation
+
+If the recommendations closely matched observed play, they would offer
+a fair way to handle missed sessions. The data says they are
+**increasingly stingy**: the guideline is roughly calibrated for the
+first half of the campaign, but from 1883 onward the table's economy
+inflates (bigger tickets, headquarters tolls, richer events) while the
+guideline grows only linearly. Averaged over the whole campaign, four
+of the five companies out-earned the guideline by \$13--19 per game;
+only **Blue** essentially broke even against it (average difference
+\$-1.4). With just 12 paired observations per company, none of the
+Wilcoxon tests reach conventional significance (Green comes closest at
+p = 0.074), so the per-company differences should be read as
+descriptive. Still, the direction is consistent: skipping a
+late-campaign game and taking the official payout would have been a
+bad trade for everyone except perhaps Blue.
 
 The campaign total is what decides the winner — the running sum of the
 bank slips through 1898, then each post-campaign addition stepped in
