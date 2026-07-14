@@ -620,24 +620,47 @@ ggplot() +
 ### Hotspots
 
 Which cities did completed tickets actually connect? Each punch on a
-ticket counts once for each of its two endpoint cities.
+ticket counts once for each of its two endpoint cities. **Hover a
+city** for its name, punch count, and most frequent visitor — the
+company that punched the most tickets through it.
 
 ```{r hotspots}
-#| fig-height: 7
-hot <- dbGetQuery(con, "
+#| fig-height: 6.5
+library(plotly)
+
+city_players <- dbGetQuery(con, "
   WITH endpoint_punches AS (
-    SELECT t.from_city AS city, p.punches FROM tickets t
+    SELECT t.from_city AS city, p.color AS player, p.punches FROM tickets t
     JOIN ticket_punches p ON p.ticket_id = t.ticket_id
     UNION ALL
-    SELECT t.to_city, p.punches FROM tickets t
+    SELECT t.to_city, p.color, p.punches FROM tickets t
     JOIN ticket_punches p ON p.ticket_id = t.ticket_id
   )
-  SELECT city, SUM(punches) AS punches
-  FROM endpoint_punches GROUP BY city
-") |>
-  inner_join(coords, by = "city")
+  SELECT city, player, SUM(punches) AS punches
+  FROM endpoint_punches GROUP BY city, player
+")
 
-ggplot() +
+top_visitors <- city_players |>
+  filter(punches > 0) |>
+  group_by(city) |>
+  filter(punches == max(punches)) |>
+  summarise(
+    top_label = paste0(paste(player, collapse = " & "),
+                       " (", first(punches), ")"),
+    .groups = "drop"
+  )
+
+hot <- city_players |>
+  group_by(city) |>
+  summarise(punches = sum(punches), .groups = "drop") |>
+  left_join(top_visitors, by = "city") |>
+  inner_join(coords, by = "city") |>
+  mutate(tooltip = paste0(
+    "<b>", city, "</b><br>punches: ", punches,
+    "<br>most frequent visitor: ", coalesce(top_label, "none")
+  ))
+
+p_hot <- ggplot() +
   geom_segment(
     data = routes,
     aes(x = lon_a, y = lat_a, xend = lon_b, yend = lat_b),
@@ -645,20 +668,18 @@ ggplot() +
   ) +
   geom_point(
     data = hot,
-    aes(lon, lat, size = punches, color = punches),
+    aes(lon, lat, size = punches, color = punches, text = tooltip),
     alpha = 0.8
   ) +
-  geom_text(
-    data = slice_max(hot, punches, n = 12),
-    aes(lon, lat, label = paste0(city, " (", punches, ")")),
-    size = 2.8, vjust = -1.1, fontface = "bold", check_overlap = TRUE
-  ) +
-  scale_size_continuous(range = c(1, 10)) +
+  scale_size_continuous(range = c(1, 9)) +
   scale_color_viridis_c(option = "inferno", direction = -1) +
-  coord_quickmap() +
+  coord_fixed(ratio = 1.25) +
   theme_void() +
   theme(legend.position = "none") +
   labs(title = "Ticket hotspots: endpoint cities weighted by punches")
+
+ggplotly(p_hot, tooltip = "text") |>
+  config(displayModeBar = FALSE)
 ```
 
 ### When was the network built?
