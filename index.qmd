@@ -37,69 +37,72 @@ scores <- dbGetQuery(con, "SELECT * FROM v_scores") |>
 players <- dbGetQuery(con, "SELECT * FROM players")
 ```
 
-## What on earth is Ticket to Ride Legacy?
+## What on earth is *Ticket to Ride Legacy*?
 
 [*Ticket to Ride*](https://boardgamegeek.com/boardgame/9209/ticket-to-ride)
-(TtR) is Alan R. Moon's famous gateway board game — the set-collecting,
-network-building train game; most people where I come from know the
+(TtR) is Alan R. Moon's classic gateway board game: a set-collection
+and network-building train game. Most players where I come from are
+familiar with
 [*Europe*](https://boardgamegeek.com/boardgame/14996/ticket-to-ride-europe)
 or
-[*Nordic*](https://boardgamegeek.com/boardgame/31627/ticket-to-ride-nordic-countries)
-variety. Each TtR variation is basically draw colored train cards,
-claim routes between cities, complete tickets for points — with
-various nuances for additional scoring (like longest road).
+[*Nordic Countries*](https://boardgamegeek.com/boardgame/31627/ticket-to-ride-nordic-countries):
+collect coloured train cards, claim routes between cities, complete
+destination tickets for points, and score the most points to win.
+
 [*Ticket to Ride Legacy: Legends of the West*](https://boardgamegeek.com/boardgame/390092/ticket-to-ride-legacy-legends-of-the-west)
-(2023) gives that familiar game the **legacy treatment** pioneered by
-Rob Daviau and Matt Leacock in *Pandemic Legacy* (seasons
+(2023) gives that familiar formula the **legacy treatment** pioneered
+by Rob Daviau and Matt Leacock in *Pandemic Legacy* (Seasons
 [1](https://boardgamegeek.com/boardgame/161936/pandemic-legacy-season-1),
 [2](https://boardgamegeek.com/boardgame/221107/pandemic-legacy-season-2)
-and [0](https://boardgamegeek.com/boardgame/314040/pandemic-legacy-season-0)
-— yes, in that order): a 12-game campaign where the results of each
-play permanently change the next — the board grows piece by piece,
-cards are punched and stickered, and unlike many legacy systems
-nothing gets torn up: it might be altered, but eventually it gets
-retired for good into the dead letter office, while the story unfolds
-as you go.
+and
+[0](https://boardgamegeek.com/boardgame/314040/pandemic-legacy-season-0)
+--- in that order). Across a twelve-game campaign, the outcome of each
+session permanently changes future games. The map expands frontier by
+frontier, new cards and mechanics are introduced, existing components
+are modified with stickers or punches, and --- unlike many legacy
+games --- almost nothing is destroyed. Instead, components eventually
+retire to the **Dead Letter Office**, creating a persistent record of
+the campaign as the story unfolds.
 
 ::: {.callout-warning title="Spoiler warning"}
-This report is one long spoiler. It shows the full board, every
-frontier, hidden card values, postcards, and campaign-end scoring. If
-you ever plan to play *Ticket to Ride Legacy: Legends of the West*
-unspoiled, close this tab now and come back in twelve games.
+This report is one long spoiler. It contains the complete campaign,
+including every frontier, the fully revealed map, destination tickets,
+postcards, hidden card values, campaign events, and final scoring. If
+you think you might play *Ticket to Ride Legacy: Legends of the West*
+in the future, stop reading now and come back after twelve games.
 :::
 
 ## Our campaign
 
-Our campaign was played by five players. Throughout this report, they
-are referred to by their player colours — **Green**, **Black**,
-**Red**, **Yellow**, and **Blue**. As each player controls a railroad
-company throughout the campaign, the terms *player* and *company* are
-used interchangeably.
+Our campaign was played by five players. Throughout this report they
+are referred to by their player colours --- **Green**, **Black**,
+**Red**, **Yellow**, and **Blue**. Since each player controls a
+railroad company throughout the campaign, the terms *player* and
+*company* are used interchangeably.
 
 The game itself was a Christmas present from Green and Black to
 Black's sisters, Red and Yellow, and Yellow's husband, Blue. Everyone
-at the table was already well versed in *Ticket to Ride* —
-particularly *Ticket to Ride: Europe* — and enjoyed set-collection
-train games. Only Green and Black had previous experience with legacy
-games, having completed *Pandemic Legacy* Seasons 1 and 2 (with
-Season 0 still waiting on the shelf of opportunity). As those are
-cooperative games, where players work together against the game,
-*Legends of the West* was everyone's **first competitive legacy
-campaign**.
+at the table was already well versed in *Ticket to Ride* ---
+particularly *Europe* --- and enjoyed set-collection train games. Only
+Green and Black had previous experience with legacy games, having
+completed *Pandemic Legacy* Seasons 1 and 2 (with Season 0 still on
+the shelf of opportunity). As those are cooperative games in which
+players work together against the game, *Legends of the West* was
+everyone's **first competitive legacy campaign**.
 
-The campaign consists of twelve games but, in our case, spanned
-roughly **two and a half years**. Although the game was received as a
-Christmas gift in 2023 and the first session took place in February
-2024, the campaign included a lengthy hiatus from late 2024 until
-April 2026. In the meantime, life happened: pregnancies, the arrival
-of two new family members in 2025, and the inevitable challenge of
-finding time to get everyone back around the table.
+Although the campaign consists of only twelve games, ours spanned
+roughly **two and a half years**. The game was received as a Christmas
+present in 2023 and the first session took place in February 2024, but
+after several games the campaign paused from late 2024 until April
+2026. In the meantime, life happened: pregnancies, the arrival of two
+new family members in 2025, and the usual challenge of finding time to
+get everyone back around the table.
 
 After the campaign concluded, the complete game state was
 painstakingly **reconstructed by hand**. Every remaining card in the
 Storeroom, Post Office, Company Vaults, and the entire Dead Letter
-Office pile was catalogued card by card and entered into the database
-that forms the basis of the analyses presented in this report.
+Office was catalogued card by card and entered into the database on
+which the analyses in this report are based.
 
 ## Score progression
 
