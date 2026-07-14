@@ -382,8 +382,9 @@ descriptive. Still, the direction is consistent: skipping a
 late-campaign game and taking the official payout would have been a
 bad trade for everyone except perhaps Blue.
 
-::: {.callout-tip title="Recommendation"}
-The official payout is a fair way to handle a missing player. On
+::: {.callout-tip title="Verdict & recommendation"}
+**Yes --- a fair balancing mechanism by the designers.** The official
+payout is a reasonable way to handle a missing player. On
 average it leaves the absent company modestly short --- especially in
 the late campaign --- but the gap is small compared to the scheduling
 cost of insisting on full attendance. Take the payout and keep the
