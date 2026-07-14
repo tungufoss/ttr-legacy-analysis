@@ -250,13 +250,14 @@ obs <- scores |>
   left_join(official, by = "year") |>
   mutate(diff = mean - official)
 
+official_avg <- mean(official$official)
 all_row <- tibble(
   year = "(all)",
-  official = mean(official$official),
+  official = official_avg,
   mean = mean(scores$dollars),
   median = median(scores$dollars),
   sd = sd(scores$dollars),
-  diff = mean(scores$dollars) - mean(official$official)
+  diff = mean(scores$dollars) - official_avg
 )
 
 knitr::kable(
