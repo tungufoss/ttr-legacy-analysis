@@ -119,7 +119,9 @@ which the analyses in this report are based.
 progress persists throughout the campaign. Between games, the map
 expands westward through newly opened **Frontiers** (jigsaw pieces
 that form your board), while new cards, mechanics, and scoring
-opportunities are gradually introduced.
+opportunities are gradually introduced that are thematic to that
+newfound frontier. As a result each campaign is different, as you
+might encounter the rules in a different order than our campaign.
 
 ::: {.callout-note title="Why 1865–1898?" collapse="true"}
 The campaign rides the great American railroad boom: it opens in 1865,
