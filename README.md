@@ -83,12 +83,12 @@ mismatch points at a data problem rather than a stale formula.
    and was rejected by Google Sheets as "too large to import". Real data:
    129 rows.
 
-Plus from the endgame data: every claim card hides the same 98$ total;
-Portland's claim card was never used at all (0$ collected); blue held
+Plus from the endgame data: every claim card hides the same $98 total;
+Portland's claim card was never used at all ($0 collected); blue held
 5th place from 1865 to 1898 without interruption. Black won the
-campaign — but only just: green's 259$ of post-campaign additions
-(diversified shares, circus, timetable, vault post cards) closed a 66$
-bank-slip gap to a final margin of 18$ (1363 vs 1345). Every derivable
+campaign — but only just: green's $259 of post-campaign additions
+(diversified shares, circus, timetable, vault post cards) closed a $66
+bank-slip gap to a final margin of $18 ($1363 vs $1345). Every derivable
 component of the reported final scoring matches its independent
 derivation in the database (`v_final_check` is all zeros).
 

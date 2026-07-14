@@ -45,26 +45,28 @@ a player missing in action that game — a baseline value.
 ```{r per-game}
 missing_scores <- dbGetQuery(con, "
   SELECT year, dollars FROM bank_slips WHERE player = 'missing'
-")
+") |>
+  mutate(player = "(missing)")
 
-ggplot(scores, aes(year, dollars, color = player)) +
-  geom_line(
-    data = mutate(missing_scores, player = "(missing)"),
-    aes(year, dollars), linetype = "dashed", color = "gray45",
-    linewidth = 0.8, inherit.aes = FALSE
-  ) +
-  annotate("text",
-    x = max(missing_scores$year), y = max(missing_scores$dollars),
-    label = "(missing)", hjust = 1, vjust = -0.8,
-    size = 3.2, color = "gray45"
-  ) +
+pg_levels <- c(names(player_colors), "(missing)")
+pg_colors <- c(player_colors, "(missing)" = "gray45")
+pg_lines <- setNames(c(rep("solid", 5), "dashed"), pg_levels)
+
+per_game <- bind_rows(
+  mutate(scores, player = as.character(player)),
+  missing_scores
+) |>
+  mutate(player = factor(player, levels = pg_levels))
+
+ggplot(per_game, aes(year, dollars, color = player, linetype = player)) +
   geom_line(linewidth = 1) +
-  geom_point(size = 2) +
-  scale_color_manual(values = player_colors) +
+  geom_point(data = filter(per_game, player != "(missing)"), size = 2) +
+  scale_color_manual(values = pg_colors) +
+  scale_linetype_manual(values = pg_lines) +
   scale_x_continuous(breaks = unique(scores$year)) +
   labs(
     title = "Dollars per game",
-    x = NULL, y = "dollars", color = NULL
+    x = NULL, y = "dollars", color = NULL, linetype = NULL
   )
 ```
 
@@ -130,13 +132,25 @@ ggplot(cum_full, aes(year, total, color = player)) +
     x = (1865 + 1898) / 2, y = -160, label = "bank slips",
     color = "gray45", size = 3.2
   ) +
-  geom_vline(xintercept = 1899.5, color = "gray80", linetype = "dotted") +
+  annotate("segment",
+    x = min(component_x), xend = max(component_x), y = -95, yend = -95,
+    color = "gray55", linewidth = 0.5
+  ) +
+  annotate("text",
+    x = mean(range(component_x)), y = -160, label = "vault",
+    color = "gray45", size = 3.2
+  ) +
+  geom_vline(xintercept = 1901, color = "gray80", linetype = "dotted") +
+  annotate("text",
+    x = 1900, y = 650, label = "post campaign",
+    angle = 90, color = "gray55", size = 3
+  ) +
   geom_line(linewidth = 1) +
   geom_point(size = 2) +
   geom_text(
     data = totals_lab,
-    aes(y = lab_y, label = total),
-    hjust = -0.35, size = 3.3, fontface = "bold", show.legend = FALSE
+    aes(y = lab_y, label = paste0("$", total)),
+    hjust = -0.2, size = 3.3, fontface = "bold", show.legend = FALSE
   ) +
   scale_color_manual(values = player_colors) +
   scale_x_continuous(
@@ -156,10 +170,10 @@ ggplot(cum_full, aes(year, total, color = player)) +
   )
 ```
 
-The post-campaign additions nearly rewrote the podium: green's 259$ of
-additions (110$ shares, 71$ circus, 30$ timetable, 48$ post cards)
-closed the gap to black from 66$ to just **18$** — final score 1363 to
-1345.
+The post-campaign additions nearly rewrote the podium: green's $259 of
+additions ($110 shares, $71 circus, $30 timetable, $48 post cards)
+closed the gap to black from $66 to just **$18** — final score $1363 to
+$1345.
 
 ```{r final-additions}
 #| fig-height: 4
@@ -370,7 +384,7 @@ knitr::kable(
       owner = coalesce(owner, note, "?")
     ) |>
     select(card = card_code, town, owner, earned),
-  caption = "Claim card earnings (all cards hide the same 98$ total but in random ordering)"
+  caption = "Claim card earnings (all cards hide the same $98 total but in random ordering)"
 )
 ```
 
@@ -379,7 +393,7 @@ knitr::kable(
 Sixty shares across six railway companies (including the neutral white
 railway), ten per company. Most shares in a company ranks first (at
 least one share required to qualify; ties broken by the lowest-numbered
-share held), paying 20/15/10/5$ down the ranks.
+share held), paying $20/15/10/5 down the ranks.
 
 ```{r shares}
 #| fig-height: 4.5
@@ -413,13 +427,13 @@ ggplot(payouts, aes(player, dollars, fill = player)) +
   scale_fill_manual(values = player_colors) +
   scale_y_continuous(expand = expansion(mult = c(0.02, 0.12))) +
   labs(
-    title = "Share dollars (295$ paid out in total)",
+    title = "Share dollars ($295 paid out in total)",
     x = NULL, y = "dollars"
   )
 ```
 
 Green's diversified portfolio (22 of 60 shares, holding stakes in every
-company) pays 110$ — more than a third of the entire pool.
+company) pays $110 — more than a third of the entire pool.
 
 ## The board
 
