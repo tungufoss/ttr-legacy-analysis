@@ -203,8 +203,11 @@ ggplot(additions, aes(player, dollars, fill = component)) +
 
 ### Did the ordering change?
 
-Rank 1 = leading. First the rank within each individual game, then the
-rank on cumulative campaign total — the race that matters.
+Rank 1 = leading. First the rank within each individual game — extended
+past 1898 with the rank within each vault addition (who earned the most
+post cards, circus flyer, shares, timetable) and the final total. Then
+the rank on the running campaign total as each of those steps in — the
+race that matters.
 
 ```{r rank-helpers}
 #| include: false
@@ -225,10 +228,11 @@ bump_curves <- function(df, n = 40) {
   }))
 }
 
-plot_bump <- function(rank_df, title) {
+plot_bump <- function(rank_df, title, x_breaks, x_labels) {
   curves <- bump_curves(rank_df)
   ends <- filter(rank_df, year == max(year))
   ggplot() +
+    geom_vline(xintercept = 1901, color = "gray80", linetype = "dotted") +
     geom_line(
       data = curves, aes(x, y, color = player, group = player),
       linewidth = 2.4, alpha = 0.85, lineend = "round"
@@ -242,11 +246,20 @@ plot_bump <- function(rank_df, title) {
     scale_color_manual(values = player_colors, guide = "none") +
     scale_y_reverse(breaks = 1:5) +
     scale_x_continuous(
-      breaks = unique(rank_df$year),
+      breaks = x_breaks,
+      labels = x_labels,
       expand = expansion(mult = c(0.02, 0.09))
     ) +
+    theme(axis.text.x = element_text(angle = 35, hjust = 1)) +
     labs(title = title, x = NULL, y = "rank")
 }
+
+# x positions for the vault steps + final total on the rank charts
+rank_steps <- c("postcards", "circus", "shares", "timetable", "total")
+rank_step_x <- setNames(1901 + 3 * seq_along(rank_steps), rank_steps)
+rank_breaks <- c(unique(scores$year), rank_step_x)
+rank_labels <- c(unique(scores$year), "post cards", "circus flyer",
+                 "shares", "timetable", "total")
 ```
 
 ```{r ranks-game}
@@ -259,17 +272,52 @@ ranks <- cum_scores |>
   ) |>
   ungroup()
 
+# per-component ranks: who earned the most from each vault addition,
+# then the final standings as 'total'
+comp_ranks <- dbGetQuery(con, "
+  SELECT player, component, dollars FROM final_components
+  WHERE component <> 'bankslips'
+") |>
+  group_by(component) |>
+  mutate(rank = rank(-dollars, ties.method = "min")) |>
+  ungroup() |>
+  transmute(player, year = rank_step_x[component], rank)
+
+total_rank <- dbGetQuery(con, "SELECT player, place FROM v_final_standings") |>
+  transmute(player, year = rank_step_x[["total"]], rank = place)
+
+game_ranks_full <- bind_rows(
+  transmute(ranks, player = as.character(player), year, rank = game_rank),
+  comp_ranks,
+  total_rank
+) |>
+  mutate(player = factor(player, levels = names(player_colors)))
+
 plot_bump(
-  transmute(ranks, player, year, rank = game_rank),
-  "Rank within each game"
+  game_ranks_full,
+  "Rank within each game, each vault addition, and the final total",
+  rank_breaks, rank_labels
 )
 ```
 
 ```{r ranks-campaign}
 #| fig-height: 4
+# cumulative rank at every year and after each vault addition steps in
+cum_ranks_full <- cum_full |>
+  bind_rows(
+    cum_full |>
+      filter(year == max(year)) |>
+      mutate(year = rank_step_x[["total"]])
+  ) |>
+  group_by(year) |>
+  mutate(rank = rank(-total, ties.method = "min")) |>
+  ungroup() |>
+  transmute(player, year, rank)
+
 plot_bump(
-  transmute(ranks, player, year, rank = campaign_rank),
-  "Rank on campaign total"
+  cum_ranks_full,
+  "Rank on running total (bank slips, then each vault addition)",
+  rank_breaks, rank_labels
 )
 ```
 
