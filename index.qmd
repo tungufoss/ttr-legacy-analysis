@@ -45,8 +45,8 @@ network-building train game; most people where I come from know the
 [*Europe*](https://boardgamegeek.com/boardgame/14996/ticket-to-ride-europe)
 or
 [*Nordic*](https://boardgamegeek.com/boardgame/31627/ticket-to-ride-nordic-countries)
-variety: draw colored train cards, claim routes between cities,
-complete tickets.
+variety: draw colored train cards, claim routes between cities, and
+complete tickets for points — most points wins.
 [*Ticket to Ride Legacy: Legends of the West*](https://boardgamegeek.com/boardgame/390092/ticket-to-ride-legacy-legends-of-the-west)
 (2023) gives that familiar game the **legacy treatment** pioneered by
 Rob Daviau and Matt Leacock in *Pandemic Legacy* (seasons
@@ -55,9 +55,10 @@ Rob Daviau and Matt Leacock in *Pandemic Legacy* (seasons
 and [0](https://boardgamegeek.com/boardgame/314040/pandemic-legacy-season-0)
 — yes, in that order): a 12-game campaign where the results of each
 play permanently change the next — the board grows piece by piece,
-cards are punched, stickered, and nothing gets torn up, but retired
-for good into the dead letter office, while the story unfolds as you
-go.
+cards are punched and stickered, and unlike many legacy systems
+nothing gets torn up: it might be altered, but eventually it gets
+retired for good into the dead letter office, while the story unfolds
+as you go.
 
 ::: {.callout-warning title="Spoiler warning"}
 This report is one long spoiler. It shows the full board, every
