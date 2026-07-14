@@ -148,6 +148,36 @@ SELECT
        JOIN share_bonus_ref b ON b.rank <= q.qualifiers
     ) AS pool_total;
 
+-- Final-scoring consistency: each derivable component of the reported
+-- breakdown must match its independent derivation, and the components
+-- must sum to the reported total. All zeros = fully consistent.
+CREATE VIEW v_final_check AS
+SELECT
+    f.player,
+    MAX(CASE WHEN f.component='bankslips' THEN f.dollars END)
+      - (SELECT total_dollars FROM v_campaign_totals v WHERE v.player=f.player)
+      AS bankslips_diff,
+    MAX(CASE WHEN f.component='shares' THEN f.dollars END)
+      - (SELECT dollars FROM share_payouts s WHERE s.player=f.player)
+      AS shares_diff,
+    MAX(CASE WHEN f.component='circus' THEN f.dollars END)
+      - (SELECT total_points FROM v_circus_scores c WHERE c.player=f.player)
+      AS circus_diff,
+    MAX(CASE WHEN f.component='timetable' THEN f.dollars END)
+      - (SELECT total_points FROM v_timetable_scores t WHERE t.player=f.player)
+      AS timetable_diff,
+    SUM(f.dollars)
+      - (SELECT dollars FROM final_reported r WHERE r.player=f.player)
+      AS total_diff
+FROM final_components f
+GROUP BY f.player;
+
+-- Final standings.
+CREATE VIEW v_final_standings AS
+SELECT player, dollars,
+       RANK() OVER (ORDER BY dollars DESC) AS place
+FROM final_reported;
+
 -- Final scores per player per game, from the bank slips.
 CREATE VIEW v_scores AS
 SELECT player, year, dollars,

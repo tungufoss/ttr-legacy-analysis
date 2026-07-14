@@ -61,6 +61,20 @@ SHARES = {
 SHARE_BONUS = {1: 20, 2: 15, 3: 10, 4: 5}
 SHARE_PAYOUTS = {"black": 65, "blue": 25, "green": 110, "yellow": 40, "red": 55}
 
+# Final campaign scoring breakdown as reported at the table.
+# postcards = value of the post cards in each company's vault.
+# bankslips/shares/circus/timetable are all independently derivable
+# from the other tables (v_final_check verifies); postcards is not
+# (postcard scoring used punch state not fully reconstructible).
+FINAL_BREAKDOWN = {
+    # player: (bankslips, shares, circus, timetable, postcards, reported)
+    "blue":   (908,  25,  40, 10, 12, 995),
+    "green":  (1086, 110, 71, 30, 48, 1345),
+    "yellow": (1091, 40,  8,  20, 94, 1253),
+    "red":    (1086, 55,  56, 20, 48, 1265),
+    "black":  (1152, 65,  104, 0, 42, 1363),
+}
+
 # City coordinates for map plots. Real cities use real lat/lon; the
 # game's fictional cities (approx=1) get plausible board positions.
 CITY_COORDS = {
@@ -290,6 +304,19 @@ def create_schema(con):
         player TEXT PRIMARY KEY REFERENCES players(color),
         dollars INTEGER NOT NULL
     );
+    -- final campaign scoring as reported at the table; one row per
+    -- player per component. 'postcards' = vault post card value.
+    CREATE TABLE final_components (
+        player TEXT NOT NULL REFERENCES players(color),
+        component TEXT NOT NULL CHECK (component IN
+            ('bankslips','shares','circus','timetable','postcards')),
+        dollars INTEGER NOT NULL,
+        PRIMARY KEY (player, component)
+    );
+    CREATE TABLE final_reported (
+        player TEXT PRIMARY KEY REFERENCES players(color),
+        dollars INTEGER NOT NULL
+    );
     -- map-plot coordinates; approx=1 for the game's fictional cities
     CREATE TABLE city_coords (
         city TEXT PRIMARY KEY REFERENCES cities(city),
@@ -348,6 +375,12 @@ def load_players_and_games(con):
         con.execute("INSERT INTO share_bonus_ref VALUES (?,?)", (rank, bonus))
     for player, dollars in SHARE_PAYOUTS.items():
         con.execute("INSERT INTO share_payouts VALUES (?,?)", (player, dollars))
+    components = ["bankslips", "shares", "circus", "timetable", "postcards"]
+    for player, row in FINAL_BREAKDOWN.items():
+        for component, dollars in zip(components, row[:5]):
+            con.execute("INSERT INTO final_components VALUES (?,?,?)",
+                        (player, component, dollars))
+        con.execute("INSERT INTO final_reported VALUES (?,?)", (player, row[5]))
 
 
 def load_reference(con, ref):

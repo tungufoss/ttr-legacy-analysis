@@ -69,17 +69,12 @@ ggplot(scores, aes(year, dollars, color = player)) +
 ```
 
 The campaign total is what decides the winner — the running sum of all
-game scores, plus what was found in each company's vault after the
-campaign (post cards and share certificates; shown as the final "vault"
-step after 1898):
+game scores, plus the post-campaign additions (shares, circus flyer,
+timetable, and the post cards found in each company's vault), shown as
+the "final" step after 1898:
 
 ```{r cumulative}
-vault <- dbGetQuery(con, "
-  SELECT vault AS player, SUM(CAST(worth AS INTEGER)) AS vault_dollars
-  FROM post_office
-  WHERE vault IS NOT NULL AND worth NOT GLOB '*[a-z]*'
-  GROUP BY vault
-")
+final_reported <- dbGetQuery(con, "SELECT * FROM final_reported")
 
 cum_scores <- scores |>
   arrange(player, year) |>
@@ -87,32 +82,57 @@ cum_scores <- scores |>
   mutate(total = cumsum(dollars)) |>
   ungroup()
 
-vault_step <- cum_scores |>
-  filter(year == max(year)) |>
-  left_join(vault, by = "player") |>
-  mutate(
-    year = 1901,
-    total = total + coalesce(vault_dollars, 0)
-  )
+final_step <- final_reported |>
+  mutate(year = 1901, total = dollars) |>
+  select(player, year, total)
 
-cum_with_vault <- bind_rows(cum_scores, vault_step)
+cum_with_final <- bind_rows(select(cum_scores, player, year, total), final_step) |>
+  mutate(player = factor(player, levels = names(player_colors)))
 
-ggplot(cum_with_vault, aes(year, total, color = player)) +
+ggplot(cum_with_final, aes(year, total, color = player)) +
   geom_line(linewidth = 1) +
   geom_point(size = 2) +
   scale_color_manual(values = player_colors) +
   scale_x_continuous(
     breaks = c(unique(scores$year), 1901),
-    labels = c(unique(scores$year), "vault")
+    labels = c(unique(scores$year), "final")
   ) +
   labs(
-    title = "Campaign total (cumulative dollars, vault additions last)",
+    title = "Campaign total (cumulative dollars, post-campaign additions last)",
     x = NULL, y = "cumulative dollars", color = NULL
   )
 ```
 
-Blue's vault also held a *piggyback* post card (not a dollar value, so
-not included in the step).
+The post-campaign additions nearly rewrote the podium: green's 259$ of
+additions (110$ shares, 71$ circus, 30$ timetable, 48$ post cards)
+closed the gap to black from 66$ to just **18$** — final score 1363 to
+1345.
+
+```{r final-additions}
+#| fig-height: 4
+additions <- dbGetQuery(con, "
+  SELECT player, component, dollars
+  FROM final_components
+  WHERE component <> 'bankslips'
+") |>
+  mutate(
+    player = factor(player, levels = names(player_colors)),
+    component = factor(component,
+      levels = c("shares", "circus", "timetable", "postcards")
+    )
+  )
+
+ggplot(additions, aes(player, dollars, fill = component)) +
+  geom_col(color = "white", linewidth = 0.3) +
+  scale_fill_manual(values = c(
+    shares = "#4477aa", circus = "#ee6677",
+    timetable = "#228833", postcards = "#ccbb44"
+  )) +
+  labs(
+    title = "Post-campaign additions by component",
+    x = NULL, y = "dollars", fill = NULL
+  )
+```
 
 ### Did the ordering change?
 

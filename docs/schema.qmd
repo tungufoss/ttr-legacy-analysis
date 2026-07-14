@@ -31,6 +31,8 @@ erDiagram
     players ||--o{ post_office : "vault"
     players ||--o{ shares : "holdings"
     players ||--o| share_payouts : "share dollars"
+    players ||--o{ final_components : "final scoring"
+    players ||--o| final_reported : "final total"
 
     games ||--o{ bank_slips : "per game"
 
@@ -200,6 +202,15 @@ erDiagram
         text player PK
         int dollars "as tallied"
     }
+    final_components {
+        text player FK
+        text component "bankslips/shares/circus/timetable/postcards"
+        int dollars
+    }
+    final_reported {
+        text player PK
+        int dollars "final campaign score"
+    }
 ```
 
 ## Views
@@ -216,5 +227,7 @@ erDiagram
 | `v_ticket_rule_check` | punch-capacity rule violations (empty = consistent) |
 | `v_city_degree` | track connections per city (recreates the map sheet's degree check) |
 | `v_share_check` | share tally consistency: 10 per company, payouts exhaust the bonus pool |
+| `v_final_check` | reported final breakdown vs independent derivations (all zeros = consistent) |
+| `v_final_standings` | final placement by reported total |
 | `v_scores` | bank slip scores per player per game |
 | `v_campaign_totals` | campaign dollar totals per player |
