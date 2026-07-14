@@ -480,23 +480,46 @@ least one share required to qualify; ties broken by the lowest-numbered
 share held), paying $20/15/10/5 down the ranks.
 
 ```{r shares}
-#| fig-height: 4.5
-shares <- dbGetQuery(con, "SELECT * FROM shares") |>
+#| fig-height: 5
+company_colors <- c(player_colors, white = "#9e9e9e", total = "#555555")
+
+shares <- dbGetQuery(con, "SELECT * FROM shares")
+
+share_totals <- shares |>
+  group_by(player) |>
+  summarise(qty = sum(qty), .groups = "drop") |>
+  mutate(company = "total")
+
+shares_plot <- bind_rows(shares, share_totals) |>
+  group_by(company) |>
+  mutate(alpha_val = ifelse(qty == 0, 0, 0.15 + 0.85 * qty / max(qty))) |>
+  ungroup() |>
   mutate(
     player = factor(player, levels = names(player_colors)),
     company = factor(company,
-      levels = rev(c("black", "blue", "green", "yellow", "red", "white"))
+      levels = rev(c("black", "blue", "green", "yellow", "red", "white", "total"))
     )
   )
 
-ggplot(shares, aes(player, company, fill = qty)) +
-  geom_tile(color = "white", linewidth = 1.2) +
-  geom_text(aes(label = ifelse(qty > 0, qty, "")), size = 3.6) +
-  scale_fill_gradient(low = "#f5f5f5", high = "#2a7fbf", guide = "none") +
+ggplot(shares_plot, aes(player, company)) +
+  geom_tile(aes(fill = company, alpha = alpha_val),
+    color = "white", linewidth = 1.2
+  ) +
+  geom_text(
+    aes(label = ifelse(qty > 0, qty, ""),
+        color = alpha_val > 0.6),
+    size = 3.6, fontface = "bold"
+  ) +
+  scale_fill_manual(values = company_colors, guide = "none") +
+  scale_alpha_identity() +
+  scale_color_manual(values = c(`TRUE` = "white", `FALSE` = "gray25"),
+    guide = "none"
+  ) +
   coord_fixed(ratio = 0.6) +
   labs(
-    title = "Share holdings (rows sum to 10)",
-    x = NULL, y = "company"
+    title = "Share holdings",
+    caption = "Each company has 10 shares.",
+    x = "players", y = "company"
   )
 ```
 
@@ -528,7 +551,14 @@ gray = unbuilt track beds.
 
 ```{r board}
 #| fig-height: 7
-coords <- dbGetQuery(con, "SELECT * FROM city_coords")
+coords <- dbGetQuery(con, "
+  SELECT cc.*, c.company, c.port
+  FROM city_coords cc JOIN cities c ON c.city = cc.city
+") |>
+  mutate(
+    port_type = ifelse(coalesce(port, 0) == 1, "port", "inland"),
+    company = ifelse(is.na(company), NA, company)
+  )
 routes <- dbGetQuery(con, "
   SELECT r.*, a.lat AS lat_a, a.lon AS lon_a, b.lat AS lat_b, b.lon AS lon_b
   FROM routes r
@@ -540,6 +570,12 @@ track_palette <- c(
   black = "#1a1a1a", blue = "#1f77c4", green = "#2a9d3a",
   yellow = "#e6b400", red = "#d62728", white = "#c8c8c8",
   gray = "#8a8a8a"
+)
+
+sticker_colors <- c(
+  player_colors,
+  "Mama O'Connel" = "#8B5A2B",   # brown
+  big = "#9467bd"                 # purple
 )
 
 ggplot() +
@@ -554,16 +590,31 @@ ggplot() +
         color = track_color, linewidth = length),
     alpha = 0.55
   ) +
-  geom_point(data = coords, aes(lon, lat), size = 1.6, color = "gray20") +
+  geom_point(
+    data = coords,
+    aes(lon, lat, fill = company, shape = port_type),
+    size = 2.6, color = "gray20", stroke = 0.5
+  ) +
   geom_text(
     data = coords, aes(lon, lat, label = city),
-    size = 2.4, vjust = -0.9, check_overlap = TRUE
+    size = 2.4, vjust = -1.0, check_overlap = TRUE
   ) +
   scale_color_manual(values = track_palette, guide = "none") +
+  scale_fill_manual(
+    values = sticker_colors, na.value = NA,
+    name = "company sticker",
+    guide = guide_legend(override.aes = list(shape = 21, size = 3))
+  ) +
+  scale_shape_manual(
+    values = c(inland = 21, port = 24),
+    name = NULL,
+    guide = guide_legend(override.aes = list(size = 3))
+  ) +
   scale_linewidth_continuous(range = c(0.3, 1.8), guide = "none") +
   coord_quickmap() +
   theme_void() +
-  labs(title = "The board: every track, colored as printed")
+  theme(legend.position = "bottom") +
+  labs(title = "The board: tracks as printed, cities by company sticker (triangles = ports)")
 ```
 
 ### Hotspots
