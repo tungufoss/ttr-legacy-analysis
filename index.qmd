@@ -137,8 +137,9 @@ game.
 Unlike a traditional game of *TtR*, companies develop asymmetrically
 over time. **Employees** provide unique abilities for a single game.
 The game is seeded with **Big Cities** (some you add yourself), and
-company **headquarters** --- never allowed in Big Cities --- create
-ongoing sources of income to their owners. The campaign's recurring
+company **headquarters** --- permanent stickers placed on city
+markers, never allowed in Big Cities --- create ongoing sources of
+income to their owners. The campaign's recurring
 villain, **Mama O'Connell**, has a habit of collecting money that
 would otherwise be yours; she may also pop up in the event deck to
 demand payment, whereas other events might give you money if you
