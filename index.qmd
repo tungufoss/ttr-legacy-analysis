@@ -286,9 +286,8 @@ each game (60 observations), its **mean error is
 a mean absolute error of \$`r round(mae, 1)` and RMSE of
 \$`r round(rmse, 1)`. The bias is not constant, though — it grows
 with the campaign economy, and the later games introduce outrageous
-cash-cow rules: Sierra Madre's treasure hunt, and above all the
-**Claims** that arrive with Cascadia, the final frontier (the CS-coded
-scratch cards, each hiding \$98):
+cash-cow rules: Sierra Madre's **Treasure hunt**, and above all the
+**Claims** that arrive with Cascadia.
 
 ```{r missing-residuals}
 #| fig-height: 4.5
@@ -296,10 +295,14 @@ scratch cards, each hiding \$98):
 #|   Residuals (actual − official) per game. The guideline tracks the
 #|   early campaign well, then falls increasingly behind the inflating
 #|   economy.
-ggplot(player_official, aes(year, resid, color = player)) +
+ggplot(player_official, aes(year, resid)) +
   geom_hline(yintercept = 0, color = "gray55", linetype = "dashed") +
-  geom_line(linewidth = 0.8) +
-  geom_point(size = 2) +
+  geom_boxplot(
+    aes(group = year),
+    width = 1.6, fill = "gray92", color = "gray60",
+    outlier.shape = NA
+  ) +
+  geom_point(aes(color = player), size = 2.2, alpha = 0.9) +
   scale_color_manual(values = player_colors) +
   scale_x_continuous(breaks = unique(scores$year)) +
   labs(
