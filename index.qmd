@@ -114,34 +114,12 @@ which the analyses in this report are based.
 ## Campaign basics
 
 *Legends of the West* is played over twelve games spanning the years
-1865 to 1898 (`1865:3:1898`), with each session advancing the calendar
-by three years. Every player controls a railroad company whose
+1865 to 1898 with each session advancing the calendar by three years
+(i.e., `1865:3:1898`). Every player controls a railroad company whose
 progress persists throughout the campaign. Between games, the map
-expands westward through newly opened **Frontiers**, while new cards,
-mechanics, and scoring opportunities are gradually introduced.
-
-Unlike a traditional game of *TtR*, companies develop
-asymmetrically over time. **Employees** provide unique abilities for a
-single game, **headquarters** create ongoing sources of income (though
-never in the handful of **Big Cities** that anchor the map), and
-campaign events can permanently alter future games. The campaign's
-recurring villain, **Mama O'Connell**, has a habit of collecting money
-that would otherwise be yours. Components are rarely destroyed;
-instead, they are modified, retired to the **Dead Letter Office**, or
-stored for later use.
-
-## Score progression
-
-The campaign tracks **dollars**, not traditional TtR points. Money comes in from completed tickets, coins in hand, bonuses
-for trains remaining, favorable events, and the $2 toll other
-companies pay for building into your headquarters cities. Money goes
-out for failed tickets, unfavorable events, and payments claimed by
-Mama O'Connell on the bank's behalf. Each game starts every company at
-$5 (employees can sweeten that).
-
-Dollars earned per game, per company. The dashed gray line is the
-suggested dollars for a player missing in action that game — a
-baseline value.
+expands westward through newly opened **Frontiers** (jigsaw pieces
+that form your board), while new cards, mechanics, and scoring
+opportunities are gradually introduced.
 
 ::: {.callout-note title="Why 1865–1898?" collapse="true"}
 The campaign rides the great American railroad boom: it opens in 1865,
@@ -155,6 +133,30 @@ doesn't depict: the dispossession of Native American tribes and the
 exploitation of railroad laborers. Worth reading about alongside the
 game.
 :::
+
+Unlike a traditional game of *TtR*, companies develop asymmetrically
+over time. **Employees** provide unique abilities for a single game.
+The game is seeded with **Big Cities** (some you add yourself), and
+company **headquarters** --- never allowed in Big Cities --- create
+ongoing sources of income to their owners. The campaign's recurring
+villain, **Mama O'Connell**, has a habit of collecting money that
+would otherwise be yours; she may also pop up in the event deck to
+demand payment, whereas other events might give you money if you
+qualify. Components are rarely destroyed; instead, they are modified,
+retired to the **Dead Letter Office**, or stored for later use.
+
+## Score progression
+
+The campaign tracks **dollars**, not traditional TtR points. Money comes in from completed tickets, coins in hand, bonuses
+for trains remaining, favorable events, and the $2 toll other
+companies pay for building into your headquarters cities. Money goes
+out for failed tickets, unfavorable events, and payments claimed by
+Mama O'Connell on the bank's behalf. Each game starts every company at
+$5 (employees can sweeten that).
+
+Dollars earned per game, per company. The dashed gray line is the
+suggested dollars for a player missing in action that game — a
+baseline value.
 
 ```{r per-game}
 missing_scores <- dbGetQuery(con, "
