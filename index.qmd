@@ -169,8 +169,12 @@ of the period.
 
 When the campaign starts, the board is minimal and a game is
 relatively quick (less than an hour) --- and it is hard to tell what a
-"good" score even looks like. What we noticed is that as the campaign
-progressed, the scores got *consistently* higher.
+"good" score even looks like. For reference: in a normal game of
+*TtR*, my usual score lands somewhere in the 100--150 range, so a
+first game where the best player won with
+\$`r max(scores$dollars[scores$year == 1865])` was a distinctly
+foreign feeling. What we noticed is that as the campaign progressed,
+the scores got *consistently* higher.
 
 ::: {.callout-note title="How tickets deplete" collapse="true"}
 The more valuable tickets are sought after and eventually depleted:
@@ -216,7 +220,7 @@ ggplot(per_game, aes(year, dollars, color = player, linetype = player)) +
 
 ## The missing-player payout
 
-One feature of the campaign deserves a confession. The rulebook is
+First, a confession about how we handled absent players. The rulebook is
 initially very vague about absent players: it merely says the campaign
 can continue even when not everyone is present. We took that to mean a
 missing player would simply receive *nothing* — hence the scheduling
