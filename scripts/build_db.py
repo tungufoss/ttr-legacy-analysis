@@ -43,12 +43,53 @@ GENDERS = {
 }
 GAME_YEARS = list(range(1865, 1899, 3)) + [1901]
 
-# The workbook and the reference use different spellings for two cities.
+# City coordinates for map plots. Real cities use real lat/lon; the
+# game's fictional cities (approx=1) get plausible board positions.
+CITY_COORDS = {
+    "Albany": (42.65, -73.75, 0), "Atlanta": (33.75, -84.39, 0),
+    "Baja": (32.52, -117.04, 1), "Baltimore": (39.29, -76.61, 0),
+    "Bangor": (44.80, -68.77, 0), "Boston": (42.36, -71.06, 0),
+    "Buffalo": (42.89, -78.88, 0), "Calgary": (51.05, -114.07, 0),
+    "Cemetery City": (36.17, -115.14, 1), "Charleston": (32.78, -79.93, 0),
+    "Charlotte": (35.23, -80.84, 0), "Cheyenne": (41.14, -104.82, 0),
+    "Chicago": (41.88, -87.63, 0), "Chihuahua": (28.63, -106.08, 0),
+    "Cincinnati": (39.10, -84.51, 0), "Dallas": (32.78, -96.80, 0),
+    "Davenport": (41.52, -90.58, 0), "Denver": (39.74, -104.99, 0),
+    "Detroit": (42.33, -83.05, 0), "Dodge City": (37.75, -100.02, 0),
+    "Duluth": (46.79, -92.10, 0), "El Paso": (31.76, -106.49, 0),
+    "Fargo": (46.88, -96.79, 0), "Helena": (46.59, -112.04, 0),
+    "Hermosillo": (29.07, -110.96, 0), "Houston": (29.76, -95.37, 0),
+    "Jacksonville": (30.33, -81.66, 0), "Kansas City": (39.10, -94.58, 0),
+    "Knoxville": (35.96, -83.92, 0), "Lewisburg": (37.80, -80.45, 0),
+    "Little Rock": (34.75, -92.29, 0), "Miami": (25.76, -80.19, 0),
+    "Miles City": (46.41, -105.84, 0), "Mobile": (30.69, -88.04, 0),
+    "Monterrey": (25.69, -100.32, 0), "Montreal": (45.50, -73.57, 0),
+    "Nashville": (36.16, -86.78, 0), "New Orleans": (29.95, -90.07, 0),
+    "New York": (40.71, -74.01, 0), "Norfolk": (36.85, -76.29, 0),
+    "Nuevos Angeles": (34.05, -118.24, 1), "Oklahoma City": (35.47, -97.52, 0),
+    "Omaha": (41.26, -95.93, 0), "Pacific Haven": (34.42, -119.70, 1),
+    "Philadelphia": (39.95, -75.17, 0), "Phoenix": (33.45, -112.07, 0),
+    "Pittsburgh": (40.44, -79.99, 0), "Portland": (45.52, -122.68, 0),
+    "Quebec": (46.81, -71.21, 0), "Regina": (50.45, -104.62, 0),
+    "Sacramento": (38.58, -121.49, 0), "Salt Lake City": (40.76, -111.89, 0),
+    "San Antonio": (29.42, -98.49, 0), "San Francisco": (37.77, -122.42, 0),
+    "Santa Fe": (35.69, -105.94, 0), "Savannah": (32.08, -81.09, 0),
+    "Seattle": (47.61, -122.33, 0), "Spokane": (47.66, -117.43, 0),
+    "St. Louis": (38.63, -90.20, 0), "St. Paul": (44.95, -93.09, 0),
+    "Tampa": (27.95, -82.46, 0), "Vancouver": (49.28, -123.12, 0),
+    "Winnipeg": (49.90, -97.14, 0),
+}
+
+# The workbook and the reference use different spellings for some cities.
 def norm_city(name):
     if not isinstance(name, str):
         return name
     name = name.strip()
-    return {"Montréal": "Montreal", "Québec": "Quebec"}.get(name, name)
+    return {
+        "Montréal": "Montreal",
+        "Québec": "Quebec",
+        "Monterray": "Monterrey",   # map sheet typo
+    }.get(name, name)
 
 
 def create_schema(con):
@@ -208,6 +249,13 @@ def create_schema(con):
         section TEXT NOT NULL,             -- jigsaw piece of the board
         company TEXT,                      -- ownership sticker (color/'big'/...)
         port INTEGER                       -- 1 = port city
+    );
+    -- map-plot coordinates; approx=1 for the game's fictional cities
+    CREATE TABLE city_coords (
+        city TEXT PRIMARY KEY REFERENCES cities(city),
+        lat REAL NOT NULL,
+        lon REAL NOT NULL,
+        approx INTEGER NOT NULL
     );
     -- the game board: individual tracks between cities. Parallel tracks
     -- appear as separate rows. track_color NULL = unbuilt track bed.
@@ -462,6 +510,15 @@ def load_workbook(con, ref):
         con.execute("INSERT INTO cities VALUES (?,?,?,?)",
                     (norm_city(r["city"]), str(r["section"]).strip(), company,
                      None if pd.isna(r["port"]) else int(r["port"])))
+
+    for row in con.execute("SELECT city FROM cities"):
+        city = row[0]
+        if city in CITY_COORDS:
+            lat, lon, approx = CITY_COORDS[city]
+            con.execute("INSERT INTO city_coords VALUES (?,?,?,?)",
+                        (city, lat, lon, approx))
+        else:
+            print(f"WARNING: no coordinates for city {city!r}")
 
     # canonical case lookup so e.g. 'charleston' matches 'Charleston'
     canon = {c[0].lower(): c[0]

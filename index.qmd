@@ -252,12 +252,151 @@ A Welch t-test on per-game scores gives p = `r round(t_res$p.value, 3)`
 at the 5% level, though with 5 players and 12 games this is descriptive at
 best.
 
+## The board
+
+The game board as a network: 200 tracks connecting 63 cities across 12
+jigsaw sections. Fictional cities (Nuevos Angeles, Cemetery City,
+Pacific Haven, Baja) sit at plausible approximate positions; dashed
+gray = unbuilt track beds.
+
+```{r board}
+#| fig-height: 7
+coords <- dbGetQuery(con, "SELECT * FROM city_coords")
+routes <- dbGetQuery(con, "
+  SELECT r.*, a.lat AS lat_a, a.lon AS lon_a, b.lat AS lat_b, b.lon AS lon_b
+  FROM routes r
+  JOIN city_coords a ON a.city = r.city_a
+  JOIN city_coords b ON b.city = r.city_b
+")
+
+track_palette <- c(
+  black = "#1a1a1a", blue = "#1f77c4", green = "#2a9d3a",
+  yellow = "#e6b400", red = "#d62728", white = "#c8c8c8",
+  gray = "#8a8a8a"
+)
+
+ggplot() +
+  geom_segment(
+    data = filter(routes, is.na(track_color)),
+    aes(x = lon_a, y = lat_a, xend = lon_b, yend = lat_b),
+    color = "gray70", linetype = "dashed", linewidth = 0.5
+  ) +
+  geom_segment(
+    data = filter(routes, !is.na(track_color)),
+    aes(x = lon_a, y = lat_a, xend = lon_b, yend = lat_b,
+        color = track_color, linewidth = length),
+    alpha = 0.55
+  ) +
+  geom_point(data = coords, aes(lon, lat), size = 1.6, color = "gray20") +
+  geom_text(
+    data = coords, aes(lon, lat, label = city),
+    size = 2.4, vjust = -0.9, check_overlap = TRUE
+  ) +
+  scale_color_manual(values = track_palette, guide = "none") +
+  scale_linewidth_continuous(range = c(0.3, 1.8), guide = "none") +
+  coord_quickmap() +
+  theme_void() +
+  labs(title = "The board: every track, colored as printed")
+```
+
+### Hotspots
+
+Which cities did completed tickets actually connect? Each punch on a
+ticket counts once for each of its two endpoint cities.
+
+```{r hotspots}
+#| fig-height: 7
+hot <- dbGetQuery(con, "
+  WITH endpoint_punches AS (
+    SELECT t.from_city AS city, p.punches FROM tickets t
+    JOIN ticket_punches p ON p.ticket_id = t.ticket_id
+    UNION ALL
+    SELECT t.to_city, p.punches FROM tickets t
+    JOIN ticket_punches p ON p.ticket_id = t.ticket_id
+  )
+  SELECT city, SUM(punches) AS punches
+  FROM endpoint_punches GROUP BY city
+") |>
+  inner_join(coords, by = "city")
+
+ggplot() +
+  geom_segment(
+    data = routes,
+    aes(x = lon_a, y = lat_a, xend = lon_b, yend = lat_b),
+    color = "gray85", linewidth = 0.4
+  ) +
+  geom_point(
+    data = hot,
+    aes(lon, lat, size = punches, color = punches),
+    alpha = 0.8
+  ) +
+  geom_text(
+    data = slice_max(hot, punches, n = 12),
+    aes(lon, lat, label = paste0(city, " (", punches, ")")),
+    size = 2.8, vjust = -1.1, fontface = "bold", check_overlap = TRUE
+  ) +
+  scale_size_continuous(range = c(1, 10)) +
+  scale_color_viridis_c(option = "inferno", direction = -1) +
+  coord_quickmap() +
+  theme_void() +
+  theme(legend.position = "none") +
+  labs(title = "Ticket hotspots: endpoint cities weighted by punches")
+```
+
+### When was the network built?
+
+Retired tickets sit between dated story markers in the dead letter
+office, which bounds when they were completed. Using the midpoint of
+each ticket's retirement window as a rough timestamp:
+
+```{r eras}
+#| fig-height: 5
+era_tickets <- dbGetQuery(con, "
+  SELECT t.from_city, t.to_city,
+         (COALESCE(w.earliest_year, 1865) + COALESCE(w.latest_year, 1901)) / 2 AS mid_year,
+         SUM(p.punches) AS punches
+  FROM tickets t
+  JOIN v_retirement_window w ON w.run_id = t.run_id
+  JOIN ticket_punches p ON p.ticket_id = t.ticket_id
+  WHERE t.active = 0
+  GROUP BY t.ticket_id
+  HAVING punches > 0
+") |>
+  mutate(era = cut(mid_year,
+    breaks = c(1864, 1874, 1886, 1901),
+    labels = c("early (1865-1874)", "mid (1877-1886)", "late (1889-1901)")
+  )) |>
+  inner_join(coords, by = c("from_city" = "city")) |>
+  rename(lat_a = lat, lon_a = lon) |>
+  inner_join(coords, by = c("to_city" = "city")) |>
+  rename(lat_b = lat, lon_b = lon)
+
+ggplot(era_tickets) +
+  geom_segment(
+    data = routes,
+    aes(x = lon_a, y = lat_a, xend = lon_b, yend = lat_b),
+    color = "gray88", linewidth = 0.3
+  ) +
+  geom_segment(
+    aes(x = lon_a, y = lat_a, xend = lon_b, yend = lat_b,
+        linewidth = punches),
+    color = "#c1440e", alpha = 0.5
+  ) +
+  scale_linewidth_continuous(range = c(0.3, 1.6), guide = "none") +
+  coord_quickmap() +
+  facet_wrap(~era) +
+  theme_void() +
+  labs(
+    title = "Completed ticket connections by campaign era",
+    subtitle = "Straight lines connect ticket endpoints (not actual track paths)"
+  )
+```
+
 ## Next up
 
-- Map the game board: city coordinates, route overlays, and completion
-  "hotspots" weighted by punches.
-- Use the dead-letter-office retirement windows (`v_ticket_retirement`)
-  to animate *when* tracks were laid across the map.
+- Route the ticket connections along actual board tracks (shortest path
+  over the `routes` network) instead of straight lines.
+- Claim / postcard geography: where the postcard tickets cluster.
 
 ```{r close}
 #| include: false
