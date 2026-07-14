@@ -35,7 +35,7 @@ SELECT
 FROM players p;
 
 -- Claim card totals: true total (all 7 spots, from reference) vs the
--- revealed lower bound observed during play.
+-- revealed state observed after the campaign.
 CREATE VIEW v_claim_values AS
 SELECT
     c.card_code,
@@ -48,15 +48,31 @@ FROM claims c
 JOIN claim_spots s USING (card_code)
 GROUP BY c.card_code;
 
+-- Claim earnings actually collected during play.
+-- On partially-scratched cards, the scratched spots are exactly the claims
+-- collected, so their sum is the card's true earnings. Fully-scratched
+-- cards (all 7) were opened out of curiosity after the campaign - play
+-- scratches can no longer be told apart, so earnings are unknown (NULL).
+CREATE VIEW v_claim_earnings AS
+SELECT
+    card_code,
+    town,
+    owner,
+    CASE WHEN spots_revealed < 7
+         THEN COALESCE(revealed_total, 0)
+    END AS earned_dollars,
+    spots_revealed < 7 AS earnings_known
+FROM v_claim_values;
+
 -- Retirement window for every retired card in the dead letter office.
--- Story pause/stop cards carry years; a card's deck position between two
--- dated markers bounds when it was retired. Higher deck ids sit deeper in
+-- Story pause/stop cards carry years; a card's run position between two
+-- dated markers bounds when it was retired. Higher run ids sit deeper in
 -- the pile (earlier games), so:
 --   earliest_year = year of the nearest dated marker with a HIGHER id
 --   latest_year   = year of the nearest dated marker with a LOWER id
 CREATE VIEW v_retirement_window AS
 SELECT
-    d.id AS deck_id,
+    d.id AS run_id,
     d.card_type,
     (SELECT s.year FROM story_cards s
       WHERE s.year IS NOT NULL AND s.id > d.id
@@ -64,7 +80,7 @@ SELECT
     (SELECT s.year FROM story_cards s
       WHERE s.year IS NOT NULL AND s.id < d.id
       ORDER BY s.id DESC LIMIT 1) AS latest_year
-FROM deck_order d;
+FROM run_order d;
 
 -- Ticket-level retirement inference (retired tickets only).
 CREATE VIEW v_ticket_retirement AS
@@ -77,7 +93,7 @@ SELECT
     w.earliest_year,
     w.latest_year
 FROM tickets t
-JOIN v_retirement_window w ON w.deck_id = t.deck_id
+JOIN v_retirement_window w ON w.run_id = t.run_id
 LEFT JOIN card_ref r ON r.ref_id = t.ref_id
 WHERE t.active = 0;
 

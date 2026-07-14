@@ -1,0 +1,26 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "TtR Legacy — Data Dive"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Report
+      - href: docs/schema.md
+        text: Schema
+
+format:
+  html:
+    theme: flatly
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    fig-width: 9
+    fig-height: 5.5
+    embed-resources: false
+
+execute:
+  warning: false
+  message: false

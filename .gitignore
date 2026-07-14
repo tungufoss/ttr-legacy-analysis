@@ -4,3 +4,7 @@ __pycache__/
 venv/
 .ipynb_checkpoints/
 .DS_Store
+
+/.quarto/
+**/*.quarto_ipynb
+/_site/

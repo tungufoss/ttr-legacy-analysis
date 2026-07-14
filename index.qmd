@@ -1,0 +1,265 @@
+---
+title: "Ticket to Ride Legacy — Data Dive"
+subtitle: "One campaign, 13 games, 5 companies — reconstructed from the dead letter office"
+---
+
+```{r setup}
+#| include: false
+library(DBI)
+library(RSQLite)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+con <- dbConnect(SQLite(), "ttr.db")
+
+player_colors <- c(
+  black  = "#1a1a1a",
+  blue   = "#1f77c4",
+  green  = "#2a9d3a",
+  yellow = "#e6b400",
+  red    = "#d62728"
+)
+
+theme_set(
+  theme_minimal(base_size = 13) +
+    theme(
+      legend.position = "bottom",
+      panel.grid.minor = element_blank(),
+      plot.title = element_text(face = "bold")
+    )
+)
+
+scores <- dbGetQuery(con, "SELECT * FROM v_scores") |>
+  mutate(player = factor(player, levels = names(player_colors)))
+
+players <- dbGetQuery(con, "SELECT * FROM players")
+```
+
+## Score progression
+
+Dollars earned per game, per company. Each game is one year of the
+campaign, 1865–1898.
+
+```{r per-game}
+ggplot(scores, aes(year, dollars, color = player)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  scale_color_manual(values = player_colors) +
+  scale_x_continuous(breaks = unique(scores$year)) +
+  labs(
+    title = "Dollars per game",
+    x = NULL, y = "dollars", color = NULL
+  )
+```
+
+The campaign total is what decides the winner — the running sum of all
+game scores:
+
+```{r cumulative}
+cum_scores <- scores |>
+  arrange(player, year) |>
+  group_by(player) |>
+  mutate(total = cumsum(dollars)) |>
+  ungroup()
+
+ggplot(cum_scores, aes(year, total, color = player)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  scale_color_manual(values = player_colors) +
+  scale_x_continuous(breaks = unique(scores$year)) +
+  labs(
+    title = "Campaign total (cumulative dollars)",
+    x = NULL, y = "cumulative dollars", color = NULL
+  )
+```
+
+### Did the ordering change?
+
+Rank 1 = leading. Left: rank within each game. Right: rank on
+cumulative campaign total — the race that matters.
+
+```{r ranks}
+#| fig-height: 4.5
+ranks <- cum_scores |>
+  group_by(year) |>
+  mutate(
+    game_rank = rank(-dollars, ties.method = "min"),
+    campaign_rank = rank(-total, ties.method = "min")
+  ) |>
+  ungroup() |>
+  pivot_longer(c(game_rank, campaign_rank),
+    names_to = "kind", values_to = "rank"
+  ) |>
+  mutate(kind = recode(kind,
+    game_rank = "per game",
+    campaign_rank = "campaign total"
+  ))
+
+ggplot(ranks, aes(year, rank, color = player)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  scale_color_manual(values = player_colors) +
+  scale_y_reverse(breaks = 1:5) +
+  scale_x_continuous(breaks = unique(scores$year)) +
+  facet_wrap(~kind) +
+  labs(title = "Ranking over the campaign", x = NULL, y = "rank", color = NULL)
+```
+
+## Where do the points come from?
+
+Bank slips break each game's score into components: coins in hand,
+bonus for trains remaining, and completed-ticket value.
+
+```{r components}
+components <- scores |>
+  select(player, year, coins_in_hand, trains_bonus, ticket_value) |>
+  pivot_longer(-c(player, year), names_to = "component", values_to = "value") |>
+  mutate(component = recode(component,
+    coins_in_hand = "coins in hand",
+    trains_bonus = "trains remaining bonus",
+    ticket_value = "ticket value"
+  ))
+
+component_totals <- components |>
+  group_by(player, component) |>
+  summarise(total = sum(value, na.rm = TRUE), .groups = "drop")
+
+ggplot(component_totals, aes(player, total, fill = player)) +
+  geom_col(show.legend = FALSE) +
+  scale_fill_manual(values = player_colors) +
+  facet_wrap(~component, scales = "free_y") +
+  labs(
+    title = "Campaign totals by scoring component",
+    x = NULL, y = "dollars"
+  )
+```
+
+```{r components-time}
+#| fig-height: 6
+ggplot(components, aes(year, value, color = player)) +
+  geom_line(linewidth = 0.8) +
+  scale_color_manual(values = player_colors) +
+  facet_wrap(~component, ncol = 1, scales = "free_y") +
+  scale_x_continuous(breaks = unique(scores$year)) +
+  labs(
+    title = "Scoring components over time",
+    x = NULL, y = "dollars", color = NULL
+  )
+```
+
+## Tickets
+
+Punches per player — how many ticket completions each company recorded
+over the whole campaign, split by normal tickets and postcard tickets
+(single-punch tickets that retire immediately and earn a post card).
+
+```{r punches}
+punches <- dbGetQuery(con, "
+  SELECT p.color AS player, c.capacity, SUM(p.punches) AS punches
+  FROM ticket_punches p
+  JOIN tickets t ON t.ticket_id = p.ticket_id
+  JOIN card_ref_capacity c ON c.ref_id = t.ref_id AND c.color = p.color
+  GROUP BY p.color, c.capacity
+") |>
+  mutate(
+    player = factor(player, levels = names(player_colors)),
+    type = ifelse(capacity == 1, "postcard tickets", "normal tickets")
+  )
+
+ggplot(punches, aes(player, punches, fill = player)) +
+  geom_col(show.legend = FALSE) +
+  scale_fill_manual(values = player_colors) +
+  facet_wrap(~type) +
+  labs(
+    title = "Ticket punches per company",
+    x = NULL, y = "punches"
+  )
+```
+
+Ticket dollars actually collected (ticket value × punches):
+
+```{r ticket-dollars}
+ticket_dollars <- dbGetQuery(con, "
+  SELECT p.color AS player, SUM(p.punches * t.value) AS dollars
+  FROM ticket_punches p
+  JOIN tickets t ON t.ticket_id = p.ticket_id
+  GROUP BY p.color
+") |>
+  mutate(player = factor(player, levels = names(player_colors)))
+
+ggplot(ticket_dollars, aes(player, dollars, fill = player)) +
+  geom_col(show.legend = FALSE) +
+  scale_fill_manual(values = player_colors) +
+  labs(
+    title = "Total dollars from completed tickets",
+    x = NULL, y = "dollars"
+  )
+```
+
+## Claims
+
+The endgame scratch cards. On partially-scratched cards the scratched
+spots are exactly the claims collected during play; fully-scratched cards
+were opened out of curiosity afterwards, so their in-play earnings are
+unknown.
+
+```{r claims}
+claims <- dbGetQuery(con, "SELECT * FROM v_claim_earnings")
+knitr::kable(
+  claims |>
+    mutate(
+      earned = ifelse(earnings_known == 1, earned_dollars, "unknown (fully scratched)"),
+      owner = ifelse(is.na(owner), "?", owner)
+    ) |>
+    select(card = card_code, town, owner, earned),
+  caption = "Claim card earnings (all cards hide the same 98$ total)"
+)
+```
+
+## Gender
+
+Black and blue are played by men, green, yellow and red by women (no
+names tracked). Average dollars per game by gender:
+
+```{r gender}
+#| fig-height: 4
+gender_scores <- scores |>
+  left_join(players, by = c("player" = "color"))
+
+gender_summary <- gender_scores |>
+  group_by(gender, year) |>
+  summarise(mean_dollars = mean(dollars), .groups = "drop")
+
+ggplot(gender_summary, aes(year, mean_dollars, color = gender)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  scale_color_manual(values = c(male = "#4477aa", female = "#ee6677")) +
+  scale_x_continuous(breaks = unique(scores$year)) +
+  labs(
+    title = "Average dollars per game by gender",
+    x = NULL, y = "mean dollars", color = NULL
+  )
+```
+
+```{r gender-test}
+t_res <- t.test(dollars ~ gender, data = gender_scores)
+```
+
+A Welch t-test on per-game scores gives p = `r round(t_res$p.value, 3)`
+(mean female `r round(t_res$estimate[1], 1)`, mean male
+`r round(t_res$estimate[2], 1)`) — `r if (t_res$p.value < 0.05) "a statistically significant difference" else "no statistically significant difference"`
+at the 5% level, though with 5 players and 12 games this is descriptive at
+best.
+
+## Next up
+
+- Map the game board: city coordinates, route overlays, and completion
+  "hotspots" weighted by punches.
+- Use the dead-letter-office retirement windows (`v_ticket_retirement`)
+  to animate *when* tracks were laid across the map.
+
+```{r close}
+#| include: false
+dbDisconnect(con)
+```

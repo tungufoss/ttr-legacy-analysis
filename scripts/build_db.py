@@ -10,7 +10,7 @@ Sources:
 
 The workbook's `id` column is a single global sequence shared by the
 Tickets, Employees, Events, PostOffice and Story sheets: the backtracked
-dead-letter-office ordering. It becomes the deck_order spine.
+dead-letter-office ordering. It becomes the run_order spine.
 """
 import json
 import re
@@ -33,6 +33,14 @@ COMPANIES = {
     "yellow": "Erie",
     "red": "PRR",
 }
+# real-life player gender per color (no names tracked)
+GENDERS = {
+    "black": "male",
+    "blue": "male",
+    "green": "female",
+    "yellow": "female",
+    "red": "female",
+}
 GAME_YEARS = list(range(1865, 1899, 3)) + [1901]
 
 # The workbook and the reference use different spellings for two cities.
@@ -47,14 +55,15 @@ def create_schema(con):
     con.executescript("""
     CREATE TABLE players (
         color TEXT PRIMARY KEY,
-        company TEXT NOT NULL
+        company TEXT NOT NULL,
+        gender TEXT NOT NULL CHECK (gender IN ('male','female'))
     );
     CREATE TABLE games (
         year INTEGER PRIMARY KEY,
         seq INTEGER NOT NULL
     );
     -- one row per card in the backtracked global ordering
-    CREATE TABLE deck_order (
+    CREATE TABLE run_order (
         id INTEGER PRIMARY KEY,
         card_type TEXT NOT NULL CHECK (card_type IN
             ('ticket','employee','event','postoffice','story'))
@@ -62,7 +71,9 @@ def create_schema(con):
     -- canonical ticket cards from the replay reference (129 cards)
     CREATE TABLE card_ref (
         ref_id INTEGER PRIMARY KEY,
-        card_code TEXT NOT NULL,           -- 'EC' is shared by 33 cards
+        card_uid TEXT NOT NULL UNIQUE,     -- unique code; EC cards get
+                                           -- synthesized EC-01..EC-33
+        card_code TEXT NOT NULL,           -- printed code; 'EC' shared by 33
         frontier TEXT NOT NULL,
         from_city TEXT NOT NULL,
         to_city TEXT NOT NULL,
@@ -77,7 +88,7 @@ def create_schema(con):
     );
     CREATE TABLE tickets (
         ticket_id INTEGER PRIMARY KEY,     -- synthetic; source ids collide once
-        deck_id INTEGER REFERENCES deck_order(id),  -- NULL for the duplicate
+        run_id INTEGER REFERENCES run_order(id),  -- NULL for the duplicate
         ref_id INTEGER REFERENCES card_ref(ref_id),
         frontier TEXT NOT NULL,            -- corrected via card_ref
         frontier_original TEXT NOT NULL,   -- as recorded in the workbook
@@ -96,15 +107,15 @@ def create_schema(con):
         PRIMARY KEY (ticket_id, color)
     );
     CREATE TABLE employees (
-        id INTEGER PRIMARY KEY,            -- source id; deck slot may collide
-        deck_id INTEGER REFERENCES deck_order(id),
+        id INTEGER PRIMARY KEY,            -- source id; run slot may collide
+        run_id INTEGER REFERENCES run_order(id),
         name TEXT NOT NULL,
         punches INTEGER NOT NULL,
         active INTEGER NOT NULL,
         origin TEXT
     );
     CREATE TABLE events (
-        id INTEGER PRIMARY KEY REFERENCES deck_order(id),
+        id INTEGER PRIMARY KEY REFERENCES run_order(id),
         name TEXT NOT NULL,
         origin TEXT,
         punched INTEGER NOT NULL,
@@ -114,7 +125,7 @@ def create_schema(con):
     -- never entered the dead letter office (stored as NULL here)
     CREATE TABLE post_office (
         rowid_ INTEGER PRIMARY KEY,
-        id INTEGER REFERENCES deck_order(id),
+        id INTEGER REFERENCES run_order(id),
         card_number INTEGER NOT NULL,
         read INTEGER NOT NULL,
         punched INTEGER,
@@ -122,7 +133,7 @@ def create_schema(con):
         vault TEXT REFERENCES players(color)
     );
     CREATE TABLE story_cards (
-        id INTEGER PRIMARY KEY REFERENCES deck_order(id),
+        id INTEGER PRIMARY KEY REFERENCES run_order(id),
         name TEXT NOT NULL,
         year INTEGER,
         location TEXT
@@ -185,6 +196,12 @@ def create_schema(con):
         title TEXT NOT NULL,
         punch_capacity INTEGER NOT NULL
     );
+    -- fixed mapping: which postcard each potential-postcard ticket leads to
+    CREATE TABLE ticket_postcards (
+        card_uid TEXT PRIMARY KEY REFERENCES card_ref(card_uid),
+        postcard_number INTEGER NOT NULL,
+        postcard_code TEXT NOT NULL        -- 'PC-123'
+    );
     """)
 
 
@@ -213,18 +230,27 @@ def split_route(words):
 
 def load_players_and_games(con):
     for color, company in COMPANIES.items():
-        con.execute("INSERT INTO players VALUES (?,?)", (color, company))
+        con.execute("INSERT INTO players VALUES (?,?,?)",
+                    (color, company, GENDERS[color]))
     for seq, year in enumerate(GAME_YEARS, start=1):
         con.execute("INSERT INTO games VALUES (?,?)", (year, seq))
 
 
 def load_reference(con, ref):
+    ec_counter = 0
     for i, t in enumerate(ref["tickets"], start=1):
         from_city, to_city = split_route(t["route_words"])
         frontier = "Initial" if t["frontier"].startswith("East Coast") else t["frontier"]
+        if t["card_code"] == "EC":
+            # EC cards carry no individual printed number; synthesize one
+            # following the reference list order (alphabetical by route)
+            ec_counter += 1
+            card_uid = f"EC-{ec_counter:02d}"
+        else:
+            card_uid = t["card_code"]
         con.execute(
-            "INSERT INTO card_ref VALUES (?,?,?,?,?,?)",
-            (i, t["card_code"], frontier, from_city, to_city, t["value"]),
+            "INSERT INTO card_ref VALUES (?,?,?,?,?,?,?)",
+            (i, card_uid, t["card_code"], frontier, from_city, to_city, t["value"]),
         )
         for color, cap in t["punch_capacity"].items():
             con.execute("INSERT INTO card_ref_capacity VALUES (?,?,?)", (i, color, cap))
@@ -251,24 +277,24 @@ def load_workbook(con, ref):
         key = (frozenset([row[1], row[2]]), row[3])
         ref_lookup[key] = row[0]
 
-    seen_deck_ids = set()
+    seen_run_ids = set()
     ticket_pk = 0
     for _, r in df.iterrows():
         if pd.isna(r["id"]):
             continue
         ticket_pk += 1
-        deck_id = int(r["id"])
+        run_id = int(r["id"])
         note = None if pd.isna(r.get("note")) else str(r.get("note"))
-        if deck_id in seen_deck_ids:
+        if run_id in seen_run_ids:
             # source data assigns the same dead-letter position twice
             # (known collision: id 105); keep the row, drop the position
-            print(f"WARNING: duplicate deck id {deck_id} "
-                  f"({r['From']} - {r['To']}); stored with deck_id NULL")
-            note = f"[deck id collision: source id {deck_id}] " + (note or "")
-            deck_id = None
+            print(f"WARNING: duplicate run id {run_id} "
+                  f"({r['From']} - {r['To']}); stored with run_id NULL")
+            note = f"[run id collision: source id {run_id}] " + (note or "")
+            run_id = None
         else:
-            seen_deck_ids.add(deck_id)
-            con.execute("INSERT INTO deck_order VALUES (?, 'ticket')", (deck_id,))
+            seen_run_ids.add(run_id)
+            con.execute("INSERT INTO run_order VALUES (?, 'ticket')", (run_id,))
         from_city, to_city = norm_city(r["From"]), norm_city(r["To"])
         key = (frozenset([from_city, to_city]), int(r["Dollars"]))
         rid = ref_lookup.get(key)
@@ -279,7 +305,7 @@ def load_workbook(con, ref):
         postcard = int(r["Postcard"]) if r["Postcard"] and int(r["Postcard"]) > 0 else None
         con.execute(
             "INSERT INTO tickets VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
-            (ticket_pk, deck_id, rid, frontier, r["Box"], from_city, to_city,
+            (ticket_pk, run_id, rid, frontier, r["Box"], from_city, to_city,
              int(r["Dollars"]), int(r["Active"]), postcard, r.get("valid"), note),
         )
         for color, col in zip(COLORS, ["Black", "Blue", "Green", "Yellow", "Red"]):
@@ -289,26 +315,35 @@ def load_workbook(con, ref):
         assert int(r["Punches"]) == sum(int(r[c]) for c in ["Black", "Blue", "Green", "Yellow", "Red"]), \
             f"ticket {ticket_pk}: Punches != sum of colors"
 
+    # --- ticket -> postcard mapping (fixed by the game; the workbook
+    # records the postcard number on every potential-postcard ticket) ---
+    con.execute("""
+        INSERT INTO ticket_postcards
+        SELECT r.card_uid, t.postcard_card, 'PC-' || t.postcard_card
+        FROM tickets t JOIN card_ref r ON r.ref_id = t.ref_id
+        WHERE t.postcard_card IS NOT NULL
+    """)
+
     # --- employees ---
     df = xl.parse("Employees")
     for _, r in df.iterrows():
         eid = int(r["id"])
-        deck_id = eid
-        if deck_id in seen_deck_ids:
-            print(f"WARNING: duplicate deck id {deck_id} "
-                  f"(employee {r['Name']}); stored with deck_id NULL")
-            deck_id = None
+        run_id = eid
+        if run_id in seen_run_ids:
+            print(f"WARNING: duplicate run id {run_id} "
+                  f"(employee {r['Name']}); stored with run_id NULL")
+            run_id = None
         else:
-            seen_deck_ids.add(deck_id)
-            con.execute("INSERT INTO deck_order VALUES (?, 'employee')", (deck_id,))
+            seen_run_ids.add(run_id)
+            con.execute("INSERT INTO run_order VALUES (?, 'employee')", (run_id,))
         con.execute("INSERT INTO employees VALUES (?,?,?,?,?,?)",
-                    (eid, deck_id, r["Name"], int(r["Punches"]), int(r["Active"]),
+                    (eid, run_id, r["Name"], int(r["Punches"]), int(r["Active"]),
                      str(r["Origin"])))
 
     # --- events ---
     df = xl.parse("Events")
     for _, r in df.iterrows():
-        con.execute("INSERT INTO deck_order VALUES (?, 'event')", (int(r["id"]),))
+        con.execute("INSERT INTO run_order VALUES (?, 'event')", (int(r["id"]),))
         con.execute("INSERT INTO events VALUES (?,?,?,?,?)",
                     (int(r["id"]), r["Name"], str(r["Origin"]), int(r["Punched"]),
                      int(r["Active"])))
@@ -317,20 +352,20 @@ def load_workbook(con, ref):
     df = xl.parse("PostOffice")
     for i, (_, r) in enumerate(df.iterrows(), start=1):
         oid = int(r["id"])
-        deck_id = None
+        run_id = None
         if oid > 0:
-            con.execute("INSERT INTO deck_order VALUES (?, 'postoffice')", (oid,))
-            deck_id = oid
+            con.execute("INSERT INTO run_order VALUES (?, 'postoffice')", (oid,))
+            run_id = oid
         worth = None if pd.isna(r["Worth"]) else str(r["Worth"])
         vault = None if pd.isna(r["Vault"]) else str(r["Vault"]).strip().lower()
         punched = None if pd.isna(r["Punched"]) else int(r["Punched"])
         con.execute("INSERT INTO post_office VALUES (?,?,?,?,?,?,?)",
-                    (i, deck_id, int(r["Card"]), int(r["Read"]), punched, worth, vault))
+                    (i, run_id, int(r["Card"]), int(r["Read"]), punched, worth, vault))
 
     # --- story cards ---
     df = xl.parse("Story")
     for _, r in df.iterrows():
-        con.execute("INSERT INTO deck_order VALUES (?, 'story')", (int(r["id"]),))
+        con.execute("INSERT INTO run_order VALUES (?, 'story')", (int(r["id"]),))
         year = None if pd.isna(r["Year"]) else int(r["Year"])
         loc = None if pd.isna(r["location"]) else str(r["location"])
         con.execute("INSERT INTO story_cards VALUES (?,?,?,?)",
@@ -423,7 +458,7 @@ def main():
         con.executescript(views_sql.read_text(encoding="utf-8"))
         con.commit()
 
-    for table in ["deck_order", "card_ref", "tickets", "ticket_punches", "employees",
+    for table in ["run_order", "card_ref", "tickets", "ticket_punches", "employees",
                   "events", "post_office", "story_cards", "claims", "claim_spots",
                   "circus", "circus_stickers", "timetable_cells", "bank_slips",
                   "postcard_ref", "employee_ref", "event_ref"]:

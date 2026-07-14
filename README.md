@@ -9,7 +9,9 @@ SQLite database and digs into what it reveals.
 
 ## The database
 
-Everything lives in `ttr.db`, rebuilt reproducibly from the raw workbook:
+Everything lives in `ttr.db`, rebuilt reproducibly from the raw workbook.
+The full schema is documented with an ER diagram in
+[docs/schema.md](docs/schema.md).
 
 ```
 data/
@@ -19,23 +21,28 @@ scripts/
   extract_reference.py       # PDF -> reference.json
   build_db.py                # xlsx + reference.json -> ttr.db
   views.sql                  # derived views (all arithmetic lives here)
+docs/schema.md               # ER diagram (mermaid) + view catalog
 ttr.db                       # the database
+index.qmd, _quarto.yml       # Quarto report (ggplot dashboard)
 ```
 
-Rebuild with:
+Rebuild the database with `python scripts/build_db.py`, render the
+report with `quarto render`.
 
-```
-python scripts/build_db.py
-```
+### The run_order spine
 
-### The deck_order spine
+The workbook's `id` column is a **run id**: a single global sequence
+shared across the Tickets, Employees, Events, PostOffice and Story
+sheets — the order the dead letter office pile was unstacked during the
+backtrack (`run id 0` = found in a player's vault, no pile position). It
+becomes the `run_order` table, and since story pause/stop cards carry
+game years, any card's position between two dated markers bounds *when
+it was retired* (`v_retirement_window`, `v_ticket_retirement`).
 
-The workbook's `id` column is a single global sequence shared across the
-Tickets, Employees, Events, PostOffice and Story sheets — the order the
-dead letter office pile was unstacked. It becomes the `deck_order` table,
-and since story pause/stop cards carry game years, any card's position
-between two dated markers bounds *when it was retired*
-(`v_retirement_window`, `v_ticket_retirement`).
+Proper legacy card codes live in `card_ref.card_uid` (`GP-14`, `CS-08`,
+…; the unnumbered East Coast starters get synthesized `EC-01`..`EC-33`),
+and `ticket_postcards` maps all 42 potential-postcard tickets to their
+postcard (`PC-101`..`PC-142`) — the workbook had the complete mapping.
 
 ### Main tables
 
@@ -76,8 +83,21 @@ mismatch points at a data problem rather than a stale formula.
    and was rejected by Google Sheets as "too large to import". Real data:
    129 rows.
 
+Plus from the endgame data: every claim card hides the same 98$ total;
+Portland's claim card was never used at all (0$ collected); black won
+the campaign (1152$) after trading the lead with yellow twice, while
+blue held 5th place from 1865 to 1898 without interruption.
+
 Lesson so far: totals that add up can still be wrong, and the data you
 track during a game night is as messy as any production dataset.
+
+## The report
+
+`index.qmd` is a Quarto website with the ggplot dashboard: score
+progression per game and cumulative, rank changes, scoring-component
+breakdowns, ticket punches, claim earnings, and a gender comparison
+(black/blue are played by men, green/yellow/red by women; no names
+tracked). Render with `quarto render`, output lands in `_site/`.
 
 ## Open questions
 
