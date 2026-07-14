@@ -285,11 +285,7 @@ each game (60 observations), its **mean error is
 \$`r round(me, 1)`** (positive = players actually earned more), with
 a mean absolute error of \$`r round(mae, 1)` and RMSE of
 \$`r round(rmse, 1)`. The bias is not constant, though — it grows
-with the campaign economy, and the later games introduce outrageous
-cash-cow rules: Sierra Madre's **Treasure hunt**, and above all the
-**Claims** that arrive with Cascadia --- and since it is not fixed in
-what year those mechanics get introduced, they are hard to correct for
-*a priori*.
+with the campaign economy:
 
 ```{r missing-residuals}
 #| fig-height: 4.5
@@ -370,9 +366,13 @@ If the recommendations closely matched observed play, they would offer
 a fair way to handle missed sessions. The data says they are
 **increasingly stingy**: the guideline is roughly calibrated for the
 first half of the campaign, but from 1883 onward the table's economy
-inflates (bigger tickets, headquarters tolls, richer events) while the
-guideline grows only linearly (although with an extra \$20 step ---
-double the usual \$10 --- for the final game). Averaged over the whole campaign, four
+inflates (bigger tickets, headquarters tolls, richer events) --- the
+later games introduce outrageous cash-cow rules such as Sierra Madre's
+**Treasure hunt**, and above all the **Claims** that arrive with
+Cascadia --- while the guideline grows only linearly (although with an
+extra \$20 step, double the usual \$10, for the final game). And
+since it is not fixed in what year those mechanics get introduced,
+they are hard to correct for *a priori*. Averaged over the whole campaign, four
 of the five companies out-earned the guideline by \$13--19 per game;
 only **Blue** essentially broke even against it (average difference
 \$-1.4). With just 12 paired observations per company, none of the
@@ -381,6 +381,14 @@ p = 0.074), so the per-company differences should be read as
 descriptive. Still, the direction is consistent: skipping a
 late-campaign game and taking the official payout would have been a
 bad trade for everyone except perhaps Blue.
+
+::: {.callout-tip title="Recommendation"}
+The official payout is a fair way to handle a missing player. On
+average it leaves the absent company modestly short --- especially in
+the late campaign --- but the gap is small compared to the scheduling
+cost of insisting on full attendance. Take the payout and keep the
+campaign rolling (we wish we had).
+:::
 
 ## Where do the points come from?
 
