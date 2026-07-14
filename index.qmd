@@ -271,7 +271,10 @@ each game (60 observations), its **mean error is
 \$`r round(me, 1)`** (positive = players actually earned more), with
 a mean absolute error of \$`r round(mae, 1)` and RMSE of
 \$`r round(rmse, 1)`. The bias is not constant, though — it grows
-with the campaign economy:
+with the campaign economy, and the later games introduce outrageous
+cash-cow rules: Sierra Madre's treasure hunt, and above all the
+**Claims** that arrive with Cascadia, the final frontier (the CS-coded
+scratch cards, each hiding \$98):
 
 ```{r missing-residuals}
 #| fig-height: 4.5
