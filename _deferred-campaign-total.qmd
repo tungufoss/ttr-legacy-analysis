@@ -1,0 +1,259 @@
+---
+title: "Deferred: campaign total and ordering"
+---
+
+<!-- Parked here until the report reaches these topics; underscore
+prefix keeps this file out of the site render. Requires the setup
+and per-game chunks from index.qmd (cum_scores builds on `scores`). -->
+
+The campaign total is what decides the winner — the running sum of the
+bank slips through 1898, then each post-campaign addition stepped in
+one at a time: post cards (from the vaults), circus flyer, shares, and
+finally the timetable. The number at the right is each company's final
+score.
+
+```{r cumulative}
+#| fig-height: 6
+cum_scores <- scores |>
+  arrange(player, year) |>
+  group_by(player) |>
+  mutate(total = cumsum(dollars)) |>
+  ungroup()
+
+component_order <- c("postcards", "circus", "shares", "timetable")
+component_x <- setNames(1901 + 3 * seq_along(component_order), component_order)
+
+additions_wide <- dbGetQuery(con, "
+  SELECT player, component, dollars FROM final_components
+  WHERE component <> 'bankslips'
+")
+
+steps <- cum_scores |>
+  filter(year == max(year)) |>
+  select(player, total)
+step_rows <- list()
+for (comp in component_order) {
+  steps <- steps |>
+    left_join(filter(additions_wide, component == comp) |>
+        select(player, add = dollars), by = "player") |>
+    mutate(total = total + coalesce(add, 0)) |>
+    select(-add)
+  step_rows[[comp]] <- mutate(steps, year = component_x[[comp]])
+}
+
+cum_full <- bind_rows(
+  select(cum_scores, player, year, total),
+  bind_rows(step_rows)
+) |>
+  mutate(player = factor(player, levels = names(player_colors)))
+
+totals_lab <- cum_full |>
+  filter(year == max(year)) |>
+  arrange(total) |>
+  mutate(
+    lab_y = total,
+    # push overlapping labels apart (min 45 dollar-units of separation)
+    lab_y = Reduce(
+      function(prev, cur) max(cur, prev + 45),
+      lab_y, accumulate = TRUE
+    )
+  )
+
+ggplot(cum_full, aes(year, total, color = player)) +
+  annotate("segment",
+    x = 1865, xend = 1898, y = -95, yend = -95,
+    color = "gray55", linewidth = 0.5
+  ) +
+  annotate("text",
+    x = (1865 + 1898) / 2, y = -160, label = "bank slips",
+    color = "gray45", size = 3.2
+  ) +
+  annotate("segment",
+    x = min(component_x), xend = max(component_x), y = -95, yend = -95,
+    color = "gray55", linewidth = 0.5
+  ) +
+  annotate("text",
+    x = mean(range(component_x)), y = -160, label = "vault",
+    color = "gray45", size = 3.2
+  ) +
+  geom_vline(xintercept = 1901, color = "gray80", linetype = "dotted") +
+  annotate("text",
+    x = 1900, y = 650, label = "post campaign",
+    angle = 90, color = "gray55", size = 3
+  ) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  geom_text(
+    data = totals_lab,
+    aes(y = lab_y, label = paste0("$", total)),
+    hjust = -0.2, size = 3.3, fontface = "bold", show.legend = FALSE
+  ) +
+  scale_color_manual(values = player_colors) +
+  scale_x_continuous(
+    breaks = c(unique(scores$year), component_x),
+    labels = c(unique(scores$year), "post cards", "circus flyer",
+               "shares", "timetable"),
+    expand = expansion(mult = c(0.02, 0.06))
+  ) +
+  coord_cartesian(clip = "off") +
+  theme(
+    axis.text.x = element_text(angle = 35, hjust = 1),
+    plot.margin = margin(10, 20, 26, 10)
+  ) +
+  labs(
+    title = "Campaign total (bank slips, then each addition stepped in)",
+    x = NULL, y = "cumulative dollars", color = NULL
+  )
+```
+
+The post-campaign vault additions nearly rewrote the podium: green's $259 of
+additions ($110 shares, $71 circus, $30 timetable, $48 post cards)
+closed the gap to black from $66 to just **$18** — final score $1363 to
+$1345.
+
+```{r final-additions}
+#| fig-height: 4
+additions <- dbGetQuery(con, "
+  SELECT player, component, dollars
+  FROM final_components
+  WHERE component <> 'bankslips'
+") |>
+  mutate(
+    player = factor(player, levels = names(player_colors)),
+    component = factor(component,
+      levels = c("shares", "circus", "timetable", "postcards")
+    )
+  )
+
+ggplot(additions, aes(player, dollars, fill = component)) +
+  geom_col(color = "white", linewidth = 0.3) +
+  scale_fill_manual(values = c(
+    shares = "#4477aa", circus = "#ee6677",
+    timetable = "#228833", postcards = "#ccbb44"
+  )) +
+  labs(
+    title = "Post-campaign vault additions by component",
+    x = NULL, y = "dollars", fill = NULL
+  )
+```
+
+### Did the ordering change?
+
+Rank 1 = leading. First the rank within each individual game — extended
+past 1898 with the rank within each vault addition (who earned the most
+post cards, circus flyer, shares, timetable) and the final total. Then
+the rank on the running campaign total as each of those steps in — the
+race that matters.
+
+```{r rank-helpers}
+#| include: false
+# sigmoid interpolation between rank points, sankey/bump style
+bump_curves <- function(df, n = 40) {
+  df <- arrange(df, player, year)
+  do.call(rbind, lapply(split(df, df$player), function(d) {
+    segs <- lapply(seq_len(nrow(d) - 1), function(i) {
+      t <- seq(0, 1, length.out = n)
+      s <- 1 / (1 + exp(-12 * (t - 0.5)))   # sigmoid easing
+      data.frame(
+        player = d$player[i],
+        x = d$year[i] + t * (d$year[i + 1] - d$year[i]),
+        y = d$rank[i] + s * (d$rank[i + 1] - d$rank[i])
+      )
+    })
+    do.call(rbind, segs)
+  }))
+}
+
+plot_bump <- function(rank_df, title, x_breaks, x_labels) {
+  curves <- bump_curves(rank_df)
+  ends <- filter(rank_df, year == max(year))
+  ggplot() +
+    geom_vline(xintercept = 1901, color = "gray80", linetype = "dotted") +
+    geom_line(
+      data = curves, aes(x, y, color = player, group = player),
+      linewidth = 2.4, alpha = 0.85, lineend = "round"
+    ) +
+    geom_point(data = rank_df, aes(year, rank, color = player), size = 3.2) +
+    geom_text(
+      data = ends,
+      aes(year, rank, label = player, color = player),
+      hjust = -0.35, size = 3.4, fontface = "bold", show.legend = FALSE
+    ) +
+    scale_color_manual(values = player_colors, guide = "none") +
+    scale_y_reverse(breaks = 1:5) +
+    scale_x_continuous(
+      breaks = x_breaks,
+      labels = x_labels,
+      expand = expansion(mult = c(0.02, 0.09))
+    ) +
+    theme(axis.text.x = element_text(angle = 35, hjust = 1)) +
+    labs(title = title, x = NULL, y = "rank")
+}
+
+# x positions for the vault steps + final total on the rank charts
+rank_steps <- c("postcards", "circus", "shares", "timetable", "total")
+rank_step_x <- setNames(1901 + 3 * seq_along(rank_steps), rank_steps)
+rank_breaks <- c(unique(scores$year), rank_step_x)
+rank_labels <- c(unique(scores$year), "post cards", "circus flyer",
+                 "shares", "timetable", "total")
+```
+
+```{r ranks-game}
+#| fig-height: 4
+ranks <- cum_scores |>
+  group_by(year) |>
+  mutate(
+    game_rank = rank(-dollars, ties.method = "min"),
+    campaign_rank = rank(-total, ties.method = "min")
+  ) |>
+  ungroup()
+
+# per-component ranks: who earned the most from each vault addition,
+# then the final standings as 'total'
+comp_ranks <- dbGetQuery(con, "
+  SELECT player, component, dollars FROM final_components
+  WHERE component <> 'bankslips'
+") |>
+  group_by(component) |>
+  mutate(rank = rank(-dollars, ties.method = "min")) |>
+  ungroup() |>
+  transmute(player, year = rank_step_x[component], rank)
+
+total_rank <- dbGetQuery(con, "SELECT player, place FROM v_final_standings") |>
+  transmute(player, year = rank_step_x[["total"]], rank = place)
+
+game_ranks_full <- bind_rows(
+  transmute(ranks, player = as.character(player), year, rank = game_rank),
+  comp_ranks,
+  total_rank
+) |>
+  mutate(player = factor(player, levels = names(player_colors)))
+
+plot_bump(
+  game_ranks_full,
+  "Rank within each game, each vault addition, and the final total",
+  rank_breaks, rank_labels
+)
+```
+
+```{r ranks-campaign}
+#| fig-height: 4
+# cumulative rank at every year and after each vault addition steps in
+cum_ranks_full <- cum_full |>
+  bind_rows(
+    cum_full |>
+      filter(year == max(year)) |>
+      mutate(year = rank_step_x[["total"]])
+  ) |>
+  group_by(year) |>
+  mutate(rank = rank(-total, ties.method = "min")) |>
+  ungroup() |>
+  transmute(player, year, rank)
+
+plot_bump(
+  cum_ranks_full,
+  "Rank on running total (bank slips, then each vault addition)",
+  rank_breaks, rank_labels
+)
+```
+
