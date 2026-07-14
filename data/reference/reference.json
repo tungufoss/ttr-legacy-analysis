@@ -1,0 +1,2420 @@
+{
+  "tickets": [
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Albany",
+        "Bangor"
+      ],
+      "value": 3,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Albany",
+        "Savannah"
+      ],
+      "value": 8,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Atlanta",
+        "Philadelphia"
+      ],
+      "value": 6,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Baltimore",
+        "New",
+        "York"
+      ],
+      "value": 2,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Baltimore",
+        "Savannah"
+      ],
+      "value": 5,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Boston",
+        "Baltimore"
+      ],
+      "value": 3,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Buffalo",
+        "Baltimore"
+      ],
+      "value": 4,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Buffalo",
+        "Charleston"
+      ],
+      "value": 6,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Chicago",
+        "Atlanta"
+      ],
+      "value": 4,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Chicago",
+        "Baltimore"
+      ],
+      "value": 5,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Chicago",
+        "Montreal"
+      ],
+      "value": 6,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Cincinnati",
+        "Boston"
+      ],
+      "value": 7,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Cincinnati",
+        "Mobile"
+      ],
+      "value": 6,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Detroit",
+        "New",
+        "Orleans"
+      ],
+      "value": 9,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Detroit",
+        "New",
+        "York"
+      ],
+      "value": 5,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Detroit",
+        "Philadelphia"
+      ],
+      "value": 4,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Knoxville",
+        "Norfolk"
+      ],
+      "value": 5,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Knoxville",
+        "Savannah"
+      ],
+      "value": 3,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Mobile",
+        "Boston"
+      ],
+      "value": 11,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Mobile",
+        "Charlotte"
+      ],
+      "value": 4,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Montreal",
+        "Philadelphia"
+      ],
+      "value": 3,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Montreal",
+        "Quebec"
+      ],
+      "value": 1,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Nashville",
+        "Charleston"
+      ],
+      "value": 5,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Nashville",
+        "Montreal"
+      ],
+      "value": 9,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "New",
+        "Orleans",
+        "Charleston"
+      ],
+      "value": 6,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "New",
+        "Orleans",
+        "New",
+        "York"
+      ],
+      "value": 11,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "New",
+        "Orleans",
+        "Norfolk"
+      ],
+      "value": 8,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "New",
+        "York",
+        "Boston"
+      ],
+      "value": 1,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Philadelphia",
+        "Charleston"
+      ],
+      "value": 5,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Philadelphia",
+        "New",
+        "York"
+      ],
+      "value": 1,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Pittsburgh",
+        "Bangor"
+      ],
+      "value": 6,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Pittsburgh",
+        "Charlotte"
+      ],
+      "value": 3,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "EC",
+      "frontier": "East Coast (Start Area)",
+      "route_words": [
+        "Quebec",
+        "Savannah"
+      ],
+      "value": 10,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "BL-05",
+      "frontier": "Badlands",
+      "route_words": [
+        "Fargo",
+        "Chicago"
+      ],
+      "value": 5,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "BL-13",
+      "frontier": "Badlands",
+      "route_words": [
+        "Miles",
+        "City",
+        "Baltimore"
+      ],
+      "value": 14,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "BL-14",
+      "frontier": "Badlands",
+      "route_words": [
+        "Miles",
+        "City",
+        "New",
+        "Orleans"
+      ],
+      "value": 15,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "BL-08",
+      "frontier": "Badlands",
+      "route_words": [
+        "Regina",
+        "Charleston"
+      ],
+      "value": 16,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "BL-06",
+      "frontier": "Badlands",
+      "route_words": [
+        "Regina",
+        "Fargo"
+      ],
+      "value": 5,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "BL-07",
+      "frontier": "Badlands",
+      "route_words": [
+        "Regina",
+        "New",
+        "York"
+      ],
+      "value": 17,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "BL-12",
+      "frontier": "Badlands",
+      "route_words": [
+        "Winnipeg",
+        "Bangor"
+      ],
+      "value": 15,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "BL-11",
+      "frontier": "Badlands",
+      "route_words": [
+        "Winnipeg",
+        "Buffalo"
+      ],
+      "value": 11,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "BL-09",
+      "frontier": "Badlands",
+      "route_words": [
+        "Winnipeg",
+        "Cincinnati"
+      ],
+      "value": 8,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "BL-10",
+      "frontier": "Badlands",
+      "route_words": [
+        "Winnipeg",
+        "Savannah"
+      ],
+      "value": 13,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CA-19",
+      "frontier": "California",
+      "route_words": [
+        "Baja",
+        "Norfolk"
+      ],
+      "value": 21,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CA-21",
+      "frontier": "California",
+      "route_words": [
+        "Baja",
+        "Pittsburgh"
+      ],
+      "value": 19,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "CA-22",
+      "frontier": "California",
+      "route_words": [
+        "Cemetery",
+        "City",
+        "Charlotte"
+      ],
+      "value": 18,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CA-14",
+      "frontier": "California",
+      "route_words": [
+        "Nuevos",
+        "Angeles",
+        "Atlanta"
+      ],
+      "value": 18,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CA-20",
+      "frontier": "California",
+      "route_words": [
+        "Nuevos",
+        "Angeles",
+        "Detroit"
+      ],
+      "value": 19,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "CA-15",
+      "frontier": "California",
+      "route_words": [
+        "Nuevos",
+        "Angeles",
+        "Montreal"
+      ],
+      "value": 23,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CA-18",
+      "frontier": "California",
+      "route_words": [
+        "Nuevos",
+        "Angeles",
+        "Nashville"
+      ],
+      "value": 16,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CA-13",
+      "frontier": "California",
+      "route_words": [
+        "Nuevos",
+        "Angeles",
+        "New",
+        "York"
+      ],
+      "value": 23,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CA-17",
+      "frontier": "California",
+      "route_words": [
+        "Sacramento",
+        "Albany"
+      ],
+      "value": 21,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "CA-16",
+      "frontier": "California",
+      "route_words": [
+        "Sacramento",
+        "Knoxville"
+      ],
+      "value": 18,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CA-09",
+      "frontier": "California",
+      "route_words": [
+        "Sacramento",
+        "New",
+        "Orleans"
+      ],
+      "value": 18,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CA-08",
+      "frontier": "California",
+      "route_words": [
+        "San",
+        "Francisco",
+        "Baltimore"
+      ],
+      "value": 21,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "CA-12",
+      "frontier": "California",
+      "route_words": [
+        "San",
+        "Francisco",
+        "Chicago"
+      ],
+      "value": 16,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "CA-11",
+      "frontier": "California",
+      "route_words": [
+        "San",
+        "Francisco",
+        "Quebec"
+      ],
+      "value": 23,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CA-10",
+      "frontier": "California",
+      "route_words": [
+        "San",
+        "Francisco",
+        "Savannah"
+      ],
+      "value": 21,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CS-11",
+      "frontier": "Cascadia",
+      "route_words": [
+        "Calgary",
+        "Chicago"
+      ],
+      "value": 13,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CS-10",
+      "frontier": "Cascadia",
+      "route_words": [
+        "Calgary",
+        "Mobile"
+      ],
+      "value": 20,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "CS-13",
+      "frontier": "Cascadia",
+      "route_words": [
+        "Helena",
+        "Detroit"
+      ],
+      "value": 14,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "CS-12",
+      "frontier": "Cascadia",
+      "route_words": [
+        "Helena",
+        "Knoxville"
+      ],
+      "value": 15,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CS-07",
+      "frontier": "Cascadia",
+      "route_words": [
+        "Portland",
+        "Cincinnati"
+      ],
+      "value": 18,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CS-06",
+      "frontier": "Cascadia",
+      "route_words": [
+        "Portland",
+        "Philadelphia"
+      ],
+      "value": 23,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CS-17",
+      "frontier": "Cascadia",
+      "route_words": [
+        "Seattle",
+        "Boston"
+      ],
+      "value": 23,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CS-05",
+      "frontier": "Cascadia",
+      "route_words": [
+        "Seattle",
+        "Buffalo"
+      ],
+      "value": 20,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CS-18",
+      "frontier": "Cascadia",
+      "route_words": [
+        "Seattle",
+        "Nashville"
+      ],
+      "value": 18,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "CS-15",
+      "frontier": "Cascadia",
+      "route_words": [
+        "Spokane",
+        "Montreal"
+      ],
+      "value": 20,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CS-14",
+      "frontier": "Cascadia",
+      "route_words": [
+        "Spokane",
+        "Norfolk"
+      ],
+      "value": 20,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CS-09",
+      "frontier": "Cascadia",
+      "route_words": [
+        "Vancouver",
+        "Charleston"
+      ],
+      "value": 23,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "CS-16",
+      "frontier": "Cascadia",
+      "route_words": [
+        "Vancouver",
+        "Helena"
+      ],
+      "value": 5,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "CS-08",
+      "frontier": "Cascadia",
+      "route_words": [
+        "Vancouver",
+        "Pittsburgh"
+      ],
+      "value": 21,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "FL-10",
+      "frontier": "Florida",
+      "route_words": [
+        "Atlanta",
+        "Tampa"
+      ],
+      "value": 4,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "FL-08",
+      "frontier": "Florida",
+      "route_words": [
+        "Boston",
+        "Jacksonville"
+      ],
+      "value": 9,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "FL-09",
+      "frontier": "Florida",
+      "route_words": [
+        "Chicago",
+        "Jacksonville"
+      ],
+      "value": 7,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "FL-07",
+      "frontier": "Florida",
+      "route_words": [
+        "Detroit",
+        "Miami"
+      ],
+      "value": 10,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "FL-06",
+      "frontier": "Florida",
+      "route_words": [
+        "New",
+        "Orleans",
+        "Miami"
+      ],
+      "value": 6,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "FL-05",
+      "frontier": "Florida",
+      "route_words": [
+        "New",
+        "York",
+        "Miami"
+      ],
+      "value": 10,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "FL-11",
+      "frontier": "Florida",
+      "route_words": [
+        "Pittsburgh",
+        "Tampa"
+      ],
+      "value": 7,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "GP-12",
+      "frontier": "Great Plains",
+      "route_words": [
+        "Davenport",
+        "Charlotte"
+      ],
+      "value": 7,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "GP-07",
+      "frontier": "Great Plains",
+      "route_words": [
+        "Duluth",
+        "Kansas",
+        "City"
+      ],
+      "value": 5,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "GP-10",
+      "frontier": "Great Plains",
+      "route_words": [
+        "Duluth",
+        "New",
+        "Orleans"
+      ],
+      "value": 11,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "GP-11",
+      "frontier": "Great Plains",
+      "route_words": [
+        "Duluth",
+        "Pittsburgh"
+      ],
+      "value": 8,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "GP-09",
+      "frontier": "Great Plains",
+      "route_words": [
+        "Kansas",
+        "City",
+        "Atlanta"
+      ],
+      "value": 6,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "GP-08",
+      "frontier": "Great Plains",
+      "route_words": [
+        "Kansas",
+        "City",
+        "Philadelphia"
+      ],
+      "value": 9,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "GP-16",
+      "frontier": "Great Plains",
+      "route_words": [
+        "Omaha",
+        "Cincinnati"
+      ],
+      "value": 4,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "GP-17",
+      "frontier": "Great Plains",
+      "route_words": [
+        "Omaha",
+        "Pittsburgh"
+      ],
+      "value": 7,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "GP-14",
+      "frontier": "Great Plains",
+      "route_words": [
+        "St.",
+        "Louis",
+        "Baltimore"
+      ],
+      "value": 6,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "GP-15",
+      "frontier": "Great Plains",
+      "route_words": [
+        "St.",
+        "Louis",
+        "Boston"
+      ],
+      "value": 9,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "GP-13",
+      "frontier": "Great Plains",
+      "route_words": [
+        "St.",
+        "Louis",
+        "Charleston"
+      ],
+      "value": 6,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "GP-18",
+      "frontier": "Great Plains",
+      "route_words": [
+        "St.",
+        "Paul",
+        "New",
+        "York"
+      ],
+      "value": 10,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "GP-06",
+      "frontier": "Great Plains",
+      "route_words": [
+        "St.",
+        "Paul",
+        "Quebec"
+      ],
+      "value": 10,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "GP-19",
+      "frontier": "Great Plains",
+      "route_words": [
+        "St.",
+        "Paul",
+        "Savannah"
+      ],
+      "value": 9,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "HW-13",
+      "frontier": "Haunted Wastes",
+      "route_words": [
+        "Cheyenne",
+        "Montreal"
+      ],
+      "value": 13,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "HW-12",
+      "frontier": "Haunted Wastes",
+      "route_words": [
+        "Cheyenne",
+        "Pittsburgh"
+      ],
+      "value": 11,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "HW-08",
+      "frontier": "Haunted Wastes",
+      "route_words": [
+        "Denver",
+        "Atlanta"
+      ],
+      "value": 10,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "HW-09",
+      "frontier": "Haunted Wastes",
+      "route_words": [
+        "Denver",
+        "Knoxville"
+      ],
+      "value": 10,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "HW-07",
+      "frontier": "Haunted Wastes",
+      "route_words": [
+        "Denver",
+        "Norfolk"
+      ],
+      "value": 14,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "HW-16",
+      "frontier": "Haunted Wastes",
+      "route_words": [
+        "Phoenix",
+        "Bangor"
+      ],
+      "value": 22,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "HW-15",
+      "frontier": "Haunted Wastes",
+      "route_words": [
+        "Phoenix",
+        "Nashville"
+      ],
+      "value": 13,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "HW-05",
+      "frontier": "Haunted Wastes",
+      "route_words": [
+        "Salt",
+        "Lake",
+        "City",
+        "Mobile"
+      ],
+      "value": 15,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "HW-14",
+      "frontier": "Haunted Wastes",
+      "route_words": [
+        "Salt",
+        "Lake",
+        "City",
+        "Philadelphia"
+      ],
+      "value": 17,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "HW-06",
+      "frontier": "Haunted Wastes",
+      "route_words": [
+        "Salt",
+        "Lake",
+        "City",
+        "Santa",
+        "Fe"
+      ],
+      "value": 7,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "HW-11",
+      "frontier": "Haunted Wastes",
+      "route_words": [
+        "Santa",
+        "Fe",
+        "Boston"
+      ],
+      "value": 17,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "HW-10",
+      "frontier": "Haunted Wastes",
+      "route_words": [
+        "Santa",
+        "Fe",
+        "Nashville"
+      ],
+      "value": 9,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "OR-11",
+      "frontier": "Open Range",
+      "route_words": [
+        "Dallas",
+        "Buffalo"
+      ],
+      "value": 11,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "OR-13",
+      "frontier": "Open Range",
+      "route_words": [
+        "Dallas",
+        "Montreal"
+      ],
+      "value": 13,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "OR-12",
+      "frontier": "Open Range",
+      "route_words": [
+        "Dallas",
+        "New",
+        "Orleans"
+      ],
+      "value": 5,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "OR-10",
+      "frontier": "Open Range",
+      "route_words": [
+        "Dallas",
+        "New",
+        "York"
+      ],
+      "value": 12,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "OR-08",
+      "frontier": "Open Range",
+      "route_words": [
+        "Dodge",
+        "City",
+        "Houston"
+      ],
+      "value": 5,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "OR-09",
+      "frontier": "Open Range",
+      "route_words": [
+        "Dodge",
+        "City",
+        "Pittsburgh"
+      ],
+      "value": 9,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "OR-14",
+      "frontier": "Open Range",
+      "route_words": [
+        "Houston",
+        "Boston"
+      ],
+      "value": 14,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "OR-16",
+      "frontier": "Open Range",
+      "route_words": [
+        "Houston",
+        "Charlotte"
+      ],
+      "value": 8,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "OR-15",
+      "frontier": "Open Range",
+      "route_words": [
+        "Houston",
+        "Chicago"
+      ],
+      "value": 9,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "OR-18",
+      "frontier": "Open Range",
+      "route_words": [
+        "Little",
+        "Rock",
+        "Albany"
+      ],
+      "value": 10,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "OR-17",
+      "frontier": "Open Range",
+      "route_words": [
+        "Little",
+        "Rock",
+        "Philadelphia"
+      ],
+      "value": 8,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "OR-19",
+      "frontier": "Open Range",
+      "route_words": [
+        "Oklahoma",
+        "City",
+        "Baltimore"
+      ],
+      "value": 10,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "OR-20",
+      "frontier": "Open Range",
+      "route_words": [
+        "Oklahoma",
+        "City",
+        "Cincinnati"
+      ],
+      "value": 6,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "OR-22",
+      "frontier": "Open Range",
+      "route_words": [
+        "San",
+        "Antonio",
+        "Charleston"
+      ],
+      "value": 11,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "OR-21",
+      "frontier": "Open Range",
+      "route_words": [
+        "San",
+        "Antonio",
+        "Mobile"
+      ],
+      "value": 6,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "SM-11",
+      "frontier": "Sierra Madre",
+      "route_words": [
+        "Chihuahua",
+        "Albany"
+      ],
+      "value": 20,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "SM-12",
+      "frontier": "Sierra Madre",
+      "route_words": [
+        "Chihuahua",
+        "Chicago"
+      ],
+      "value": 14,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "SM-07",
+      "frontier": "Sierra Madre",
+      "route_words": [
+        "El",
+        "Paso",
+        "Charlotte"
+      ],
+      "value": 14,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "SM-06",
+      "frontier": "Sierra Madre",
+      "route_words": [
+        "El",
+        "Paso",
+        "Quebec"
+      ],
+      "value": 19,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "SM-08",
+      "frontier": "Sierra Madre",
+      "route_words": [
+        "Hermosillo",
+        "Bangor"
+      ],
+      "value": 23,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "SM-10",
+      "frontier": "Sierra Madre",
+      "route_words": [
+        "Hermosillo",
+        "Monterrey"
+      ],
+      "value": 5,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "SM-09",
+      "frontier": "Sierra Madre",
+      "route_words": [
+        "Hermosillo",
+        "Savannah"
+      ],
+      "value": 16,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    },
+    {
+      "card_code": "SM-13",
+      "frontier": "Sierra Madre",
+      "route_words": [
+        "Monterrey",
+        "Detroit"
+      ],
+      "value": 13,
+      "punch_capacity": {
+        "black": 2,
+        "blue": 2,
+        "green": 2,
+        "yellow": 2,
+        "red": 2
+      }
+    },
+    {
+      "card_code": "SM-14",
+      "frontier": "Sierra Madre",
+      "route_words": [
+        "Monterrey",
+        "New",
+        "Orleans"
+      ],
+      "value": 7,
+      "punch_capacity": {
+        "black": 1,
+        "blue": 1,
+        "green": 1,
+        "yellow": 1,
+        "red": 1
+      }
+    }
+  ],
+  "claims": [
+    {
+      "card_code": "CS-19",
+      "town": "Vancouver",
+      "values": [
+        14,
+        17,
+        11,
+        12,
+        15,
+        16,
+        13
+      ]
+    },
+    {
+      "card_code": "CS-20",
+      "town": "Portland",
+      "values": [
+        15,
+        14,
+        11,
+        16,
+        17,
+        13,
+        12
+      ]
+    },
+    {
+      "card_code": "CS-21",
+      "town": "Spokane",
+      "values": [
+        12,
+        13,
+        15,
+        14,
+        16,
+        17,
+        11
+      ]
+    },
+    {
+      "card_code": "CS-22",
+      "town": "Calgary",
+      "values": [
+        11,
+        14,
+        12,
+        17,
+        15,
+        13,
+        16
+      ]
+    },
+    {
+      "card_code": "CS-23",
+      "town": "Seattle",
+      "values": [
+        13,
+        12,
+        14,
+        15,
+        11,
+        17,
+        16
+      ]
+    },
+    {
+      "card_code": "CS-24",
+      "town": "Helena",
+      "values": [
+        13,
+        16,
+        12,
+        15,
+        14,
+        11,
+        17
+      ]
+    },
+    {
+      "card_code": "SM-15",
+      "town": null,
+      "values": [
+        36,
+        33,
+        29,
+        27,
+        24
+      ]
+    }
+  ],
+  "employees": [
+    {
+      "card_code": "1868-16",
+      "title": "Estate Agent",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "1874-04",
+      "title": "Port Controller",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "1877-04",
+      "title": "Financier",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "1880-04",
+      "title": "Crew Dispatcher",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "1883-09",
+      "title": "Promoter",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "1886-04",
+      "title": "Silent Partner",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "1889-04",
+      "title": "Gambler",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "1892-04",
+      "title": "Psychic",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "CS-03",
+      "title": "Tunnel Master",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "SM-03",
+      "title": "Treasure Huntress",
+      "punch_capacity": 2
+    }
+  ],
+  "events": [
+    {
+      "card_code": "1871-02",
+      "title": "Mama O'Connell increases fees",
+      "punch_capacity": 3
+    },
+    {
+      "card_code": "1877-02",
+      "title": "City Growth!",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "1886-02",
+      "title": "Tariffs",
+      "punch_capacity": 3
+    },
+    {
+      "card_code": "1889-02",
+      "title": "Mama O'Connell demands kickbacks",
+      "punch_capacity": 3
+    },
+    {
+      "card_code": "BL-04",
+      "title": "Common Stock",
+      "punch_capacity": 3
+    },
+    {
+      "card_code": "CA-03",
+      "title": "Transcontinental Rail!",
+      "punch_capacity": 3
+    },
+    {
+      "card_code": "CA-04",
+      "title": "Aftershock in San Fransisco",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "CA-05",
+      "title": "Aftershock in Cemetery City",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "CA-06",
+      "title": "Aftershock in Nuevos Angeles",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "CA-07",
+      "title": "Aftershock in Baja",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "FL-03",
+      "title": "Circus Mania",
+      "punch_capacity": 5
+    },
+    {
+      "card_code": "FL-04",
+      "title": "A Good Home",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "GP-04",
+      "title": "Mama O'Connell expands her network",
+      "punch_capacity": 6
+    },
+    {
+      "card_code": "GP-05",
+      "title": "Mama O'Connell does you a favor",
+      "punch_capacity": 3
+    },
+    {
+      "card_code": "HW-03",
+      "title": "The Stroke of Midnight",
+      "punch_capacity": 5
+    },
+    {
+      "card_code": "OR-03",
+      "title": "Sabotage!",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "OR-04",
+      "title": "Train Robbers!",
+      "punch_capacity": 3
+    },
+    {
+      "card_code": "OR-05",
+      "title": "Wanted!",
+      "punch_capacity": 2
+    }
+  ],
+  "post_cards": [
+    {
+      "card_code": "PC-102",
+      "title": "I have some treasure hunters",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "PC-105",
+      "title": "I am helping miners get out west",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "PC-108",
+      "title": "Some mystics gave me an amulet",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "PC-120",
+      "title": "Bankers owe me a favor",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "PC-121",
+      "title": "Cornelius Banks likes my wine",
+      "punch_capacity": 3
+    },
+    {
+      "card_code": "PC-127",
+      "title": "I am showing people a ghost train",
+      "punch_capacity": 3
+    },
+    {
+      "card_code": "PC-128",
+      "title": "I have engineers on payroll",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "PC-129",
+      "title": "I'm down with clowns",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "PC-130",
+      "title": "I have a digging crew on call",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "PC-132",
+      "title": "I have a relic to curse those who curse me",
+      "punch_capacity": 2
+    },
+    {
+      "card_code": "PC-139",
+      "title": "I have ghost controlling equipment",
+      "punch_capacity": 2
+    }
+  ]
+}
