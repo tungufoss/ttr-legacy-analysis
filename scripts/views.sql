@@ -119,6 +119,17 @@ JOIN card_ref r ON r.ref_id = t.ref_id
 JOIN card_ref_capacity c ON c.ref_id = t.ref_id AND c.color = p.color
 WHERE violation IS NOT NULL;
 
+-- City degree check (recreates the map sheet's degree/calc/verify
+-- helper columns): number of distinct track connections per city.
+CREATE VIEW v_city_degree AS
+SELECT
+    c.city,
+    c.section,
+    COUNT(DISTINCT r.route_id) AS tracks
+FROM cities c
+LEFT JOIN routes r ON c.city IN (r.city_a, r.city_b)
+GROUP BY c.city;
+
 -- Final scores per player per game, from the bank slips.
 CREATE VIEW v_scores AS
 SELECT player, year, dollars,

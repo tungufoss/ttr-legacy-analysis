@@ -46,6 +46,8 @@ erDiagram
     claims ||--{ claim_spots : "7 scratch spots"
     circus ||--{ circus_stickers : "stickers"
 
+    cities ||--o{ routes : "endpoints"
+
     players {
         text color PK
         text company
@@ -166,6 +168,21 @@ erDiagram
         text title
         int punch_capacity
     }
+    cities {
+        text city PK
+        text section "jigsaw piece"
+        text company "ownership sticker"
+        int port
+    }
+    routes {
+        int route_id PK
+        text section
+        text city_a FK
+        text city_b FK
+        int length
+        text track_color "NULL = unbuilt track bed"
+        int bridges
+    }
 ```
 
 ## Views
@@ -180,5 +197,6 @@ erDiagram
 | `v_retirement_window` | earliest/latest game year a card can have been retired, from its run position between dated story markers |
 | `v_ticket_retirement` | the same, joined to retired tickets |
 | `v_ticket_rule_check` | punch-capacity rule violations (empty = consistent) |
+| `v_city_degree` | track connections per city (recreates the map sheet's degree check) |
 | `v_scores` | bank slip scores per player per game |
 | `v_campaign_totals` | campaign dollar totals per player |

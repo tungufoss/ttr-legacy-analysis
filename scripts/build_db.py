@@ -202,6 +202,24 @@ def create_schema(con):
         postcard_number INTEGER NOT NULL,
         postcard_code TEXT NOT NULL        -- 'PC-123'
     );
+    -- the game board: cities per jigsaw section
+    CREATE TABLE cities (
+        city TEXT PRIMARY KEY,
+        section TEXT NOT NULL,             -- jigsaw piece of the board
+        company TEXT,                      -- ownership sticker (color/'big'/...)
+        port INTEGER                       -- 1 = port city
+    );
+    -- the game board: individual tracks between cities. Parallel tracks
+    -- appear as separate rows. track_color NULL = unbuilt track bed.
+    CREATE TABLE routes (
+        route_id INTEGER PRIMARY KEY,
+        section TEXT NOT NULL,
+        city_a TEXT NOT NULL REFERENCES cities(city),
+        city_b TEXT NOT NULL REFERENCES cities(city),
+        length INTEGER NOT NULL,
+        track_color TEXT,
+        bridges INTEGER
+    );
     """)
 
 
@@ -430,6 +448,33 @@ def load_workbook(con, ref):
             city = None if pd.isna(city) else norm_city(str(city).strip())
             con.execute("INSERT INTO timetable_cells VALUES (?,?,?,?)",
                         (player, row_no, col, city))
+
+    # --- map: cities + routes (two side-by-side tables in the sheet;
+    # the degree/calc/verify helper columns become v_city_degree) ---
+    raw = xl.parse("map")
+    cities_df = raw.iloc[:, 7:11]
+    cities_df.columns = ["section", "city", "company", "port"]
+    cities_df = cities_df[cities_df["city"].notna()]
+    for _, r in cities_df.iterrows():
+        company = None if pd.isna(r["company"]) else str(r["company"]).strip()
+        if company == "big city":
+            company = "big"
+        con.execute("INSERT INTO cities VALUES (?,?,?,?)",
+                    (norm_city(r["city"]), str(r["section"]).strip(), company,
+                     None if pd.isna(r["port"]) else int(r["port"])))
+
+    # canonical case lookup so e.g. 'charleston' matches 'Charleston'
+    canon = {c[0].lower(): c[0]
+             for c in con.execute("SELECT city FROM cities")}
+    routes_df = raw.iloc[:, :6]
+    routes_df = routes_df[routes_df["to"].notna()]
+    for i, (_, r) in enumerate(routes_df.iterrows(), start=1):
+        color = None if pd.isna(r["color"]) else str(r["color"]).strip()
+        a = norm_city(r["to"]); b = norm_city(r["from"])
+        a = canon[a.lower()]; b = canon[b.lower()]
+        con.execute("INSERT INTO routes VALUES (?,?,?,?,?,?,?)",
+                    (i, str(r["jigsaw"]).strip(), a, b, int(r["length"]), color,
+                     None if pd.isna(r["bridges"]) else int(r["bridges"])))
 
     # --- bank slips ---
     df = xl.parse("Bankslips")
