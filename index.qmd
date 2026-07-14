@@ -39,17 +39,25 @@ players <- dbGetQuery(con, "SELECT * FROM players")
 
 ## What on earth is Ticket to Ride Legacy?
 
-*Ticket to Ride* is Alan R. Moon's famous gateway board game — the
-set-collecting, network-building train game most people meet as
-*Ticket to Ride* or *Ticket to Ride Europe*: draw colored train cards,
-claim routes between cities, complete tickets. *Ticket to Ride Legacy:
-Legends of the West* (2023) gives that familiar game the **legacy
-treatment** pioneered by Rob Daviau and Matt Leacock in *Pandemic
-Legacy* (seasons 0–2): a 12-game campaign where the results of each
+[*Ticket to Ride*](https://boardgamegeek.com/boardgame/9209/ticket-to-ride)
+(TtR) is Alan R. Moon's famous gateway board game — the set-collecting,
+network-building train game; most people where I come from know the
+[*Europe*](https://boardgamegeek.com/boardgame/14996/ticket-to-ride-europe)
+or
+[*Nordic*](https://boardgamegeek.com/boardgame/31627/ticket-to-ride-nordic-countries)
+variety: draw colored train cards, claim routes between cities,
+complete tickets.
+[*Ticket to Ride Legacy: Legends of the West*](https://boardgamegeek.com/boardgame/390092/ticket-to-ride-legacy-legends-of-the-west)
+(2023) gives that familiar game the **legacy treatment** pioneered by
+Rob Daviau and Matt Leacock in *Pandemic Legacy* (seasons
+[1](https://boardgamegeek.com/boardgame/161936/pandemic-legacy-season-1),
+[2](https://boardgamegeek.com/boardgame/221107/pandemic-legacy-season-2)
+and [0](https://boardgamegeek.com/boardgame/314040/pandemic-legacy-season-0)
+— yes, in that order): a 12-game campaign where the results of each
 play permanently change the next — the board grows piece by piece,
-cards are punched, stickered, torn up or retired for good, and the
-story unfolds as you go. Moon, Daviau and Leacock designed it
-together.
+cards are punched, stickered, and nothing gets torn up, but retired
+for good into the dead letter office, while the story unfolds as you
+go.
 
 ::: {.callout-warning title="Spoiler warning"}
 This report is one long spoiler. It shows the full board, every
@@ -65,8 +73,9 @@ Black's sisters Red and Yellow, and Yellow's husband Blue. Everyone at
 the table is well versed in Ticket to Ride (especially *Europe*) and a
 fan of the set-collection train genre. Only Green and Black had played
 legacy systems before (*Pandemic Legacy* seasons 1 and 2, both
-cooperative) — this was everyone's first *competitive* legacy campaign.
-Five companies, twelve games, one long winter of railroading.
+cooperative — with season 0 on the shelf of opportunity) — this was
+everyone's first *competitive* legacy campaign. Five companies, twelve
+games, one long winter of railroading (more like 2.5 years).
 
 After the campaign ended, the entire game state was backtracked by
 hand — every card still in the storeroom, post office and company
@@ -74,6 +83,16 @@ vaults, and the full dead letter office pile, unstacked card by card —
 into the database this report is built on.
 
 ## Score progression
+
+Unlike regular Ticket to Ride, the game isn't about points exactly,
+but **dollars**. You always start a game with $5 (sometimes more,
+depending on your employee cards — asymmetric player abilities dealt
+for that particular game). An event deck can gain you more money (read:
+points) or lose you some. Later in the campaign your company can put
+up **headquarters** in cities (though not in big cities), and every
+other player laying a route into that city owes you $2. And there is
+an overarching villain in TtR Legacy — **Mama O'Connell** — whom you
+might have to pay instead, meaning the money goes back to the bank.
 
 Dollars earned per game, per company. Each play is one game of the
 campaign, and the campaign calendar jumps three years per game:
