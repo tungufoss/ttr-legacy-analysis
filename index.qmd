@@ -250,10 +250,22 @@ obs <- scores |>
   left_join(official, by = "year") |>
   mutate(diff = mean - official)
 
+all_row <- tibble(
+  year = "(all)",
+  official = mean(official$official),
+  mean = mean(scores$dollars),
+  median = median(scores$dollars),
+  sd = sd(scores$dollars),
+  diff = mean(scores$dollars) - mean(official$official)
+)
+
 knitr::kable(
-  obs |> mutate(across(c(mean, median, sd, diff), ~ round(.x, 1))) |>
+  obs |> mutate(year = as.character(year)) |>
+    bind_rows(all_row) |>
+    mutate(across(c(official, mean, median, sd, diff), ~ round(.x, 1))) |>
     select(year, official, mean, median, sd, `mean − official` = diff),
-  caption = "Official missing-player amount vs observed earnings per game"
+  caption = "Official missing-player amount vs observed earnings per
+    game; the (all) row averages across the whole campaign"
 )
 ```
 
