@@ -68,8 +68,8 @@ the campaign as the story unfolds.
 This report is one long spoiler. It contains the complete campaign,
 including every frontier, the fully revealed map, destination tickets,
 postcards, hidden card values, campaign events, and final scoring. If
-you think you might play *Ticket to Ride Legacy: Legends of the West*
-in the future, stop reading now and come back after twelve games.
+you think you might play *TtR Legacy: Legends of the West* in the
+future, stop reading now and come back after twelve games.
 :::
 
 ## Our campaign
@@ -82,7 +82,7 @@ railroad company throughout the campaign, the terms *player* and
 
 The game itself was a Christmas present from Green and Black to
 Black's sisters, Red and Yellow, and Yellow's husband, Blue. Everyone
-at the table was already well versed in *Ticket to Ride* ---
+at the table was already well versed in *TtR* ---
 particularly *Europe* --- and enjoyed set-collection train games. Only
 Green and Black had previous experience with legacy games, having
 completed *Pandemic Legacy* Seasons 1 and 2 (with Season 0 still on
@@ -113,7 +113,7 @@ progress persists throughout the campaign. Between games, the map
 expands westward through newly opened **Frontiers**, while new cards,
 mechanics, and scoring opportunities are gradually introduced.
 
-Unlike a traditional game of *Ticket to Ride*, companies develop
+Unlike a traditional game of *TtR*, companies develop
 asymmetrically over time. **Employees** provide unique abilities for a
 single game, **headquarters** create ongoing sources of income (though
 never in the handful of **Big Cities** that anchor the map), and
@@ -125,8 +125,7 @@ stored for later use.
 
 ## Score progression
 
-The campaign tracks **dollars**, not traditional Ticket to Ride
-points. Money comes in from completed tickets, coins in hand, bonuses
+The campaign tracks **dollars**, not traditional TtR points. Money comes in from completed tickets, coins in hand, bonuses
 for trains remaining, favorable events, and the $2 toll other
 companies pay for building into your headquarters cities. Money goes
 out for failed tickets, unfavorable events, and payments claimed by
