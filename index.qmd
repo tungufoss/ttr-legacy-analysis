@@ -176,15 +176,6 @@ first game where the best player won with
 foreign feeling. What we noticed is that as the campaign progressed,
 the scores got *consistently* higher.
 
-::: {.callout-note title="How tickets deplete" collapse="true"}
-The more valuable tickets are sought after and eventually depleted:
-one feature of the legacy system that keeps the ticket deck from
-bloating is that whenever a company completes a ticket, it punches the
-card --- some tickets allow one punch, others two --- and once full,
-the ticket is retired to the Dead Letter Office. We return to *when*
-the high-value tickets retired later in the report.
-:::
-
 ```{r per-game}
 #| fig-cap: >
 #|   Dollars earned by each company throughout the campaign. The dashed
@@ -865,6 +856,20 @@ ggplot(era_tickets) +
     subtitle = "Straight lines connect ticket endpoints (not actual track paths)"
   )
 ```
+
+## Ticket depletion
+
+::: {.callout-note title="How tickets deplete"}
+The more valuable tickets are sought after and eventually depleted:
+one feature of the legacy system that keeps the ticket deck from
+bloating is that whenever a company completes a ticket, it punches the
+card --- some tickets allow one punch, others two --- and once full,
+the ticket is retired to the Dead Letter Office.
+:::
+
+*Analysis to come: when did the high-value tickets retire, how quickly
+did each frontier's best tickets deplete, and who punched them out of
+the deck?*
 
 ## Next up
 
