@@ -127,9 +127,10 @@ are explored.
 Unlike a traditional game of *TtR*, companies develop asymmetrically
 over time. **Employees** provide unique abilities for a single game
 (my personal favourite is the *Financier*). The game is seeded with
-**Big Cities** (with more added during the campaign); the first time a
-company builds a route into a Big City during its turn, it draws one
-bonus train card from the face-down deck. Company **Headquarters** ---
+**Big Cities** (with more added during the campaign); every time a
+company builds a route into a Big City, it draws one bonus train card
+from the face-down deck (but only one bonus card per turn --- even if
+a single route connects two Big Cities at once). Company **Headquarters** ---
 permanent stickers placed on small city markers --- create ongoing
 sources of income for their owners. The campaign's recurring villain,
 **Mama O'Connell**, has a habit of collecting money that would
@@ -197,8 +198,9 @@ rather than victory points. Money is earned from completed destination
 tickets, coins remaining in hand, bonuses for trains left at the end
 of the game, favourable events, and the $2 toll other companies pay
 when building into one of your headquarters cities. Money is lost
-through failed destination tickets, unfavourable events, and payments
-claimed by Mama O'Connell. Every game begins with each company holding
+through failed destination tickets, unfavourable events, payments
+claimed by Mama O'Connell, and payments claimed by other companies
+(note you can also pay these tolls with train cards instead). Every game begins with each company holding
 $5 (although employee abilities may increase this starting amount).
 
 One feature of the campaign is easy to overlook: the rulebook provides

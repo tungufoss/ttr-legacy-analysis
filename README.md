@@ -11,7 +11,7 @@ SQLite database and digs into what it reveals.
 
 Everything lives in `ttr.db`, rebuilt reproducibly from the raw workbook.
 The full schema is documented with an ER diagram in
-[docs/schema.qmd](docs/schema.qmd).
+[schema.qmd](schema.qmd).
 
 ```
 data/
@@ -21,13 +21,14 @@ scripts/
   extract_reference.py       # PDF -> reference.json
   build_db.py                # xlsx + reference.json -> ttr.db
   views.sql                  # derived views (all arithmetic lives here)
-docs/schema.qmd            # ER diagram (mermaid) + view catalog
+schema.qmd                 # ER diagram (mermaid) + view catalog
 ttr.db                       # the database
 index.qmd, _quarto.yml       # Quarto report (ggplot dashboard)
 ```
 
 Rebuild the database with `python scripts/build_db.py`, render the
-report with `quarto render`.
+report with `quarto render` (the site publishes to `docs/` for
+GitHub Pages).
 
 ### The run_order spine
 
@@ -100,7 +101,8 @@ track during a game night is as messy as any production dataset.
 `index.qmd` is a Quarto website with the ggplot dashboard: score
 progression per game and cumulative, rank changes, scoring-component
 breakdowns, ticket punches, claim earnings, and the board maps. Render
-with `quarto render`, output lands in `_site/`.
+with `quarto render`; output lands in `docs/`, which GitHub Pages
+serves.
 
 ## Open questions
 

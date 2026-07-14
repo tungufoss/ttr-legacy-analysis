@@ -1,6 +1,6 @@
 project:
   type: website
-  output-dir: _site
+  output-dir: docs
 
 website:
   title: "TtR Legacy — Data Dive"
@@ -8,7 +8,7 @@ website:
     left:
       - href: index.qmd
         text: Report
-      - href: docs/schema.qmd
+      - href: schema.qmd
         text: Schema
 
 format:
