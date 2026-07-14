@@ -68,25 +68,38 @@ you ever plan to play *Ticket to Ride Legacy: Legends of the West*
 unspoiled, close this tab now and come back in twelve games.
 :::
 
-### Our campaign
+## Our campaign
 
-This particular campaign was a Christmas present from Green & Black to
-Black's sisters Red and Yellow, and Yellow's husband Blue. Everyone at
-the table is well versed in Ticket to Ride (especially *Europe*) and a
-fan of the set-collection train genre. Only Green and Black had played
-legacy systems before (*Pandemic Legacy* seasons 1 and 2, both
-cooperative — with season 0 on the shelf of opportunity) — this was
-everyone's first *competitive* legacy campaign. Five companies, twelve
-games, one long winter of railroading (more like 2.5 years: the game
-was a Christmas present in 2023, the campaign started in February
-2024, then took a long hiatus from the end of 2024 until April 2026 —
-in the meantime there were pregnancies, and two infants joined the
-table in 2025).
+Our campaign was played by five players. Throughout this report, they
+are referred to by their player colours — **Green**, **Black**,
+**Red**, **Yellow**, and **Blue**. As each player controls a railroad
+company throughout the campaign, the terms *player* and *company* are
+used interchangeably.
 
-After the campaign ended, the entire game state was backtracked by
-hand — every card still in the storeroom, post office and company
-vaults, and the full dead letter office pile, unstacked card by card —
-into the database this report is built on.
+The game itself was a Christmas present from Green and Black to
+Black's sisters, Red and Yellow, and Yellow's husband, Blue. Everyone
+at the table was already well versed in *Ticket to Ride* —
+particularly *Ticket to Ride: Europe* — and enjoyed set-collection
+train games. Only Green and Black had previous experience with legacy
+games, having completed *Pandemic Legacy* Seasons 1 and 2 (with
+Season 0 still waiting on the shelf of opportunity). As those are
+cooperative games, where players work together against the game,
+*Legends of the West* was everyone's **first competitive legacy
+campaign**.
+
+The campaign consists of twelve games but, in our case, spanned
+roughly **two and a half years**. Although the game was received as a
+Christmas gift in 2023 and the first session took place in February
+2024, the campaign included a lengthy hiatus from late 2024 until
+April 2026. In the meantime, life happened: pregnancies, the arrival
+of two new family members in 2025, and the inevitable challenge of
+finding time to get everyone back around the table.
+
+After the campaign concluded, the complete game state was
+painstakingly **reconstructed by hand**. Every remaining card in the
+Storeroom, Post Office, Company Vaults, and the entire Dead Letter
+Office pile was catalogued card by card and entered into the database
+that forms the basis of the analyses presented in this report.
 
 ## Score progression
 
