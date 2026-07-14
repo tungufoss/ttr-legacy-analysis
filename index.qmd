@@ -294,47 +294,12 @@ knitr::kable(
   claims |>
     mutate(
       earned = ifelse(earnings_known == 1, earned_dollars, "unknown (fully scratched)"),
-      owner = ifelse(is.na(owner), "?", owner)
+      owner = coalesce(owner, note, "?")
     ) |>
     select(card = card_code, town, owner, earned),
-  caption = "Claim card earnings (all cards hide the same 98$ total)"
+  caption = "Claim card earnings (all cards hide the same 98$ total but in random ordering)"
 )
 ```
-
-## Gender
-
-Black and blue are played by men, green, yellow and red by women (no
-names tracked). Average dollars per game by gender:
-
-```{r gender}
-#| fig-height: 4
-gender_scores <- scores |>
-  left_join(players, by = c("player" = "color"))
-
-gender_summary <- gender_scores |>
-  group_by(gender, year) |>
-  summarise(mean_dollars = mean(dollars), .groups = "drop")
-
-ggplot(gender_summary, aes(year, mean_dollars, color = gender)) +
-  geom_line(linewidth = 1) +
-  geom_point(size = 2) +
-  scale_color_manual(values = c(male = "#4477aa", female = "#ee6677")) +
-  scale_x_continuous(breaks = unique(scores$year)) +
-  labs(
-    title = "Average dollars per game by gender",
-    x = NULL, y = "mean dollars", color = NULL
-  )
-```
-
-```{r gender-test}
-t_res <- t.test(dollars ~ gender, data = gender_scores)
-```
-
-A Welch t-test on per-game scores gives p = `r round(t_res$p.value, 3)`
-(mean female `r round(t_res$estimate[1], 1)`, mean male
-`r round(t_res$estimate[2], 1)`) — `r if (t_res$p.value < 0.05) "a statistically significant difference" else "no statistically significant difference"`
-at the 5% level, though with 5 players and 12 games this is descriptive at
-best.
 
 ## The board
 

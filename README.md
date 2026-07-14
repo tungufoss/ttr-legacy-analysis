@@ -95,9 +95,8 @@ track during a game night is as messy as any production dataset.
 
 `index.qmd` is a Quarto website with the ggplot dashboard: score
 progression per game and cumulative, rank changes, scoring-component
-breakdowns, ticket punches, claim earnings, and a gender comparison
-(black/blue are played by men, green/yellow/red by women; no names
-tracked). Render with `quarto render`, output lands in `_site/`.
+breakdowns, ticket punches, claim earnings, and the board maps. Render
+with `quarto render`, output lands in `_site/`.
 
 ## Open questions
 

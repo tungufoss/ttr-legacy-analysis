@@ -41,6 +41,7 @@ SELECT
     c.card_code,
     c.town,
     c.owner,
+    c.note,
     SUM(s.value)                                    AS true_total,
     SUM(CASE WHEN s.revealed THEN s.value END)      AS revealed_total,
     SUM(s.revealed)                                 AS spots_revealed
@@ -58,6 +59,7 @@ SELECT
     card_code,
     town,
     owner,
+    note,
     CASE WHEN spots_revealed < 7
          THEN COALESCE(revealed_total, 0)
     END AS earned_dollars,

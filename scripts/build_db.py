@@ -179,11 +179,13 @@ def create_schema(con):
         year INTEGER,
         location TEXT
     );
-    -- claim (scratch) cards: 6 cards, 5 players; only blue's is attributed
+    -- claim (scratch) cards: 6 cards, 5 players; only blue's is attributed.
+    -- CS-20 (Portland) was never used at all, so it is the unowned extra.
     CREATE TABLE claims (
         card_code TEXT PRIMARY KEY,        -- CS-19..CS-24
         town TEXT NOT NULL,
-        owner TEXT REFERENCES players(color)  -- NULL = unknown or unowned extra
+        owner TEXT REFERENCES players(color),  -- NULL = unknown owner
+        note TEXT
     );
     CREATE TABLE claim_spots (
         card_code TEXT NOT NULL REFERENCES claims(card_code),
@@ -447,8 +449,16 @@ def load_workbook(con, ref):
             raise ValueError(f"claim town {r['Claim']!r} not in reference")
         owner = str(r["Player"]).strip().lower()
         owner = owner if owner in COLORS else None
-        con.execute("INSERT INTO claims VALUES (?,?,?)",
-                    (cref["card_code"], cref["town"], owner))
+        if cref["card_code"] == "CS-20":
+            # zero spots scratched: this card was never used, so it is
+            # the one card beyond the five players - the unowned extra
+            note = "no one (extra card)"
+        elif owner is None:
+            note = "one of black/green/yellow/red"
+        else:
+            note = None
+        con.execute("INSERT INTO claims VALUES (?,?,?,?)",
+                    (cref["card_code"], cref["town"], owner, note))
         for pos in range(1, 8):
             observed = r[f"Value {pos}"]
             observed = None if pd.isna(observed) else int(observed)
