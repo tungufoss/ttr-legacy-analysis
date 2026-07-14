@@ -104,22 +104,38 @@ Storeroom, Post Office, Company Vaults, and the entire Dead Letter
 Office was catalogued card by card and entered into the database on
 which the analyses in this report are based.
 
+## Campaign basics
+
+*Legends of the West* is played over twelve games spanning the years
+1865 to 1898 (`1865:3:1898`), with each session advancing the calendar
+by three years. Every player controls a railroad company whose
+progress persists throughout the campaign. Between games, the map
+expands westward through newly opened **Frontiers**, while new cards,
+mechanics, and scoring opportunities are gradually introduced.
+
+Unlike a traditional game of *Ticket to Ride*, companies develop
+asymmetrically over time. **Employees** provide unique abilities for a
+single game, **headquarters** create ongoing sources of income (though
+never in the handful of **Big Cities** that anchor the map), and
+campaign events can permanently alter future games. The campaign's
+recurring villain, **Mama O'Connell**, has a habit of collecting money
+that would otherwise be yours. Components are rarely destroyed;
+instead, they are modified, retired to the **Dead Letter Office**, or
+stored for later use.
+
 ## Score progression
 
-Unlike regular Ticket to Ride, the game isn't about points exactly,
-but **dollars**. You always start a game with $5 (sometimes more,
-depending on your employee cards — asymmetric player abilities dealt
-for that particular game). An event deck can gain you more money (read:
-points) or lose you some. Later in the campaign your company can put
-up **headquarters** in cities (though not in big cities), and every
-other player laying a route into that city owes you $2. And there is
-an overarching villain in TtR Legacy — **Mama O'Connell** — whom you
-might have to pay instead, meaning the money goes back to the bank.
+The campaign tracks **dollars**, not traditional Ticket to Ride
+points. Money comes in from completed tickets, coins in hand, bonuses
+for trains remaining, favorable events, and the $2 toll other
+companies pay for building into your headquarters cities. Money goes
+out for failed tickets, unfavorable events, and payments claimed by
+Mama O'Connell on the bank's behalf. Each game starts every company at
+$5 (employees can sweeten that).
 
-Dollars earned per game, per company. Each play is one game of the
-campaign, and the campaign calendar jumps three years per game:
-`1865:3:1898`. The dashed gray line is the suggested dollars for
-a player missing in action that game — a baseline value.
+Dollars earned per game, per company. The dashed gray line is the
+suggested dollars for a player missing in action that game — a
+baseline value.
 
 ::: {.callout-note title="Why 1865–1898?" collapse="true"}
 The campaign rides the great American railroad boom: it opens in 1865,
