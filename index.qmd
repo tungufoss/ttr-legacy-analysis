@@ -75,7 +75,11 @@ fan of the set-collection train genre. Only Green and Black had played
 legacy systems before (*Pandemic Legacy* seasons 1 and 2, both
 cooperative — with season 0 on the shelf of opportunity) — this was
 everyone's first *competitive* legacy campaign. Five companies, twelve
-games, one long winter of railroading (more like 2.5 years).
+games, one long winter of railroading (more like 2.5 years: the game
+was a Christmas present in 2023, the campaign started in February
+2024, then took a long hiatus from the end of 2024 until April 2026 —
+in the meantime there were pregnancies, and two infants joined the
+table in 2025).
 
 After the campaign ended, the entire game state was backtracked by
 hand — every card still in the storeroom, post office and company
@@ -96,8 +100,21 @@ might have to pay instead, meaning the money goes back to the bank.
 
 Dollars earned per game, per company. Each play is one game of the
 campaign, and the campaign calendar jumps three years per game:
-1865, 1868, … 1898. The dashed gray line is the suggested dollars for
+`1865:3:1898`. The dashed gray line is the suggested dollars for
 a player missing in action that game — a baseline value.
+
+::: {.callout-note title="Why 1865–1898?" collapse="true"}
+The campaign rides the great American railroad boom: it opens in 1865,
+the year the Civil War ended and the race west began in earnest (the
+transcontinental golden spike followed in 1869), and closes as the
+1890s wind down — the decade the frontier was declared closed. The
+rulebook leans on the era's long-lasting tropes — expansionism, the
+Wild West, the great outdoors — and its designers' note is upfront
+that the real expansion came at a cost the game's lighter theme
+doesn't depict: the dispossession of Native American tribes and the
+exploitation of railroad laborers. Worth reading about alongside the
+game.
+:::
 
 ```{r per-game}
 missing_scores <- dbGetQuery(con, "
