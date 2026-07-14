@@ -114,57 +114,59 @@ which the analyses in this report are based.
 ## Campaign basics
 
 *Legends of the West* is played over twelve games spanning the years
-1865 to 1898 with each session advancing the calendar by three years
+1865 to 1898, with each session advancing the calendar by three years
 (i.e., `1865:3:1898`). Every player controls a railroad company whose
 progress persists throughout the campaign. Between games, the map
 expands westward through newly opened **Frontiers** (jigsaw pieces
-that form your board), while new cards, mechanics, and scoring
-opportunities are gradually introduced that are thematic to that
-newfound frontier. As a result each campaign is different, as you
-might encounter the rules in a different order than our campaign.
-
-::: {.callout-note title="Why 1865–1898?" collapse="true"}
-The campaign rides the great American railroad boom: it opens in 1865,
-the year the Civil War ended and the race west began in earnest (the
-transcontinental golden spike followed in 1869), and closes as the
-1890s wind down — the decade the frontier was declared closed. The
-rulebook leans on the era's long-lasting tropes — expansionism, the
-Wild West, the great outdoors — and its designers' note is upfront
-that the real expansion came at a cost the game's lighter theme
-doesn't depict: the dispossession of Native American tribes and the
-exploitation of railroad laborers. Worth reading about alongside the
-game.
-:::
+that gradually form the board), while new cards, mechanics, and
+scoring opportunities themed to each frontier are introduced. As a
+result, every campaign unfolds differently, as the order in which
+these mechanics appear depends on the sequence in which the frontiers
+are explored.
 
 Unlike a traditional game of *TtR*, companies develop asymmetrically
-over time. **Employees** provide unique abilities for a single game (my personal
-favorite is the *Financier*).
-The game is seeded with **Big Cities** (some you add yourself);
-whenever a company lays track into a Big City, it draws one free card
-(max 1) from the face-down train deck. Company **headquarters** ---
-permanent stickers placed on city markers, never allowed in Big
-Cities --- create ongoing sources of income to their owners. The
-campaign's recurring villain, **Mama O'Connell**, has a habit of
-collecting money that would otherwise be yours: she can hold
-headquarters of her own (not just the player companies), and she may
-pop up in the event deck to demand payment, whereas other events
-might pay you if you qualify. Components (mostly cards) are never
-destroyed; instead they may be modified and stored for later use in
-subsequent games, until they are eventually retired to the **Dead
-Letter Office** --- or, in some cases, simply depleted (like a
-used-up sticker sheet).
+over time. **Employees** provide unique abilities for a single game
+(my personal favourite is the *Financier*). The game is seeded with
+**Big Cities** (with more added during the campaign); the first time a
+company builds a route into a Big City during its turn, it draws one
+bonus train card from the face-down deck. Company **Headquarters** ---
+permanent stickers placed on small city markers --- create ongoing
+sources of income for their owners. The campaign's recurring villain,
+**Mama O'Connell**, has a habit of collecting money that would
+otherwise be yours: she can establish headquarters of her own, and she
+frequently appears in the event deck demanding payment, while other
+events may reward companies that meet certain conditions. Components,
+primarily cards, are never destroyed. Instead, they may be modified
+and stored for future games until they are eventually retired to the
+**Dead Letter Office** --- or, in some cases, simply depleted, such as
+a fully used sticker sheet.
+
+The campaign tracks **dollars**, rather than traditional *TtR* victory
+points. Money is earned from completed destination tickets, coins
+remaining in hand, bonuses for trains left at the end of the game,
+favourable events, and the $2 toll other companies pay when building
+into one of your headquarters cities. Money is lost through failed
+destination tickets, unfavourable events, and payments claimed by Mama
+O'Connell. Every game begins with each company holding $5, although
+employee abilities may increase this starting amount.
+
+::: {.callout-note title="Why 1865–1898?" collapse="true"}
+The campaign follows the great American railroad boom. It begins in
+1865, the year the American Civil War ended, and concludes in 1898 as
+the nineteenth century --- and the era of westward railroad
+expansion --- draws to a close. The rulebook deliberately leans into
+familiar themes of frontier expansion and the Wild West, while also
+acknowledging that this history came at a significant human cost
+through the dispossession of Native American peoples and the
+exploitation of railroad labourers. It is worth keeping this broader
+historical context in mind while enjoying the game's lighter treatment
+of the period.
+:::
 
 ## Score progression
 
-The campaign tracks **dollars**, not traditional TtR points. Money comes in from completed tickets, coins in hand, bonuses
-for trains remaining, favorable events, and the $2 toll other
-companies pay for building into your headquarters cities. Money goes
-out for failed tickets, unfavorable events, and payments claimed by
-Mama O'Connell on the bank's behalf. Each game starts every company at
-$5 (employees can sweeten that).
-
 Dollars earned per game, per company. The dashed gray line is the
-suggested dollars for a player missing in action that game — a
+suggested dollars for a player missing in action that game --- a
 baseline value.
 
 ```{r per-game}
