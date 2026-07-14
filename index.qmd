@@ -137,7 +137,8 @@ game.
 :::
 
 Unlike a traditional game of *TtR*, companies develop asymmetrically
-over time. **Employees** provide unique abilities for a single game.
+over time. **Employees** provide unique abilities for a single game (my personal
+favorite is the *Financier*).
 The game is seeded with **Big Cities** (some you add yourself);
 whenever a company lays track into a Big City, it draws one free card
 (max 1) from the face-down train deck. Company **headquarters** ---
