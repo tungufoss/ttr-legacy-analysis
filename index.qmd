@@ -287,7 +287,9 @@ a mean absolute error of \$`r round(mae, 1)` and RMSE of
 \$`r round(rmse, 1)`. The bias is not constant, though — it grows
 with the campaign economy, and the later games introduce outrageous
 cash-cow rules: Sierra Madre's **Treasure hunt**, and above all the
-**Claims** that arrive with Cascadia.
+**Claims** that arrive with Cascadia --- and since it is not fixed in
+what year those mechanics get introduced, they are hard to correct for
+*a priori*.
 
 ```{r missing-residuals}
 #| fig-height: 4.5
