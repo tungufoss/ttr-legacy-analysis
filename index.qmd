@@ -37,10 +37,47 @@ scores <- dbGetQuery(con, "SELECT * FROM v_scores") |>
 players <- dbGetQuery(con, "SELECT * FROM players")
 ```
 
+## What on earth is Ticket to Ride Legacy?
+
+*Ticket to Ride* is Alan R. Moon's famous gateway board game — the
+set-collecting, network-building train game most people meet as
+*Ticket to Ride* or *Ticket to Ride Europe*: draw colored train cards,
+claim routes between cities, complete tickets. *Ticket to Ride Legacy:
+Legends of the West* (2023) gives that familiar game the **legacy
+treatment** pioneered by Rob Daviau and Matt Leacock in *Pandemic
+Legacy* (seasons 0–2): a 12-game campaign where the results of each
+play permanently change the next — the board grows piece by piece,
+cards are punched, stickered, torn up or retired for good, and the
+story unfolds as you go. Moon, Daviau and Leacock designed it
+together.
+
+::: {.callout-warning title="Spoiler warning"}
+This report is one long spoiler. It shows the full board, every
+frontier, hidden card values, postcards, and campaign-end scoring. If
+you ever plan to play *Ticket to Ride Legacy: Legends of the West*
+unspoiled, close this tab now and come back in twelve games.
+:::
+
+### Our campaign
+
+This particular campaign was a Christmas present from Green & Black to
+Black's sisters Red and Yellow, and Yellow's husband Blue. Everyone at
+the table is well versed in Ticket to Ride (especially *Europe*) and a
+fan of the set-collection train genre. Only Green and Black had played
+legacy systems before (*Pandemic Legacy* seasons 1 and 2, both
+cooperative) — this was everyone's first *competitive* legacy campaign.
+Five companies, twelve games, one long winter of railroading.
+
+After the campaign ended, the entire game state was backtracked by
+hand — every card still in the storeroom, post office and company
+vaults, and the full dead letter office pile, unstacked card by card —
+into the database this report is built on.
+
 ## Score progression
 
-Dollars earned per game, per company. Each game is one year of the
-campaign, 1865–1898. The dashed gray line is the suggested dollars for
+Dollars earned per game, per company. Each play is one game of the
+campaign, and the campaign calendar jumps three years per game:
+1865, 1868, … 1898. The dashed gray line is the suggested dollars for
 a player missing in action that game — a baseline value.
 
 ```{r per-game}
@@ -621,13 +658,15 @@ ggplot() +
 
 ### Opening the frontiers
 
-The dead letter office remembers the order the map grew. Frontier
-discovery cards sit between dated story markers in the pile, so the
-unstack order gives both the sequence and the game year each jigsaw
-section was added. Drag the slider (or press play) to watch the board
-unfold from the initial East Coast start area; cities are colored by
-jigsaw section, and tracks appear once both their endpoints are
-unlocked.
+How the map grows (per the official rules): at the end of a game, the
+winner chooses which jigsaw piece to add next — its cities and tickets
+come into play from the *next* game on. The dead letter office
+remembers the order: frontier cards sit between dated story markers in
+the pile, giving both the sequence and (with the one-frontier-per-game
+constraint) the year each section became playable. Drag the slider (or
+press play) to watch the board unfold from the initial East Coast start
+area; cities are colored by jigsaw section, and tracks appear once both
+their endpoints are unlocked.
 
 ```{r frontier-unlock}
 #| fig-height: 6.5
@@ -645,8 +684,15 @@ unlocks <- dbGetQuery(con, "
 ") |>
   mutate(key = tolower(name)) |>
   filter(key %in% names(frontier_map)) |>
-  arrange(desc(id)) |>   # deeper in the pile = discovered earlier
-  transmute(section = unname(frontier_map[key]), year = latest_year)
+  arrange(desc(id)) |>   # deeper in the pile = chosen earlier
+  transmute(section = unname(frontier_map[key]), year = latest_year) |>
+  # a frontier is chosen at the end of one game and playable from the
+  # next, so in-play years must strictly increase (one per game); this
+  # also corrects two markers that sit scrambled in the pile
+  mutate(year = Reduce(
+    function(prev, cur) max(cur, prev + 3),
+    year, accumulate = TRUE
+  ))
 
 initial_sections <- c("Northeast", "Atlantic Coast", "The South", "Appalachia")
 
