@@ -182,7 +182,7 @@ the Dead Letter Office.
 #|   Dollars earned by each company throughout the campaign. The dashed
 #|   grey line indicates the recommended dollar amount awarded to a
 #|   player who missed that particular game, as specified by the
-#|   event deck.
+#|   end-of-campaign story deck card.
 missing_scores <- dbGetQuery(con, "
   SELECT year, dollars FROM bank_slips WHERE player = 'missing'
 ") |>
@@ -210,12 +210,17 @@ ggplot(per_game, aes(year, dollars, color = player, linetype = player)) +
   )
 ```
 
-One feature of the campaign is easy to overlook: the event deck
-provides a **recommended dollar amount** for any player who misses a
-particular game. Rather than attempting to recreate the absent player's result,
-the designers simply award a fixed amount based on the chapter of the
-campaign. Presumably these values were chosen to approximate what a
-typical company would have earned during that game.
+One feature of the campaign deserves a confession. The rulebook is
+initially very vague about absent players: it merely says the campaign
+can continue even when not everyone is present. We took that to mean a
+missing player would simply receive *nothing* — hence the scheduling
+nightmare and the long hiatus. Only at the end of the campaign does a
+story deck card make up for those missed games, awarding a
+**recommended dollar amount** for each game a player sat out. Rather
+than attempting to recreate the absent player's result, the designers
+simply award a fixed amount per game of the campaign — presumably
+chosen to approximate what a typical company would have earned during
+that game.
 
 Because our campaign contains complete results for all five companies,
 we can evaluate how well these recommendations match observed play.
