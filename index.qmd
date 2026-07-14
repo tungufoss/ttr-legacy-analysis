@@ -358,7 +358,8 @@ a fair way to handle missed sessions. The data says they are
 **increasingly stingy**: the guideline is roughly calibrated for the
 first half of the campaign, but from 1883 onward the table's economy
 inflates (bigger tickets, headquarters tolls, richer events) while the
-guideline grows only linearly. Averaged over the whole campaign, four
+guideline grows only linearly (although with an extra \$20 step ---
+double the usual \$10 --- for the final game). Averaged over the whole campaign, four
 of the five companies out-earned the guideline by \$13--19 per game;
 only **Blue** essentially broke even against it (average difference
 \$-1.4). With just 12 paired observations per company, none of the
