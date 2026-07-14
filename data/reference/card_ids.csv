@@ -1,0 +1,130 @@
+﻿card_id,frontier,from_city,to_city,value
+GP-14,Great Plains,St. Louis,Baltimore,6
+GP-15,Great Plains,St. Louis,Boston,9
+GP-13,Great Plains,St. Louis,Charleston,6
+GP-18,Great Plains,St. Paul,New York,10
+GP-06,Great Plains,St. Paul,Quebec,10
+GP-19,Great Plains,St. Paul,Savannah,9
+HW-13,Haunted Wastes,Cheyenne,Montreal,13
+HW-12,Haunted Wastes,Cheyenne,Pittsburgh,11
+HW-08,Haunted Wastes,Denver,Atlanta,10
+HW-09,Haunted Wastes,Denver,Knoxville,10
+HW-07,Haunted Wastes,Denver,Norfolk,14
+HW-16,Haunted Wastes,Phoenix,Bangor,22
+HW-15,Haunted Wastes,Phoenix,Nashville,13
+HW-05,Haunted Wastes,Salt Lake City,Mobile,15
+HW-14,Haunted Wastes,Salt Lake City,Philadelphia,17
+HW-06,Haunted Wastes,Salt Lake City,Santa Fe,7
+HW-11,Haunted Wastes,Santa Fe,Boston,17
+HW-10,Haunted Wastes,Santa Fe,Nashville,9
+OR-11,Open Range,Dallas,Buffalo,11
+OR-13,Open Range,Dallas,Montreal,13
+OR-12,Open Range,Dallas,New Orleans,5
+OR-10,Open Range,Dallas,New York,12
+OR-08,Open Range,Dodge City,Houston,5
+OR-09,Open Range,Dodge City,Pittsburgh,9
+OR-14,Open Range,Houston,Boston,14
+OR-16,Open Range,Houston,Charlotte,8
+OR-15,Open Range,Houston,Chicago,9
+OR-18,Open Range,Little Rock,Albany,10
+OR-17,Open Range,Little Rock,Philadelphia,8
+OR-19,Open Range,Oklahoma City,Baltimore,10
+OR-20,Open Range,Oklahoma City,Cincinnati,6
+OR-22,Open Range,San Antonio,Charleston,11
+OR-21,Open Range,San Antonio,Mobile,6
+SM-11,Sierra Madre,Chihuahua,Albany,20
+SM-12,Sierra Madre,Chihuahua,Chicago,14
+SM-07,Sierra Madre,El Paso,Charlotte,14
+SM-06,Sierra Madre,El Paso,Quebec,19
+SM-08,Sierra Madre,Hermosillo,Bangor,23
+SM-10,Sierra Madre,Hermosillo,Monterrey,5
+SM-09,Sierra Madre,Hermosillo,Savannah,16
+SM-13,Sierra Madre,Monterrey,Detroit,13
+SM-14,Sierra Madre,Monterrey,New Orleans,7
+CA-19,California,Baja,Norfolk,21
+CA-21,California,Baja,Pittsburgh,19
+CA-22,California,Cemetery City,Charlotte,18
+CA-14,California,Nuevos Angeles,Atlanta,18
+CA-20,California,Nuevos Angeles,Detroit,19
+CA-15,California,Nuevos Angeles,Montreal,23
+CA-18,California,Nuevos Angeles,Nashville,16
+CA-13,California,Nuevos Angeles,New York,23
+CA-17,California,Sacramento,Albany,21
+CA-16,California,Sacramento,Knoxville,18
+CA-09,California,Sacramento,New Orleans,18
+CA-08,California,San Francisco,Baltimore,21
+CA-12,California,San Francisco,Chicago,16
+CA-11,California,San Francisco,Quebec,23
+CA-10,California,San Francisco,Savannah,21
+CS-11,Cascadia,Calgary,Chicago,13
+CS-10,Cascadia,Calgary,Mobile,20
+CS-13,Cascadia,Helena,Detroit,14
+CS-12,Cascadia,Helena,Knoxville,15
+CS-07,Cascadia,Portland,Cincinnati,18
+CS-06,Cascadia,Portland,Philadelphia,23
+CS-17,Cascadia,Seattle,Boston,23
+CS-05,Cascadia,Seattle,Buffalo,20
+CS-18,Cascadia,Seattle,Nashville,18
+CS-15,Cascadia,Spokane,Montreal,20
+CS-14,Cascadia,Spokane,Norfolk,20
+CS-09,Cascadia,Vancouver,Charleston,23
+CS-16,Cascadia,Vancouver,Helena,5
+CS-08,Cascadia,Vancouver,Pittsburgh,21
+FL-10,Florida,Atlanta,Tampa,4
+FL-08,Florida,Boston,Jacksonville,9
+FL-09,Florida,Chicago,Jacksonville,7
+FL-07,Florida,Detroit,Miami,10
+FL-06,Florida,New Orleans,Miami,6
+FL-05,Florida,New York,Miami,10
+FL-11,Florida,Pittsburgh,Tampa,7
+GP-12,Great Plains,Davenport,Charlotte,7
+GP-07,Great Plains,Duluth,Kansas City,5
+GP-10,Great Plains,Duluth,New Orleans,11
+GP-11,Great Plains,Duluth,Pittsburgh,8
+GP-09,Great Plains,Kansas City,Atlanta,6
+GP-08,Great Plains,Kansas City,Philadelphia,9
+GP-16,Great Plains,Omaha,Cincinnati,4
+GP-17,Great Plains,Omaha,Pittsburgh,7
+EC,East Coast (Start Area),Albany,Bangor,3
+EC,East Coast (Start Area),Albany,Savannah,8
+EC,East Coast (Start Area),Atlanta,Philadelphia,6
+EC,East Coast (Start Area),Baltimore,New York,2
+EC,East Coast (Start Area),Baltimore,Savannah,5
+EC,East Coast (Start Area),Boston,Baltimore,3
+EC,East Coast (Start Area),Buffalo,Baltimore,4
+EC,East Coast (Start Area),Buffalo,Charleston,6
+EC,East Coast (Start Area),Chicago,Atlanta,4
+EC,East Coast (Start Area),Chicago,Baltimore,5
+EC,East Coast (Start Area),Chicago,Montreal,6
+EC,East Coast (Start Area),Cincinnati,Boston,7
+EC,East Coast (Start Area),Cincinnati,Mobile,6
+EC,East Coast (Start Area),Detroit,New Orleans,9
+EC,East Coast (Start Area),Detroit,New York,5
+EC,East Coast (Start Area),Detroit,Philadelphia,4
+EC,East Coast (Start Area),Knoxville,Norfolk,5
+EC,East Coast (Start Area),Knoxville,Savannah,3
+EC,East Coast (Start Area),Mobile,Boston,11
+EC,East Coast (Start Area),Mobile,Charlotte,4
+EC,East Coast (Start Area),Montreal,Philadelphia,3
+EC,East Coast (Start Area),Montreal,Quebec,1
+EC,East Coast (Start Area),Nashville,Charleston,5
+EC,East Coast (Start Area),Nashville,Montreal,9
+EC,East Coast (Start Area),New Orleans,Charleston,6
+EC,East Coast (Start Area),New Orleans,New York,11
+EC,East Coast (Start Area),New Orleans,Norfolk,8
+EC,East Coast (Start Area),New York,Boston,1
+EC,East Coast (Start Area),Philadelphia,Charleston,5
+EC,East Coast (Start Area),Philadelphia,New York,1
+EC,East Coast (Start Area),Pittsburgh,Bangor,6
+EC,East Coast (Start Area),Pittsburgh,Charlotte,3
+EC,East Coast (Start Area),Quebec,Savannah,10
+BL-05,Badlands,Fargo,Chicago,5
+BL-13,Badlands,Miles City,Baltimore,14
+BL-14,Badlands,Miles City,New Orleans,15
+BL-08,Badlands,Regina,Charleston,16
+BL-06,Badlands,Regina,Fargo,5
+BL-07,Badlands,Regina,New York,17
+BL-12,Badlands,Winnipeg,Bangor,15
+BL-11,Badlands,Winnipeg,Buffalo,11
+BL-09,Badlands,Winnipeg,Cincinnati,8
+BL-10,Badlands,Winnipeg,Savannah,13
