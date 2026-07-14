@@ -81,6 +81,12 @@ TRAINS_BONUS_REF = [
     (16, 0, 0), (12, 1, 1), (9, 2, 2), (7, 3, 3), (6, 4, 4),
     (4, 5, 7), (2, 8, 10), (0, 11, None),
 ]
+# off-schedule bonuses explained at the table
+TRAINS_BONUS_EXCEPTIONS = [
+    # (player, year, trains_min, trains_max, note)
+    ("yellow", 1883, 0, 0,
+     "postcard effect: $28 instead of the usual $16 for 0 trains"),
+]
 
 # City coordinates for map plots. Real cities use real lat/lon; the
 # game's fictional cities (approx=1) get plausible board positions.
@@ -330,6 +336,15 @@ def create_schema(con):
         trains_min INTEGER NOT NULL,
         trains_max INTEGER            -- NULL = open-ended (11+)
     );
+    -- off-schedule bonuses with their explanation (e.g. postcard effects)
+    CREATE TABLE trains_bonus_exceptions (
+        player TEXT NOT NULL REFERENCES players(color),
+        year INTEGER NOT NULL REFERENCES games(year),
+        trains_min INTEGER NOT NULL,
+        trains_max INTEGER,
+        note TEXT NOT NULL,
+        PRIMARY KEY (player, year)
+    );
     -- map-plot coordinates; approx=1 for the game's fictional cities
     CREATE TABLE city_coords (
         city TEXT PRIMARY KEY REFERENCES cities(city),
@@ -397,6 +412,9 @@ def load_players_and_games(con):
     for bonus, tmin, tmax in TRAINS_BONUS_REF:
         con.execute("INSERT INTO trains_bonus_ref VALUES (?,?,?)",
                     (bonus, tmin, tmax))
+    for player, year, tmin, tmax, note in TRAINS_BONUS_EXCEPTIONS:
+        con.execute("INSERT INTO trains_bonus_exceptions VALUES (?,?,?,?,?)",
+                    (player, year, tmin, tmax, note))
 
 
 def load_reference(con, ref):

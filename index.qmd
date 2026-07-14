@@ -395,9 +395,9 @@ ggplot(trains, aes(year, trains_plot, color = player)) +
   )
 ```
 
-One bank slip resists the schedule: yellow's 1883 bonus of $28 has no
-entry in the payout table (the maximum is $16), so that game shows a
-gap — either a scoring event that year or a slip of the pen.
+One bank slip needed an explanation: yellow's 1883 bonus of $28 is off
+the schedule — a postcard effect that game paid $28 instead of the
+usual $16 for 0 trains, so it plots as 0 trains remaining.
 
 ## Tickets
 

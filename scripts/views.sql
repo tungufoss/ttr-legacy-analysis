@@ -149,23 +149,33 @@ SELECT
     ) AS pool_total;
 
 -- Trains remaining at each game end, derived from the bank-slip bonus
--- via the schedule in trains_bonus_ref. Rows with a bonus outside the
--- schedule (e.g. yellow 1883 = 28) get NULLs - flagged, not guessed.
+-- via the schedule in trains_bonus_ref. Off-schedule bonuses resolve
+-- through trains_bonus_exceptions (e.g. yellow 1883: postcard effect
+-- paid $28 instead of the usual $16 for 0 trains).
 CREATE VIEW v_trains_remaining AS
 SELECT
     b.player,
     b.year,
     b.trains_bonus,
-    r.trains_min,
-    r.trains_max,
+    COALESCE(e.trains_min, r.trains_min) AS trains_min,
+    COALESCE(e.trains_max, r.trains_max) AS trains_max,
     CASE
+        WHEN e.player IS NOT NULL AND e.trains_max IS NULL
+            THEN e.trains_min || '+'
+        WHEN e.player IS NOT NULL AND e.trains_min = e.trains_max
+            THEN CAST(e.trains_min AS TEXT)
+        WHEN e.player IS NOT NULL
+            THEN e.trains_min || '-' || e.trains_max
         WHEN r.bonus IS NULL THEN NULL
         WHEN r.trains_max IS NULL THEN r.trains_min || '+'
         WHEN r.trains_min = r.trains_max THEN CAST(r.trains_min AS TEXT)
         ELSE r.trains_min || '-' || r.trains_max
-    END AS trains_label
+    END AS trains_label,
+    e.note
 FROM bank_slips b
 LEFT JOIN trains_bonus_ref r ON r.bonus = b.trains_bonus
+LEFT JOIN trains_bonus_exceptions e
+    ON e.player = b.player AND e.year = b.year
 WHERE b.player IN (SELECT color FROM players);
 
 -- Final-scoring consistency: each derivable component of the reported
