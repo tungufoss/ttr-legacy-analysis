@@ -1,5 +1,6 @@
 ---
 title: "Database schema"
+engine: markdown
 ---
 
 `ttr.db` is a SQLite database built by `scripts/build_db.py` from the
