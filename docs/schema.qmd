@@ -1,4 +1,6 @@
-# Database schema
+---
+title: "Database schema"
+---
 
 `ttr.db` is a SQLite database built by `scripts/build_db.py` from the
 campaign workbook and the replay-PDF reference. Stored tables hold facts
@@ -19,7 +21,7 @@ only; all arithmetic lives in views (`scripts/views.sql`).
 
 ## Entity relationships
 
-```mermaid
+```{mermaid}
 erDiagram
     players ||--o{ ticket_punches : "punches"
     players ||--o{ circus : "flyer rows"

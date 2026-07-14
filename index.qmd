@@ -39,10 +39,25 @@ players <- dbGetQuery(con, "SELECT * FROM players")
 ## Score progression
 
 Dollars earned per game, per company. Each game is one year of the
-campaign, 1865–1898.
+campaign, 1865–1898. The dashed gray line is the "(missing)" baseline
+recorded on the bank-slip pad.
 
 ```{r per-game}
+missing_scores <- dbGetQuery(con, "
+  SELECT year, dollars FROM bank_slips WHERE player = 'missing'
+")
+
 ggplot(scores, aes(year, dollars, color = player)) +
+  geom_line(
+    data = mutate(missing_scores, player = "(missing)"),
+    aes(year, dollars), linetype = "dashed", color = "gray45",
+    linewidth = 0.8, inherit.aes = FALSE
+  ) +
+  annotate("text",
+    x = max(missing_scores$year), y = max(missing_scores$dollars),
+    label = "(missing)", hjust = 1, vjust = -0.8,
+    size = 3.2, color = "gray45"
+  ) +
   geom_line(linewidth = 1) +
   geom_point(size = 2) +
   scale_color_manual(values = player_colors) +
@@ -54,56 +69,121 @@ ggplot(scores, aes(year, dollars, color = player)) +
 ```
 
 The campaign total is what decides the winner — the running sum of all
-game scores:
+game scores, plus what was found in each company's vault after the
+campaign (post cards and share certificates; shown as the final "vault"
+step after 1898):
 
 ```{r cumulative}
+vault <- dbGetQuery(con, "
+  SELECT vault AS player, SUM(CAST(worth AS INTEGER)) AS vault_dollars
+  FROM post_office
+  WHERE vault IS NOT NULL AND worth NOT GLOB '*[a-z]*'
+  GROUP BY vault
+")
+
 cum_scores <- scores |>
   arrange(player, year) |>
   group_by(player) |>
   mutate(total = cumsum(dollars)) |>
   ungroup()
 
-ggplot(cum_scores, aes(year, total, color = player)) +
+vault_step <- cum_scores |>
+  filter(year == max(year)) |>
+  left_join(vault, by = "player") |>
+  mutate(
+    year = 1901,
+    total = total + coalesce(vault_dollars, 0)
+  )
+
+cum_with_vault <- bind_rows(cum_scores, vault_step)
+
+ggplot(cum_with_vault, aes(year, total, color = player)) +
   geom_line(linewidth = 1) +
   geom_point(size = 2) +
   scale_color_manual(values = player_colors) +
-  scale_x_continuous(breaks = unique(scores$year)) +
+  scale_x_continuous(
+    breaks = c(unique(scores$year), 1901),
+    labels = c(unique(scores$year), "vault")
+  ) +
   labs(
-    title = "Campaign total (cumulative dollars)",
+    title = "Campaign total (cumulative dollars, vault additions last)",
     x = NULL, y = "cumulative dollars", color = NULL
   )
 ```
 
+Blue's vault also held a *piggyback* post card (not a dollar value, so
+not included in the step).
+
 ### Did the ordering change?
 
-Rank 1 = leading. Left: rank within each game. Right: rank on
-cumulative campaign total — the race that matters.
+Rank 1 = leading. First the rank within each individual game, then the
+rank on cumulative campaign total — the race that matters.
 
-```{r ranks}
-#| fig-height: 4.5
+```{r rank-helpers}
+#| include: false
+# sigmoid interpolation between rank points, sankey/bump style
+bump_curves <- function(df, n = 40) {
+  df <- arrange(df, player, year)
+  do.call(rbind, lapply(split(df, df$player), function(d) {
+    segs <- lapply(seq_len(nrow(d) - 1), function(i) {
+      t <- seq(0, 1, length.out = n)
+      s <- 1 / (1 + exp(-12 * (t - 0.5)))   # sigmoid easing
+      data.frame(
+        player = d$player[i],
+        x = d$year[i] + t * (d$year[i + 1] - d$year[i]),
+        y = d$rank[i] + s * (d$rank[i + 1] - d$rank[i])
+      )
+    })
+    do.call(rbind, segs)
+  }))
+}
+
+plot_bump <- function(rank_df, title) {
+  curves <- bump_curves(rank_df)
+  ends <- filter(rank_df, year == max(year))
+  ggplot() +
+    geom_line(
+      data = curves, aes(x, y, color = player, group = player),
+      linewidth = 2.4, alpha = 0.85, lineend = "round"
+    ) +
+    geom_point(data = rank_df, aes(year, rank, color = player), size = 3.2) +
+    geom_text(
+      data = ends,
+      aes(year, rank, label = player, color = player),
+      hjust = -0.35, size = 3.4, fontface = "bold", show.legend = FALSE
+    ) +
+    scale_color_manual(values = player_colors, guide = "none") +
+    scale_y_reverse(breaks = 1:5) +
+    scale_x_continuous(
+      breaks = unique(rank_df$year),
+      expand = expansion(mult = c(0.02, 0.09))
+    ) +
+    labs(title = title, x = NULL, y = "rank")
+}
+```
+
+```{r ranks-game}
+#| fig-height: 4
 ranks <- cum_scores |>
   group_by(year) |>
   mutate(
     game_rank = rank(-dollars, ties.method = "min"),
     campaign_rank = rank(-total, ties.method = "min")
   ) |>
-  ungroup() |>
-  pivot_longer(c(game_rank, campaign_rank),
-    names_to = "kind", values_to = "rank"
-  ) |>
-  mutate(kind = recode(kind,
-    game_rank = "per game",
-    campaign_rank = "campaign total"
-  ))
+  ungroup()
 
-ggplot(ranks, aes(year, rank, color = player)) +
-  geom_line(linewidth = 1) +
-  geom_point(size = 2) +
-  scale_color_manual(values = player_colors) +
-  scale_y_reverse(breaks = 1:5) +
-  scale_x_continuous(breaks = unique(scores$year)) +
-  facet_wrap(~kind) +
-  labs(title = "Ranking over the campaign", x = NULL, y = "rank", color = NULL)
+plot_bump(
+  transmute(ranks, player, year, rank = game_rank),
+  "Rank within each game"
+)
+```
+
+```{r ranks-campaign}
+#| fig-height: 4
+plot_bump(
+  transmute(ranks, player, year, rank = campaign_rank),
+  "Rank on campaign total"
+)
 ```
 
 ## Where do the points come from?
@@ -128,7 +208,7 @@ component_totals <- components |>
 ggplot(component_totals, aes(player, total, fill = player)) +
   geom_col(show.legend = FALSE) +
   scale_fill_manual(values = player_colors) +
-  facet_wrap(~component, scales = "free_y") +
+  facet_wrap(~component) +
   labs(
     title = "Campaign totals by scoring component",
     x = NULL, y = "dollars"
@@ -140,7 +220,7 @@ ggplot(component_totals, aes(player, total, fill = player)) +
 ggplot(components, aes(year, value, color = player)) +
   geom_line(linewidth = 0.8) +
   scale_color_manual(values = player_colors) +
-  facet_wrap(~component, ncol = 1, scales = "free_y") +
+  facet_wrap(~component, ncol = 1) +
   scale_x_continuous(breaks = unique(scores$year)) +
   labs(
     title = "Scoring components over time",
@@ -169,7 +249,11 @@ punches <- dbGetQuery(con, "
 
 ggplot(punches, aes(player, punches, fill = player)) +
   geom_col(show.legend = FALSE) +
+  geom_text(aes(label = punches),
+    vjust = -0.4, size = 3, color = "gray30"
+  ) +
   scale_fill_manual(values = player_colors) +
+  scale_y_continuous(expand = expansion(mult = c(0.02, 0.09))) +
   facet_wrap(~type) +
   labs(
     title = "Ticket punches per company",

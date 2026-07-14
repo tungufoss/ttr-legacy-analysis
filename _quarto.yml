@@ -8,7 +8,7 @@ website:
     left:
       - href: index.qmd
         text: Report
-      - href: docs/schema.md
+      - href: docs/schema.qmd
         text: Schema
 
 format:

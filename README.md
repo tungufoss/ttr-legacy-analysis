@@ -11,7 +11,7 @@ SQLite database and digs into what it reveals.
 
 Everything lives in `ttr.db`, rebuilt reproducibly from the raw workbook.
 The full schema is documented with an ER diagram in
-[docs/schema.md](docs/schema.md).
+[docs/schema.qmd](docs/schema.qmd).
 
 ```
 data/
@@ -21,7 +21,7 @@ scripts/
   extract_reference.py       # PDF -> reference.json
   build_db.py                # xlsx + reference.json -> ttr.db
   views.sql                  # derived views (all arithmetic lives here)
-docs/schema.md               # ER diagram (mermaid) + view catalog
+docs/schema.qmd            # ER diagram (mermaid) + view catalog
 ttr.db                       # the database
 index.qmd, _quarto.yml       # Quarto report (ggplot dashboard)
 ```
