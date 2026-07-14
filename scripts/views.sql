@@ -148,6 +148,26 @@ SELECT
        JOIN share_bonus_ref b ON b.rank <= q.qualifiers
     ) AS pool_total;
 
+-- Trains remaining at each game end, derived from the bank-slip bonus
+-- via the schedule in trains_bonus_ref. Rows with a bonus outside the
+-- schedule (e.g. yellow 1883 = 28) get NULLs - flagged, not guessed.
+CREATE VIEW v_trains_remaining AS
+SELECT
+    b.player,
+    b.year,
+    b.trains_bonus,
+    r.trains_min,
+    r.trains_max,
+    CASE
+        WHEN r.bonus IS NULL THEN NULL
+        WHEN r.trains_max IS NULL THEN r.trains_min || '+'
+        WHEN r.trains_min = r.trains_max THEN CAST(r.trains_min AS TEXT)
+        ELSE r.trains_min || '-' || r.trains_max
+    END AS trains_label
+FROM bank_slips b
+LEFT JOIN trains_bonus_ref r ON r.bonus = b.trains_bonus
+WHERE b.player IN (SELECT color FROM players);
+
 -- Final-scoring consistency: each derivable component of the reported
 -- breakdown must match its independent derivation, and the components
 -- must sum to the reported total. All zeros = fully consistent.

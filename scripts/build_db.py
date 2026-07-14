@@ -75,6 +75,13 @@ FINAL_BREAKDOWN = {
     "black":  (1152, 65,  104, 0, 42, 1363),
 }
 
+# Bank-slip bonus schedule for trains remaining at game end.
+# (bonus dollars) -> (min, max) trains remaining; max None = open-ended
+TRAINS_BONUS_REF = [
+    (16, 0, 0), (12, 1, 1), (9, 2, 2), (7, 3, 3), (6, 4, 4),
+    (4, 5, 7), (2, 8, 10), (0, 11, None),
+]
+
 # City coordinates for map plots. Real cities use real lat/lon; the
 # game's fictional cities (approx=1) get plausible board positions.
 CITY_COORDS = {
@@ -317,6 +324,12 @@ def create_schema(con):
         player TEXT PRIMARY KEY REFERENCES players(color),
         dollars INTEGER NOT NULL
     );
+    -- bank-slip bonus schedule: dollars awarded for trains remaining
+    CREATE TABLE trains_bonus_ref (
+        bonus INTEGER PRIMARY KEY,
+        trains_min INTEGER NOT NULL,
+        trains_max INTEGER            -- NULL = open-ended (11+)
+    );
     -- map-plot coordinates; approx=1 for the game's fictional cities
     CREATE TABLE city_coords (
         city TEXT PRIMARY KEY REFERENCES cities(city),
@@ -381,6 +394,9 @@ def load_players_and_games(con):
             con.execute("INSERT INTO final_components VALUES (?,?,?)",
                         (player, component, dollars))
         con.execute("INSERT INTO final_reported VALUES (?,?)", (player, row[5]))
+    for bonus, tmin, tmax in TRAINS_BONUS_REF:
+        con.execute("INSERT INTO trains_bonus_ref VALUES (?,?,?)",
+                    (bonus, tmin, tmax))
 
 
 def load_reference(con, ref):

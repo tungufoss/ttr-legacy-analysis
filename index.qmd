@@ -170,7 +170,7 @@ ggplot(cum_full, aes(year, total, color = player)) +
   )
 ```
 
-The post-campaign additions nearly rewrote the podium: green's $259 of
+The post-campaign vault additions nearly rewrote the podium: green's $259 of
 additions ($110 shares, $71 circus, $30 timetable, $48 post cards)
 closed the gap to black from $66 to just **$18** — final score $1363 to
 $1345.
@@ -196,7 +196,7 @@ ggplot(additions, aes(player, dollars, fill = component)) +
     timetable = "#228833", postcards = "#ccbb44"
   )) +
   labs(
-    title = "Post-campaign additions by component",
+    title = "Post-campaign vault additions by component",
     x = NULL, y = "dollars", fill = NULL
   )
 ```
@@ -355,13 +355,49 @@ ggplot(component_totals, aes(player, total, fill = player)) +
 ggplot(components, aes(year, value, color = player)) +
   geom_line(linewidth = 0.8) +
   scale_color_manual(values = player_colors) +
-  facet_wrap(~component, ncol = 1) +
+  facet_wrap(~component, ncol = 1, scales = "free_y") +
   scale_x_continuous(breaks = unique(scores$year)) +
   labs(
     title = "Scoring components over time",
     x = NULL, y = "dollars", color = NULL
   )
 ```
+
+The trains-remaining bonus can be read backwards: the bank-slip
+schedule pays $16/12/9/7/6 for 0–4 trains left and $4/2/0 for 5–7,
+8–10, 11+ — so the bonus reveals how many trains each company had
+left on the table:
+
+```{r trains-remaining}
+#| fig-height: 4.5
+trains <- dbGetQuery(con, "SELECT * FROM v_trains_remaining") |>
+  mutate(
+    player = factor(player, levels = names(player_colors)),
+    trains_plot = case_when(
+      is.na(trains_min)          ~ NA_real_,
+      is.na(trains_max)          ~ 11,
+      TRUE                       ~ (trains_min + trains_max) / 2
+    )
+  )
+
+ggplot(trains, aes(year, trains_plot, color = player)) +
+  geom_line(linewidth = 0.9) +
+  geom_point(size = 2) +
+  scale_color_manual(values = player_colors) +
+  scale_x_continuous(breaks = unique(scores$year)) +
+  scale_y_continuous(
+    breaks = c(0:4, 6, 9, 11),
+    labels = c("0", "1", "2", "3", "4", "5-7", "8-10", "11+")
+  ) +
+  labs(
+    title = "Trains remaining at game end (derived from the bonus)",
+    x = NULL, y = "trains remaining", color = NULL
+  )
+```
+
+One bank slip resists the schedule: yellow's 1883 bonus of $28 has no
+entry in the payout table (the maximum is $16), so that game shows a
+gap — either a scoring event that year or a slip of the pen.
 
 ## Tickets
 
