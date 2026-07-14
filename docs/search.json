@@ -110,5 +110,12 @@
     "title": "Ticket to Ride Legacy — Data Dive",
     "section": "Next up",
     "text": "Next up\n\nRoute the ticket connections along actual board tracks (shortest path over the routes network) instead of straight lines.\nClaim / postcard geography: where the postcard tickets cluster."
+  },
+  {
+    "objectID": "index.html#what-is-a-decent-score",
+    "href": "index.html#what-is-a-decent-score",
+    "title": "Ticket to Ride Legacy — Data Dive",
+    "section": "What is a decent score?",
+    "text": "What is a decent score?\nWhen the campaign starts, the board is minimal and a game is relatively quick (less than an hour) — and it is hard to tell what a “good” score even looks like. What we noticed is that as the campaign progressed, the scores got consistently higher.\n\n\n\n\n\n\nNoteHow tickets deplete\n\n\n\n\n\nThe more valuable tickets are sought after and eventually depleted: one feature of the legacy system that keeps the ticket deck from bloating is that whenever a company completes a ticket, it punches the card — some tickets allow one punch, others two — and once full, the ticket is retired to the Dead Letter Office. We return to when the high-value tickets retired later in the report.\n\n\n\n\n\nCode\nmissing_scores &lt;- dbGetQuery(con, \"\n  SELECT year, dollars FROM bank_slips WHERE player = 'missing'\n\") |&gt;\n  mutate(player = \"(missing)\")\n\npg_levels &lt;- c(names(player_colors), \"(missing)\")\npg_colors &lt;- c(player_colors, \"(missing)\" = \"gray45\")\npg_lines &lt;- setNames(c(rep(\"solid\", 5), \"dashed\"), pg_levels)\n\nper_game &lt;- bind_rows(\n  mutate(scores, player = as.character(player)),\n  missing_scores\n) |&gt;\n  mutate(player = factor(player, levels = pg_levels))\n\nggplot(per_game, aes(year, dollars, color = player, linetype = player)) +\n  geom_line(linewidth = 1) +\n  geom_point(data = filter(per_game, player != \"(missing)\"), size = 2) +\n  scale_color_manual(values = pg_colors) +\n  scale_linetype_manual(values = pg_lines) +\n  scale_x_continuous(breaks = unique(scores$year)) +\n  labs(\n    title = \"Dollars per game\",\n    x = NULL, y = \"dollars\", color = NULL, linetype = NULL\n  )\n\n\n\n\n\nDollars earned by each company throughout the campaign. The dashed grey line indicates the recommended dollar amount awarded to a player who missed that particular game, as specified by the end-of-campaign story deck card."
   }
 ]

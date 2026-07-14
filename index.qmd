@@ -165,17 +165,21 @@ historical context in mind while enjoying the game's lighter treatment
 of the period.
 :::
 
-## Score progression
+## What is a decent score?
 
 When the campaign starts, the board is minimal and a game is
 relatively quick (less than an hour) --- and it is hard to tell what a
 "good" score even looks like. What we noticed is that as the campaign
-progressed, the scores got higher. The more valuable tickets would be
-sought after and depleted: one feature of the legacy system that keeps
-the ticket deck from bloating is that whenever a company completes a
-ticket, it punches the card --- some tickets allow one punch, others
-two (more on that later) --- and once full, the ticket is retired to
-the Dead Letter Office.
+progressed, the scores got *consistently* higher.
+
+::: {.callout-note title="How tickets deplete" collapse="true"}
+The more valuable tickets are sought after and eventually depleted:
+one feature of the legacy system that keeps the ticket deck from
+bloating is that whenever a company completes a ticket, it punches the
+card --- some tickets allow one punch, others two --- and once full,
+the ticket is retired to the Dead Letter Office. We return to *when*
+the high-value tickets retired later in the report.
+:::
 
 ```{r per-game}
 #| fig-cap: >
