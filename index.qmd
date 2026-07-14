@@ -138,15 +138,20 @@ game.
 
 Unlike a traditional game of *TtR*, companies develop asymmetrically
 over time. **Employees** provide unique abilities for a single game.
-The game is seeded with **Big Cities** (some you add yourself), and
-company **headquarters** --- permanent stickers placed on city
-markers, never allowed in Big Cities --- create ongoing sources of
-income to their owners. The campaign's recurring
-villain, **Mama O'Connell**, has a habit of collecting money that
-would otherwise be yours; she may also pop up in the event deck to
-demand payment, whereas other events might give you money if you
-qualify. Components are rarely destroyed; instead, they are modified,
-retired to the **Dead Letter Office**, or stored for later use.
+The game is seeded with **Big Cities** (some you add yourself);
+whenever a company lays track into a Big City, it draws one free card
+(max 1) from the face-down train deck. Company **headquarters** ---
+permanent stickers placed on city markers, never allowed in Big
+Cities --- create ongoing sources of income to their owners. The
+campaign's recurring villain, **Mama O'Connell**, has a habit of
+collecting money that would otherwise be yours: she can hold
+headquarters of her own (not just the player companies), and she may
+pop up in the event deck to demand payment, whereas other events
+might pay you if you qualify. Components (mostly cards) are never
+destroyed; instead they may be modified and stored for later use in
+subsequent games, until they are eventually retired to the **Dead
+Letter Office** --- or, in some cases, simply depleted (like a
+used-up sticker sheet).
 
 ## Score progression
 
