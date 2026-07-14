@@ -45,8 +45,9 @@ network-building train game; most people where I come from know the
 [*Europe*](https://boardgamegeek.com/boardgame/14996/ticket-to-ride-europe)
 or
 [*Nordic*](https://boardgamegeek.com/boardgame/31627/ticket-to-ride-nordic-countries)
-variety: draw colored train cards, claim routes between cities, and
-complete tickets for points — most points wins.
+variety. Each TtR variation is basically draw colored train cards,
+claim routes between cities, complete tickets for points — with
+various nuances for additional scoring (like longest road).
 [*Ticket to Ride Legacy: Legends of the West*](https://boardgamegeek.com/boardgame/390092/ticket-to-ride-legacy-legends-of-the-west)
 (2023) gives that familiar game the **legacy treatment** pioneered by
 Rob Daviau and Matt Leacock in *Pandemic Legacy* (seasons
