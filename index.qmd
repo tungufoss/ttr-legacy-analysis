@@ -1,6 +1,6 @@
 ---
 title: "Ticket to Ride Legacy — Data Dive"
-subtitle: "One campaign, 13 games, 5 companies — reconstructed from the dead letter office"
+subtitle: "One campaign, 12 plays, 5 companies — reconstructed from the dead letter office"
 ---
 
 ```{r setup}
@@ -39,8 +39,8 @@ players <- dbGetQuery(con, "SELECT * FROM players")
 ## Score progression
 
 Dollars earned per game, per company. Each game is one year of the
-campaign, 1865–1898. The dashed gray line is the "(missing)" baseline
-recorded on the bank-slip pad.
+campaign, 1865–1898. The dashed gray line is the suggested dollars for
+a player missing in action that game — a baseline value.
 
 ```{r per-game}
 missing_scores <- dbGetQuery(con, "
@@ -68,37 +68,90 @@ ggplot(scores, aes(year, dollars, color = player)) +
   )
 ```
 
-The campaign total is what decides the winner — the running sum of all
-game scores, plus the post-campaign additions (shares, circus flyer,
-timetable, and the post cards found in each company's vault), shown as
-the "final" step after 1898:
+The campaign total is what decides the winner — the running sum of the
+bank slips through 1898, then each post-campaign addition stepped in
+one at a time: post cards (from the vaults), circus flyer, shares, and
+finally the timetable. The number at the right is each company's final
+score.
 
 ```{r cumulative}
-final_reported <- dbGetQuery(con, "SELECT * FROM final_reported")
-
+#| fig-height: 6
 cum_scores <- scores |>
   arrange(player, year) |>
   group_by(player) |>
   mutate(total = cumsum(dollars)) |>
   ungroup()
 
-final_step <- final_reported |>
-  mutate(year = 1901, total = dollars) |>
-  select(player, year, total)
+component_order <- c("postcards", "circus", "shares", "timetable")
+component_x <- setNames(1901 + 3 * seq_along(component_order), component_order)
 
-cum_with_final <- bind_rows(select(cum_scores, player, year, total), final_step) |>
+additions_wide <- dbGetQuery(con, "
+  SELECT player, component, dollars FROM final_components
+  WHERE component <> 'bankslips'
+")
+
+steps <- cum_scores |>
+  filter(year == max(year)) |>
+  select(player, total)
+step_rows <- list()
+for (comp in component_order) {
+  steps <- steps |>
+    left_join(filter(additions_wide, component == comp) |>
+        select(player, add = dollars), by = "player") |>
+    mutate(total = total + coalesce(add, 0)) |>
+    select(-add)
+  step_rows[[comp]] <- mutate(steps, year = component_x[[comp]])
+}
+
+cum_full <- bind_rows(
+  select(cum_scores, player, year, total),
+  bind_rows(step_rows)
+) |>
   mutate(player = factor(player, levels = names(player_colors)))
 
-ggplot(cum_with_final, aes(year, total, color = player)) +
+totals_lab <- cum_full |>
+  filter(year == max(year)) |>
+  arrange(total) |>
+  mutate(
+    lab_y = total,
+    # push overlapping labels apart (min 45 dollar-units of separation)
+    lab_y = Reduce(
+      function(prev, cur) max(cur, prev + 45),
+      lab_y, accumulate = TRUE
+    )
+  )
+
+ggplot(cum_full, aes(year, total, color = player)) +
+  annotate("segment",
+    x = 1865, xend = 1898, y = -95, yend = -95,
+    color = "gray55", linewidth = 0.5
+  ) +
+  annotate("text",
+    x = (1865 + 1898) / 2, y = -160, label = "bank slips",
+    color = "gray45", size = 3.2
+  ) +
+  geom_vline(xintercept = 1899.5, color = "gray80", linetype = "dotted") +
   geom_line(linewidth = 1) +
   geom_point(size = 2) +
+  geom_text(
+    data = totals_lab,
+    aes(y = lab_y, label = total),
+    hjust = -0.35, size = 3.3, fontface = "bold", show.legend = FALSE
+  ) +
   scale_color_manual(values = player_colors) +
   scale_x_continuous(
-    breaks = c(unique(scores$year), 1901),
-    labels = c(unique(scores$year), "final")
+    breaks = c(unique(scores$year), component_x),
+    labels = c(unique(scores$year), "post cards", "circus flyer",
+               "shares", "timetable"),
+    expand = expansion(mult = c(0.02, 0.06))
+  ) +
+  coord_cartesian(clip = "off") +
+  theme(
+    axis.text.x = element_text(angle = 35, hjust = 1),
+    plot.margin = margin(10, 20, 26, 10)
   ) +
   labs(
-    title = "Campaign total (cumulative dollars, post-campaign additions last)",
+    title = "Campaign total (bank slips, then each addition stepped in)",
     x = NULL, y = "cumulative dollars", color = NULL
   )
 ```
