@@ -10,6 +10,7 @@ library(RSQLite)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
+library(plotly)
 
 con <- dbConnect(SQLite(), "ttr.db")
 
@@ -547,7 +548,8 @@ company) pays $110 — more than a third of the entire pool.
 The game board as a network: 200 tracks connecting 63 cities across 12
 jigsaw sections. Fictional cities (Nuevos Angeles, Cemetery City,
 Pacific Haven, Baja) sit at plausible approximate positions; dashed
-gray = unbuilt track beds.
+gray = unbuilt track beds. The cities are colored by the sticker
+locations of *our* campaign — your board may vary.
 
 ```{r board}
 #| fig-height: 7
@@ -617,6 +619,93 @@ ggplot() +
   labs(title = "The board: tracks as printed, cities by company sticker (triangles = ports)")
 ```
 
+### Opening the frontiers
+
+The dead letter office remembers the order the map grew. Frontier
+discovery cards sit between dated story markers in the pile, so the
+unstack order gives both the sequence and the game year each jigsaw
+section was added. Drag the slider (or press play) to watch the board
+unfold from the initial East Coast start area; cities are colored by
+jigsaw section, and tracks appear once both their endpoints are
+unlocked.
+
+```{r frontier-unlock}
+#| fig-height: 6.5
+frontier_map <- c(
+  "great plains" = "Great Plains", "florida" = "Florida",
+  "sierra madre" = "Sierra Madre", "haunted waste" = "Haunted Wastes",
+  "badlands" = "Badlands", "california" = "California",
+  "open range" = "Open Range", "cascadia" = "Cascadia"
+)
+
+unlocks <- dbGetQuery(con, "
+  SELECT s.id, s.name, w.latest_year
+  FROM story_cards s
+  JOIN v_retirement_window w ON w.run_id = s.id
+") |>
+  mutate(key = tolower(name)) |>
+  filter(key %in% names(frontier_map)) |>
+  arrange(desc(id)) |>   # deeper in the pile = discovered earlier
+  transmute(section = unname(frontier_map[key]), year = latest_year)
+
+initial_sections <- c("Northeast", "Atlantic Coast", "The South", "Appalachia")
+
+city_sections <- dbGetQuery(con, "
+  SELECT c.city, c.section, cc.lat, cc.lon FROM cities c
+  JOIN city_coords cc ON cc.city = c.city
+")
+
+# cumulative frames: each step adds one frontier's sections
+acc <- initial_sections
+frame_defs <- list(tibble(frame = "1865 · Initial", section = acc))
+for (i in seq_len(nrow(unlocks))) {
+  acc <- c(acc, unlocks$section[i])
+  frame_defs[[i + 1]] <- tibble(
+    frame = paste0(unlocks$year[i], " · ", unlocks$section[i]),
+    section = acc
+  )
+}
+frames_df <- bind_rows(frame_defs)
+
+cities_anim <- frames_df |>
+  inner_join(city_sections, by = "section",
+    relationship = "many-to-many"
+  ) |>
+  mutate(tooltip = paste0("<b>", city, "</b><br>", section))
+
+routes_anim <- frames_df |>
+  distinct(frame) |>
+  cross_join(routes) |>
+  semi_join(
+    cities_anim |> select(frame, city),
+    by = c("frame", "city_a" = "city")
+  ) |>
+  semi_join(
+    cities_anim |> select(frame, city),
+    by = c("frame", "city_b" = "city")
+  )
+
+p_unlock <- ggplot() +
+  geom_segment(
+    data = routes_anim,
+    aes(x = lon_a, y = lat_a, xend = lon_b, yend = lat_b, frame = frame),
+    color = "gray80", linewidth = 0.4
+  ) +
+  geom_point(
+    data = cities_anim,
+    aes(lon, lat, color = section, frame = frame, text = tooltip),
+    size = 2.4
+  ) +
+  coord_fixed(ratio = 1.25) +
+  theme_void() +
+  labs(title = "How the board unfolded", color = "jigsaw section")
+
+ggplotly(p_unlock, tooltip = "text") |>
+  animation_opts(frame = 1200, transition = 300, redraw = FALSE) |>
+  animation_slider(currentvalue = list(prefix = "unlocked: ", font = list(size = 14))) |>
+  config(displayModeBar = FALSE)
+```
+
 ### Hotspots
 
 Which cities did completed tickets actually connect? Each punch on a
@@ -626,8 +715,6 @@ company that punched the most tickets through it.
 
 ```{r hotspots}
 #| fig-height: 6.5
-library(plotly)
-
 city_players <- dbGetQuery(con, "
   WITH endpoint_punches AS (
     SELECT t.from_city AS city, p.color AS player, p.punches FROM tickets t
