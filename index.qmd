@@ -209,7 +209,7 @@ ggplot(per_game, aes(year, dollars, color = player, linetype = player)) +
   )
 ```
 
-## The missing-player payout
+### The missing-player payout
 
 First, a confession about how we handled absent players. The rulebook is
 initially very vague about absent players: it merely says the campaign
@@ -234,7 +234,7 @@ The remainder of this section compares the official "missing player"
 values against the observed campaign results — effectively an
 evaluation of one of the game's hidden balancing mechanisms.
 
-### Game-level comparison
+#### Game-level comparison
 
 ```{r missing-game-level}
 official <- dbGetQuery(con, "
@@ -295,7 +295,7 @@ ggplot(player_official, aes(year, resid, color = player)) +
   )
 ```
 
-### Per-company performance
+#### Per-company performance
 
 ```{r missing-company}
 #| fig-height: 4
@@ -335,7 +335,7 @@ knitr::kable(
 )
 ```
 
-### Interpretation
+#### Interpretation
 
 If the recommendations closely matched observed play, they would offer
 a fair way to handle missed sessions. The data says they are
