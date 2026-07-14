@@ -353,6 +353,17 @@ knitr::kable(
 
 #### Interpretation
 
+::: {.callout-note title="What does the p-value mean?"}
+The Wilcoxon signed-rank test compares each company's actual earnings
+with the official "missing player" amount across all twelve games. A
+small p-value suggests the company consistently earned more (or less)
+than the guideline. Larger p-values mean the observed differences
+could plausibly be explained by normal variation. Because the campaign
+consists of only twelve games, the test has limited statistical power,
+so these results should be interpreted as descriptive rather than
+definitive.
+:::
+
 If the recommendations closely matched observed play, they would offer
 a fair way to handle missed sessions. The data says they are
 **increasingly stingy**: the guideline is roughly calibrated for the
